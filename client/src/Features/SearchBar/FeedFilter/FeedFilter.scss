@@ -1,0 +1,80 @@
+.feed__filter {
+  height: 100%;
+  // width: fit-content;
+  // min-width: 2em;
+  display: grid;
+
+  &_toggle {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    // outline: 1px solid white;
+    margin: 0;
+    grid-area: 1/1;
+
+    &:checked ~ .feed__filter_dropdown {
+      display: unset;
+      position: fixed;
+      top: 100cqh;
+    }
+  }
+
+  &_visual {
+    grid-area: 1/1;
+    // width: 100%;
+    height: 100%;
+    display: flex;
+    color: var(--c_text_1);
+    padding-inline: 1ch;
+
+    & > div {
+      margin: auto;
+      display: flex;
+
+      p {
+        margin: auto;
+      }
+
+      i {
+        height: 0.7ch;
+        width: 0.7ch;
+        border-right: 2px solid var(--c_text_1);
+        border-bottom: 2px solid var(--c_text_1);
+
+        display: inline-block;
+        margin: auto;
+        margin-left: 0.7ch;
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  // &_dropdown {
+  //   grid-area: 1/1;
+  //   display: none;
+  //   background-color: var(--c_menu_bg_1);
+  //   color: var(--c_text_1);
+  //   padding: 0.4em;
+  //   border-radius: 0 0 1em 0;
+  //
+  //   li {
+  //     button {
+  //       background-color: transparent;
+  //       color: var(--c_text_1);
+  //       width: 100%;
+  //       margin: 0;
+  //       padding: 0;
+  //       text-align: left;
+  //       border: none;
+  //       cursor: pointer;
+  //     }
+  //
+  //     &[aria-selected="true"] > button::after {
+  //       content: "<";
+  //       padding-left: 1ch;
+  //     }
+  //   }
+  // }
+}

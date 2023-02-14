@@ -1,0 +1,24 @@
+main {
+  background-color: lightgreen;
+  // margin: auto;
+  height: 100%;
+  // width: 100vw;
+  display: flex;
+
+  .login {
+    background-color: lightyellow;
+    margin: 1em;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr 1fr;
+
+    title {
+      background-color: lightsalmon;
+
+      h1 {
+        font-size: 2em;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.logo {
+  font-family: Codystar;
+  font-weight: 600;
+  color: var(--c_text_1);
+  background-color: var(--c_menu_bg_1);
+  border-top-right-radius: 3em;
+  padding-left: 0.5ch;
+  font-size: 1.3em;
+  align-self: center;
+  height: 100%;
+  width: 100%;
+  display: grid;
+
+  span {
+    margin-block: auto;
+    display: block;
+  }
+}

@@ -1,0 +1,32 @@
+.search {
+  height: 100%;
+  // width: 3em;
+  display: grid;
+  margin-left: auto;
+  margin-right: 0.5em;
+  // background-color: red;
+  // border: 1px solid white;
+
+  img {
+    grid-row: 1;
+    grid-column: 1;
+    width: 1em;
+    height: 1em;
+    // width: 0.7em;
+    // height: 0.7em;
+    z-index: 1;
+    margin-block: auto;
+    margin-left: auto;
+    opacity: 0.3;
+  }
+
+  &_input {
+    grid-row: 1;
+    grid-column: 1;
+    height: 70%;
+    width: 100%;
+    border: none;
+    border-radius: 2em;
+    margin: auto;
+  }
+}

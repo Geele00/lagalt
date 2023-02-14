@@ -1,0 +1,32 @@
+.feed-item {
+  --padding: 0.4em;
+
+  background-color: var(--c_white);
+  color: var(--c_black_2);
+  padding-left: var(--padding);
+  margin-bottom: 0.5em;
+  display: flex;
+
+  &__main {
+    padding-block: var(--padding);
+
+    h2 {
+    }
+
+    p {
+      font-size: 0.8em;
+    }
+
+    footer {
+      font-size: 0.6em;
+      // background-color: var(--c_temp_1);
+      color: var(--c_grey_1);
+      display: flex;
+    }
+  }
+
+  &__sidebar {
+    margin-left: auto;
+    background-color: var(--c_grey_1);
+  }
+}
