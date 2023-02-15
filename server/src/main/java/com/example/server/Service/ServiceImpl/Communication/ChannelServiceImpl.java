@@ -1,33 +1,47 @@
 package com.example.server.Service.ServiceImpl.Communication;
 
+import com.example.server.Models.Communication.Channel;
+import com.example.server.Repository.Communication.ChannelRepository;
 import com.example.server.Service.Interface.Communication.ChannelService;
+import com.example.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 @Service
 public class ChannelServiceImpl implements ChannelService {
+
+    private final ChannelRepository channelRepository;
+
+    public ChannelServiceImpl(ChannelRepository channelRepository) {
+        this.channelRepository = channelRepository;
+    }
+
     @Override
-    public ChannelService findById(Integer integer) {
+    public Channel findById(Integer id) {
+        if (channelRepository.existsById(id)) {
+            return channelRepository.findById(id).get();
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    @Override
+    public Collection<Channel> findAll() {
         return null;
     }
 
     @Override
-    public Collection<ChannelService> findAll() {
+    public Channel add(Channel entity) {
         return null;
     }
 
     @Override
-    public ChannelService add(ChannelService entity) {
+    public Channel update(Channel entity) {
         return null;
     }
 
     @Override
-    public ChannelService update(ChannelService entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(ChannelService entity) {
+    public void delete(Channel entity) {
 
     }
 
@@ -35,4 +49,6 @@ public class ChannelServiceImpl implements ChannelService {
     public void deleteById(Integer integer) {
 
     }
+
+
 }

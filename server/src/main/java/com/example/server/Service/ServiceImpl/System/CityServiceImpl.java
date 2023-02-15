@@ -1,33 +1,47 @@
 package com.example.server.Service.ServiceImpl.System;
 
+import com.example.server.Models.System.City;
+import com.example.server.Repository.System.CityRepository;
 import com.example.server.Service.Interface.System.CityService;
+import com.example.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 @Service
 public class CityServiceImpl implements CityService {
+
+    private final CityRepository cityRepository;
+
+    public CityServiceImpl(CityRepository cityRepository) {
+        this.cityRepository = cityRepository;
+    }
+
     @Override
-    public CityService findById(Integer integer) {
+    public City findById(Integer id) {
+        if (cityRepository.existsById(id)) {
+            return cityRepository.findById(id).get();
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    @Override
+    public Collection<City> findAll() {
         return null;
     }
 
     @Override
-    public Collection<CityService> findAll() {
+    public City add(City entity) {
         return null;
     }
 
     @Override
-    public CityService add(CityService entity) {
+    public City update(City entity) {
         return null;
     }
 
     @Override
-    public CityService update(CityService entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(CityService entity) {
+    public void delete(City entity) {
 
     }
 
