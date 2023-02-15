@@ -1,10 +1,6 @@
-import { useRef, useState } from "react";
-import "./FeedFilter.scss";
+import { useState } from "react";
+import { IFeedFilter } from ".";
 import { FilterItem } from "./FilterItem";
-
-interface IFeedFilter {
-  filterName: string;
-}
 
 export const FeedFilter = ({ filterName }: IFeedFilter) => {
   // const defaultInputRef = useRef<HTMLInputElement>(null);

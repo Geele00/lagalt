@@ -1,6 +1,6 @@
 import "./App.scss";
-import { Header } from "./Components/Header";
-import { Feed } from "./Features/Feed";
+import { Header } from "src/Components/Header";
+import { Feed } from "src/Features/Feed";
 
 function App() {
   return (

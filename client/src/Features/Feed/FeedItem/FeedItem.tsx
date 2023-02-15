@@ -1,9 +1,4 @@
-import "./FeedItem.scss";
-
-interface IFeedItem {
-  title: string;
-  description: string;
-}
+import { IFeedItem } from ".";
 
 export const FeedItem = ({ title, description }: IFeedItem) => {
   return (

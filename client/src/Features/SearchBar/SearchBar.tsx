@@ -1,5 +1,3 @@
-import "./SearchBar.scss";
-
 export const SearchBar = () => {
   return (
     <form className="search" role="search">

@@ -1,10 +1,6 @@
 import { useRef } from "react";
-import { LoginButton } from "../../Components/LoginButton";
-import { Menu } from "../../Features/Menu";
-import { SearchBar } from "../../Features/SearchBar";
-import { FeedFilter } from "../../Features/SearchBar/FeedFilter";
-import { Logo } from "../Logo";
-import "./Header.scss";
+import { ProfileButton, Logo } from "src/Components";
+import { Menu, SearchBar, FeedFilter } from "src/Features";
 
 export const Header = () => {
   const menuToggleRef = useRef<HTMLInputElement>(null);
@@ -25,7 +21,7 @@ export const Header = () => {
       <FeedFilter filterName="Industry" />
 
       <SearchBar />
-      <LoginButton username="blah" className="test" />
+      <ProfileButton username="blah" className="test" />
     </header>
   );
 };

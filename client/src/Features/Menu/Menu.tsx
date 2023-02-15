@@ -1,10 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import { FormEvent } from "react";
-import "./Menu.scss";
-
-interface IMenu {
-  menuToggleRef: React.RefObject<HTMLInputElement>;
-}
+import { Link } from "@tanstack/react-router";
+import { IMenu } from ".";
 
 export const Menu = ({ menuToggleRef }: IMenu) => {
   const onInput = (e: FormEvent) => {
