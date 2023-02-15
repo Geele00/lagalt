@@ -1,34 +1,48 @@
 package com.example.server.Service.ServiceImpl.Communication;
 
+import com.example.server.Models.Communication.MessageBoard;
+import com.example.server.Repository.Communication.MessageBoardRepository;
 import com.example.server.Service.Interface.Communication.MessageBoardService;
+import com.example.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 @Service
 public class MessageBoardServiceImpl implements MessageBoardService {
+
+    private final MessageBoardRepository messageBoardRepository;
+
+    public MessageBoardServiceImpl(MessageBoardRepository messageBoardRepository) {
+        this.messageBoardRepository = messageBoardRepository;
+    }
+
     @Override
-    public MessageBoardService findById(Integer integer) {
+    public MessageBoard findById(Integer id) {
+        if (messageBoardRepository.existsById(id)) {
+            return messageBoardRepository.findById(id).get();
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    @Override
+    public Collection<MessageBoard> findAll() {
         return null;
     }
 
     @Override
-    public Collection<MessageBoardService> findAll() {
+    public MessageBoard add(MessageBoard entity) {
         return null;
     }
 
     @Override
-    public MessageBoardService add(MessageBoardService entity) {
+    public MessageBoard update(MessageBoard entity) {
         return null;
     }
 
     @Override
-    public MessageBoardService update(MessageBoardService entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(MessageBoardService entity) {
+    public void delete(MessageBoard entity) {
 
     }
 

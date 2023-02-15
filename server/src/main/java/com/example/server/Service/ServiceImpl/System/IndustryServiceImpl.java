@@ -1,33 +1,47 @@
 package com.example.server.Service.ServiceImpl.System;
 
+import com.example.server.Models.System.Industry;
+import com.example.server.Repository.System.IndustryRepository;
 import com.example.server.Service.Interface.System.IndustryService;
+import com.example.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 @Service
 public class IndustryServiceImpl implements IndustryService {
+
+    private final IndustryRepository industryRepository;
+
+    public IndustryServiceImpl(IndustryRepository industryRepository) {
+        this.industryRepository = industryRepository;
+    }
+
     @Override
-    public IndustryService findById(Integer integer) {
+    public Industry findById(Integer id) {
+        if (industryRepository.existsById(id)) {
+            return industryRepository.findById(id).get();
+        } else {
+            throw new NotFoundException(id);
+        }
+    }
+
+    @Override
+    public Collection<Industry> findAll() {
         return null;
     }
 
     @Override
-    public Collection<IndustryService> findAll() {
+    public Industry add(Industry entity) {
         return null;
     }
 
     @Override
-    public IndustryService add(IndustryService entity) {
+    public Industry update(Industry entity) {
         return null;
     }
 
     @Override
-    public IndustryService update(IndustryService entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(IndustryService entity) {
+    public void delete(Industry entity) {
 
     }
 
