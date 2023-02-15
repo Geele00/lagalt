@@ -1,5 +1,6 @@
 package com.example.server.Models.Users;
 
+import com.example.server.Communication.MessageBoard;
 import com.example.server.Models.System.Industry;
 import com.example.server.Models.System.Notification;
 import com.example.server.Models.Users.LagaltUser;
@@ -42,4 +43,6 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "lagaltuser_project")
     private LagaltUser lagaltUsers;
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL,orphanRemoval = true)
+    private MessageBoard messageBoard;
 }
