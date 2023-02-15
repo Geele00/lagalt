@@ -1,4 +1,4 @@
-package com.example.server.Communication;
+package com.example.server.Models.Communication;
 
 import com.example.server.Models.Users.LagaltUser;
 import jakarta.persistence.*;

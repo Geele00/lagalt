@@ -1,4 +1,4 @@
-package com.example.server.Utils;
+package com.example.server.Utils.Enum;
 
 public enum AddedBy {
 

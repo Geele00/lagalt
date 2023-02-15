@@ -1,4 +1,4 @@
-package com.example.server.Communication;
+package com.example.server.Models.Communication;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.server.Models.Users;
 
 import com.example.server.Models.System.Country;
 import com.example.server.Models.System.History;
-import com.example.server.Utils.Gender;
+import com.example.server.Utils.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
