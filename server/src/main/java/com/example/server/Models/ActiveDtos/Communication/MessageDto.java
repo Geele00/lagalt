@@ -1,18 +1,17 @@
 package com.example.server.Models.ActiveDtos.Communication;
 
 import com.example.server.Models.Users.LagaltUser;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-
+@Data
 public class MessageDto {
 
-    private final String text;
-    private final LagaltUser lagaltUser;
-    private final LocalDateTime timeStamp;
+    private @NotBlank(message = "Text field cannot be empty") String text;
+    private @NotNull(message = "User cannot be null") LagaltUser lagaltUser;
+    private @NotNull(message = "Message board cannot be null") LocalDateTime timeStamp;
 
-    public MessageDto(String text, LagaltUser lagaltUser, LocalDateTime timeStamp) {
-        this.text = text;
-        this.lagaltUser = lagaltUser;
-        this.timeStamp = timeStamp;
-    }
+
 }
