@@ -11,7 +11,14 @@ import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { Header } from "./Components";
-import { homeRoute, loginRoute, projectRoute, signupRoute } from "./Routes";
+import {
+  forgotRoute,
+  homeRoute,
+  loginRoute,
+  projectRoute,
+  signupRoute,
+  profilePageRoute,
+} from "./Routes";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +37,8 @@ const routeTree = rootRoute.addChildren([
   loginRoute(rootRoute, queryClient),
   signupRoute(rootRoute, queryClient),
   projectRoute(rootRoute, queryClient),
+  forgotRoute(rootRoute, queryClient),
+  profilePageRoute(rootRoute, queryClient),
 ]);
 
 const router = new ReactRouter({ routeTree });
