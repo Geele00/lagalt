@@ -1,13 +1,13 @@
-import "./Login.scss";
+import { Link } from "@tanstack/react-router";
 
 export const Login = () => {
   return (
-    <main>
-      <div className="login">
+    <main className="login__main">
+      <section className="login">
         <div className="login_title">
           <h1>Logg inn</h1>
         </div>
-        <form>
+        <form className="login__form">
           <input
             required
             type="text"
@@ -26,9 +26,15 @@ export const Login = () => {
             placeholder="Passord"
             autoComplete="off"
           />
-          <button />
+          <button>Logg inn</button>
         </form>
-      </div>
+        <section className="login_options">
+          <Link to="glemt-passord">Glemt passord</Link>
+          <Link to="registrer">Ny bruker</Link>
+        </section>
+        <p className="login_google">Google Login</p>
+        <p>Ny bruker</p>
+      </section>
     </main>
   );
 };

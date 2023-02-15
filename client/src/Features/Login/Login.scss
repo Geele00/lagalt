@@ -1,24 +1,57 @@
-main {
-  background-color: lightgreen;
+.login__main {
+  // background-color: lightgreen;
   // margin: auto;
   height: 100%;
   // width: 100vw;
   display: flex;
+}
 
-  .login {
-    background-color: lightyellow;
-    margin: 1em;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 1fr 3fr 1fr 1fr;
+.login {
+  background-color: lightyellow;
+  // margin: 1em;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 2fr 4fr 1fr 2fr 1fr;
 
-    title {
-      background-color: lightsalmon;
+  &_title {
+    background-color: lightsalmon;
+    display: flex;
 
-      h1 {
-        font-size: 2em;
-        text-transform: uppercase;
-      }
+    h1 {
+      margin: auto;
+      font-size: var(--s_title_1);
+      text-transform: uppercase;
     }
+  }
+
+  &__form {
+    background-color: lightyellow;
+    display: grid;
+    grid-template-rows: 2fr 2fr 1fr;
+
+    input {
+      border-radius: 1em;
+      border-style: none;
+      background-color: lightgreen;
+      margin: auto;
+      width: 90%;
+      height: 60%;
+      font-size: 1em;
+      padding-inline: 0.5em;
+    }
+
+    button {
+      margin: auto;
+      width: 90%;
+      height: 60%;
+    }
+  }
+
+  &_options {
+    background-color: lightgreen;
+  }
+
+  &_google {
+    background-color: lightsalmon;
   }
 }

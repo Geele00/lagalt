@@ -1,19 +1,19 @@
 import { QueryClient } from "@tanstack/react-query";
 import { RootRoute, Route } from "@tanstack/react-router";
-import { Feed } from "../../Features/Feed";
+import { ProjectPage } from "../../../Features/ProjectPage";
 
-export const homeRoute = (rootRoute: RootRoute, queryClient: QueryClient) =>
+// Project
+export const projectRoute = (rootRoute: RootRoute, queryClient: QueryClient) =>
   new Route({
     getParentRoute: () => rootRoute,
-    path: "/",
+    path: "/prosjekt/$projectId",
+    component: ProjectPage,
     onLoad: () =>
       queryClient.ensureQueryData({
-        queryKey: ["feed"],
+        queryKey: ["project"],
         queryFn: () => 5,
         // fetch("localhost:8080/projects")
         //   .then((res) => res.json())
         //   .then((data) => data),
       }),
-    component: Feed,
-    errorComponent: () => "3rr0rL0l",
   });

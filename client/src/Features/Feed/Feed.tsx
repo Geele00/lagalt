@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import "./Feed.scss";
 import { FeedItem } from "./FeedItem";
 
 const feedItems = [
