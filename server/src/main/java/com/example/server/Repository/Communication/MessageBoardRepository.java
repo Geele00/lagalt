@@ -1,8 +1,9 @@
 package com.example.server.Repository.Communication;
 
+import com.example.server.Models.Communication.MessageBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Message extends JpaRepository<Message, Integer> {
+public interface MessageBoardRepository extends JpaRepository<MessageBoard, Integer> {
 }
