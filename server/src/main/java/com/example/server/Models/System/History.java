@@ -4,10 +4,16 @@ package com.example.server.Models.System;
 import com.example.server.Models.Users.LagaltUser;
 import com.example.server.Models.Users.Project;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@ToString
 @Table(name = "History")
 public class History {
     @Id
