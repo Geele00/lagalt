@@ -1,9 +1,8 @@
 package com.example.server.Models.Users;
 
-import com.example.server.Communication.MessageBoard;
+import com.example.server.Models.Communication.MessageBoard;
 import com.example.server.Models.System.Industry;
 import com.example.server.Models.System.Notification;
-import com.example.server.Models.Users.LagaltUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

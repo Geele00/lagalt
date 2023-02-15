@@ -1,7 +1,7 @@
 package com.example.server.Models.Users;
 
 import com.example.server.Models.System.Industry;
-import com.example.server.Utils.AddedBy;
+import com.example.server.Utils.Enum.AddedBy;
 import jakarta.persistence.*;
 import java.util.List;
 
