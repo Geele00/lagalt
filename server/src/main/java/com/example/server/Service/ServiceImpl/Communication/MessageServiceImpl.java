@@ -5,9 +5,11 @@ import com.example.server.Repository.Communication.MessageRepository;
 import com.example.server.Service.Interface.Communication.MessageService;
 import com.example.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
 @Service
+@Validated
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
