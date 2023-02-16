@@ -1,0 +1,2 @@
+# Absolute imports
+Configured absolute import path for src/*. Allows for consistent and less chaotic imports.
