@@ -1,6 +1,6 @@
-export { loginRoute } from "./logg-inn/loginRoute";
-export { homeRoute } from "./home/home";
-export { projectRoute } from "./$username/$projectName/projectRoute";
-export { signupRoute } from "./registrer/signupRoute";
-export { forgotRoute } from "./glemt-passord/forgotRoute";
+export { loginRoute } from "./logg-inn";
+export { homeRoute } from "./home";
+export { projectRoute } from "./$username/$projectName";
+export { signupRoute } from "./registrer";
+export { forgotRoute } from "./glemt-passord";
 export { profilePageRoute } from "./$username";
