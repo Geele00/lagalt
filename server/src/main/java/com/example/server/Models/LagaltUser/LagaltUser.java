@@ -7,6 +7,7 @@ import com.example.server.Models.Skill.Skill;
 import com.example.server.Utils.Enum.Gender;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,10 +35,10 @@ public class LagaltUser {
   private String lastName;
 
   @Column(name = "dob", nullable = false)
-  private LocalDate dob;
+  private Date dob;
 
   @Column(name = "dateOfCreation", nullable = false)
-  private LocalDate dateOfCreation;
+  private Date dateOfCreation;
 
   @Column(name = "email", nullable = false)
   private String email;
