@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   app-server:
+    container_name: JavaBackend
     build:
       context: server
       dockerfile: Dockerfile
@@ -19,6 +20,7 @@ services:
       - frontend
 
   app-client:
+    container_name: ReactFront
     build:
       context: client
       dockerfile: Dockerfile
@@ -33,6 +35,7 @@ services:
       - frontend
 
   db:
+    container_name: postgresDB
     image: postgres
     ports:
       - "5432:5432"
