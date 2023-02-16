@@ -1,5 +1,6 @@
 package no.lagalt.server.Models.MessageBoard;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import no.lagalt.server.Models.Channel.Channel;
 import no.lagalt.server.Models.Message.Message;
 import no.lagalt.server.Models.Project.Project;
 
-@Entity
+@Entity(name = "messageBoard")
 @Getter
 @Setter
 @ToString
@@ -29,9 +30,8 @@ public class MessageBoard {
   @JoinColumn(name = "projectId")
   private Project project;
 
-  @ManyToOne
-  @JoinColumn(name = "channelId")
-  private Channel channel;
+  @OneToMany(mappedBy = "messageBoards")
+  private List<Channel> channel = new ArrayList<>();
 
   private LocalDate creationDate;
 

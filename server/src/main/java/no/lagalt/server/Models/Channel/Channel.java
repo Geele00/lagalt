@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
+import no.lagalt.server.Models.Message.Message;
 import no.lagalt.server.Models.MessageBoard.MessageBoard;
 
 @Entity
@@ -19,6 +20,12 @@ public class Channel {
 
   private String name;
 
-  @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<MessageBoard> messageBoards = new ArrayList<>();
+  @ManyToOne
+  @JoinColumn(name = "messageBoardId")
+  private MessageBoard messageBoards;
+
+
+
+  @OneToMany
+  private List<Message> messages = new ArrayList<>();
 }
