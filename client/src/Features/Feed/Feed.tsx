@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { FeedItem } from "./FeedItem";
 
 const feedItems = [
@@ -34,11 +35,12 @@ const feedItems = [
 ];
 
 export const Feed = () => {
-  // const feedQuery = useQuery(["feed"], () => 5);
-  // console.log(feedQuery);
+  const { status, data, error, isFetching, isLoading } = useQuery({
+    queryKey: ["/users"],
+  });
 
   return (
-    <section className="feed" role="feed">
+    <main className="feed" role="feed">
       {feedItems.map((item) => (
         <FeedItem
           title={item.title}
@@ -46,6 +48,6 @@ export const Feed = () => {
           key={item.id}
         />
       ))}
-    </section>
+    </main>
   );
 };
