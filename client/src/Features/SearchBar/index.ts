@@ -1,2 +1,2 @@
 export { SearchBar } from "./SearchBar";
-export * from "./SearchBar.scss";
+export * from "./style.scss";

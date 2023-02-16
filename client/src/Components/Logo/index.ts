@@ -1,2 +1,2 @@
 export { Logo } from "./Logo";
-export * from "./Logo.scss";
+export * from "./style.scss";
