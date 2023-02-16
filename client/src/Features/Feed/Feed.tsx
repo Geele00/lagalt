@@ -18,7 +18,7 @@ const feedItems = [
   },
   {
     id: 4,
-    title: "Bunnies and tits",
+    title: "Bunnies and chips",
     description: "This is an awesome project. An awesome project this is.",
   },
   {
