@@ -1,9 +1,9 @@
 import { useParams } from "@tanstack/react-router";
 
 export const ProjectPage = () => {
-  const { projectId } = useParams();
-
-  console.log(projectId);
+  // const { projectName } = useParams();
+  //
+  // console.log(projectName);
 
   return (
     <main className="project-page">

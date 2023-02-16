@@ -5,6 +5,7 @@ import {
   Outlet,
   ReactRouter,
   RootRoute,
+  Route,
   RouterProvider,
 } from "@tanstack/react-router";
 import React, { StrictMode } from "react";
@@ -15,14 +16,14 @@ import {
   forgotRoute,
   homeRoute,
   loginRoute,
-  projectRoute,
   signupRoute,
   profilePageRoute,
+  projectRoute,
 } from "./Routes";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
-const rootRoute = new RootRoute({
+export const rootRoute = new RootRoute({
   component: () => (
     <>
       <Header />
@@ -32,13 +33,17 @@ const rootRoute = new RootRoute({
   ),
 });
 
+export const userRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: "$username",
+});
+
 const routeTree = rootRoute.addChildren([
-  homeRoute(rootRoute, queryClient),
-  loginRoute(rootRoute, queryClient),
-  signupRoute(rootRoute, queryClient),
-  projectRoute(rootRoute, queryClient),
-  forgotRoute(rootRoute, queryClient),
-  profilePageRoute(rootRoute, queryClient),
+  homeRoute,
+  loginRoute,
+  signupRoute,
+  forgotRoute,
+  userRoute.addChildren([profilePageRoute, projectRoute]),
 ]);
 
 const router = new ReactRouter({ routeTree });

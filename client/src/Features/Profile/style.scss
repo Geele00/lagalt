@@ -1,0 +1,33 @@
+.profile {
+  padding-block: 0.5em;
+
+  h1 {
+    font-size: 2em;
+  }
+
+  &__info {
+    display: flex;
+
+    table {
+      background-color: lightgreen;
+      text-align: left;
+
+      th {
+        width: 5em;
+      }
+    }
+
+    &_photo {
+      margin: auto;
+    }
+  }
+
+  &__projects,
+  &__projects-contributing {
+    display: none;
+
+    &:has(li) {
+      display: block;
+    }
+  }
+}

@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import "./FilterItem.scss";
+import { useRef } from "react";
 
 interface IFilterItem {
   selectedFilter: string;

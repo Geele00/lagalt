@@ -1,3 +1,3 @@
 export { FeedFilter } from "./FeedFilter";
-export * from "./FeedFilter.scss";
+export * from "./style.scss";
 export type { IFeedFilter } from "./types";

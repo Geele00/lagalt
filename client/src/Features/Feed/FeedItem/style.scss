@@ -25,8 +25,9 @@
     }
   }
 
-  &__sidebar {
+  &__right {
+    width: 15%;
     margin-left: auto;
-    background-color: var(--c_grey_1);
+    background-color: var(--c_purple);
   }
 }
