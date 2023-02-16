@@ -21,7 +21,22 @@ import {
   projectRoute,
 } from "./Routes";
 
-export const queryClient = new QueryClient();
+const apiUrl = "localhost/api/v1";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryFn: async ({ queryKey }) => {
+        const { data } = await fetch(`${apiUrl}${queryKey[0]}`)
+          .then((res) => res.json())
+          .then((data) => data);
+
+        console.log(88);
+        return data;
+      },
+    },
+  },
+});
 
 export const rootRoute = new RootRoute({
   component: () => (
