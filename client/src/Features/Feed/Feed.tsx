@@ -39,6 +39,8 @@ export const Feed = () => {
     queryKey: ["/users"],
   });
 
+  console.log(data);
+
   return (
     <main className="feed" role="feed">
       {feedItems.map((item) => (
