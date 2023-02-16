@@ -44,12 +44,12 @@ public class LagaltUserController {
                     }
             ),
             @ApiResponse(responseCode = "404",
-                    description = "character does not exist with given ID",
+                    description = "User does not exist with given ID",
                     content = @Content
             )
     })
     @GetMapping("{id}")
-    @Operation(description = "id of character", summary = "search by id")
+    @Operation(description = "id of User", summary = "search by id")
     public ResponseEntity<LagaltUserDto> getById(
             @PathVariable int id
     ) {
