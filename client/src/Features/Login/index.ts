@@ -1,2 +1,2 @@
 export { Login } from "./Login";
-export * from "./Login.scss";
+export * from "./style.scss";

@@ -10,7 +10,7 @@ export const Menu = ({ menuToggleRef }: IMenu) => {
   };
 
   return (
-    <div className="menu" aria-haspopup="menu">
+    <nav className="menu" aria-haspopup="menu">
       <input
         type="checkbox"
         id="burger-checkbox"
@@ -35,6 +35,6 @@ export const Menu = ({ menuToggleRef }: IMenu) => {
           <Link to="/">Hjelp</Link>
         </li>
       </ul>
-    </div>
+    </nav>
   );
 };

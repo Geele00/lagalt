@@ -1,4 +1,4 @@
-FROM node:12.4.0-alpine as build
+FROM node:19-alpine3.16 as build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN npm run build
 
 FROM nginx:1.17.0-alpine
 
-COPY --from=build /app/build /var/www
+COPY --from=build /app/dist /var/www
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

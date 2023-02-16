@@ -1,3 +1,3 @@
 export { ProfileButton } from "./ProfileButton";
-export * from "./ProfileButton.scss";
+export * from "./style.scss";
 export type { ILoginButton } from "./types";

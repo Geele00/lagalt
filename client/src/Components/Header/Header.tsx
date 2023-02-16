@@ -12,10 +12,10 @@ export const Header = () => {
 
   return (
     <header className="main-header">
-      <div className="main-header__left" onMouseLeave={onMouseLeave}>
+      <section className="main-header__left" onMouseLeave={onMouseLeave}>
         <Menu menuToggleRef={menuToggleRef} />
         <Logo />
-      </div>
+      </section>
 
       <FeedFilter filterName="Pop" />
       <FeedFilter filterName="Industry" />

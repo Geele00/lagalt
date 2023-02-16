@@ -12,10 +12,14 @@ export const FeedItem = ({ title, description }: IFeedItem) => {
           <p>Likes</p>
           <p>Comments</p>
           <p>10 hours ago</p>
+          <p>Favourite</p>
         </footer>
       </section>
 
-      <section className="feed-item__sidebar">menu</section>
+      <section className="feed-item__right">
+        <img />
+        <ul></ul>
+      </section>
     </article>
   );
 };
