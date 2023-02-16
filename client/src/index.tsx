@@ -21,7 +21,7 @@ import {
   projectRoute,
 } from "./Routes";
 
-const apiUrl = "localhost/api/v1";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export const queryClient = new QueryClient({
   defaultOptions: {
