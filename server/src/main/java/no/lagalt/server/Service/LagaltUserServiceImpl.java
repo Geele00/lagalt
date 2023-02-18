@@ -46,6 +46,13 @@ public class LagaltUserServiceImpl {
         deleteById(lagaltUser.getId());
     }
 
+    public void updateSkill(LagaltUser lagaltUser) {
+        LagaltUser user = lagaltUserRepository.findById(lagaltUser.getId()).orElseThrow(() -> new NotFoundException(lagaltUser.getId()));
+        user.setSkills(lagaltUser.getSkills());
+        lagaltUserRepository.save(user);
+    }
+
+
     public void deleteById(Integer id) {
         if (lagaltUserRepository.existsById(id)) {
             LagaltUser user = lagaltUserRepository.findById(id).get();
