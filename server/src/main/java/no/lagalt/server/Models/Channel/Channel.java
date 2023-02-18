@@ -1,10 +1,13 @@
 package no.lagalt.server.Models.Channel;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import no.lagalt.server.Models.MessageBoard.MessageBoard;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.*;
-import no.lagalt.server.Models.MessageBoard.MessageBoard;
 
 @Entity
 @Getter
@@ -13,12 +16,12 @@ import no.lagalt.server.Models.MessageBoard.MessageBoard;
 @Table(name = "channel")
 public class Channel {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-  private String name;
+    private String name;
 
-  @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<MessageBoard> messageBoards = new ArrayList<>();
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MessageBoard> messageBoards = new ArrayList<>();
 }

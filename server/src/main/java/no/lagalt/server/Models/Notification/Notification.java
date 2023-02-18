@@ -13,15 +13,17 @@ import no.lagalt.server.Models.Project.Project;
 @ToString
 @Table(name = "notification")
 public class Notification {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "notificationId", nullable = false)
-  private int notificationId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notificationId", nullable = false)
+    private int notificationId;
 
-  @Column(name = "ProjectName")
-  private String nameOfProject;
+    @Column(name = "ProjectName")
+    private String nameOfProject;
 
-  private String content;
-  @ManyToOne() private LagaltUser lagaltUser;
-  @ManyToOne private Project project;
+    private String content;
+    @ManyToOne()
+    private LagaltUser lagaltUser;
+    @ManyToOne
+    private Project project;
 }

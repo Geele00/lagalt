@@ -12,12 +12,13 @@ import no.lagalt.server.Models.Project.Project;
 @ToString
 @Table(name = "industry")
 public class Industry {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int industryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int industryId;
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  @ManyToOne private Project projects;
+    @ManyToOne
+    private Project projects;
 }

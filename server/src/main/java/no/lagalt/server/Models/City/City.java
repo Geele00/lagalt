@@ -12,11 +12,11 @@ import lombok.ToString;
 @Table(name = "City")
 public class City {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "cityId", nullable = false)
-  private int countryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cityId", nullable = false)
+    private int countryId;
 
-  @Column(name = "cityName", nullable = false)
-  private String cityName;
+    @Column(name = "cityName", nullable = false)
+    private String cityName;
 }
