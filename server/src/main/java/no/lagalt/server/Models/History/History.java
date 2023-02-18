@@ -18,7 +18,7 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hisotryId", nullable = false)
-    private int hisotryId;
+    private int id;
 
     @OneToMany
     @Column(name = "seenProject")

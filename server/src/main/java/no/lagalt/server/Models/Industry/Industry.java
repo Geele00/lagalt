@@ -14,7 +14,7 @@ import no.lagalt.server.Models.Project.Project;
 public class Industry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int industryId;
+    private int id;
 
     @Column(name = "name")
     private String name;

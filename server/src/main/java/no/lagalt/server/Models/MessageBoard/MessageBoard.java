@@ -19,7 +19,7 @@ import java.util.List;
 public class MessageBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int messageBoardId;
+    private int id;
 
     private String name;
 
