@@ -11,9 +11,12 @@ import no.lagalt.server.Mappers.LagaltUser.LagaltUserMapper;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDto;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDtoAdd;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDtoUpdate;
+import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUsersDtoUpdateSkill;
 import no.lagalt.server.Models.LagaltUser.LagaltUser;
 import no.lagalt.server.Service.LagaltUserServiceImpl;
+import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -154,4 +157,18 @@ public class LagaltUserController {
         return ResponseEntity.created(location).build();
     }
 
+
+    @Operation(description = "Update a user Skill with id of user",summary = "Update Skill in a User",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "No content", content = @Content),
+                    @ApiResponse(responseCode = "400", description = "Bad request.", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+            }
+    )
+    @PatchMapping("{id}")
+    public ResponseEntity<LagaltUsersDtoUpdateSkill> patchSkill(@RequestBody LagaltUsersDtoUpdateSkill lagaltUsersDtoUpdateSkill, @PathVariable int id) {
+        LagaltUser user = lagaltUserMapper.usersToUserAddSkill(lagaltUsersDtoUpdateSkill);
+        lagaltUserService.updateSkill(user);
+        return ResponseEntity.noContent().build();
+    }
 }

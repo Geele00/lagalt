@@ -7,3 +7,5 @@ values ('test', 'test@test.com', 'Abbas', 'Shihab', 0,'testuser', '06-27-1994', 
        ('test', 'test@test.com', 'Geele', 'Egal', 0,'testuser', '01-01-2000', '01-01-2000');
 
 
+INSERT INTO skill(skill_id, added_by, name)
+VALUES (1, 0, 'Backend');

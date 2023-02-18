@@ -3,6 +3,7 @@ package no.lagalt.server.Mappers.LagaltUser;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDto;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDtoAdd;
 import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUserDtoUpdate;
+import no.lagalt.server.Models.ActiveDtos.LagaltUser.LagaltUsersDtoUpdateSkill;
 import no.lagalt.server.Models.LagaltUser.LagaltUser;
 import org.mapstruct.Mapper;
 
@@ -25,6 +26,10 @@ public interface LagaltUserMapper {
     LagaltUserDtoAdd usersAddToUser(LagaltUser lagaltUser);
 
     LagaltUser usersToUserAdd(LagaltUserDtoAdd lagaltUserDtoAdd);
+
+    LagaltUsersDtoUpdateSkill usersAddSkillToUser (LagaltUser lagaltUser);
+
+    LagaltUser usersToUserAddSkill(LagaltUsersDtoUpdateSkill lagaltUsersDtoUpdateSkill);
 
 
 
