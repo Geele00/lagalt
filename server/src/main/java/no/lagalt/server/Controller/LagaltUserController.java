@@ -154,39 +154,4 @@ public class LagaltUserController {
         return ResponseEntity.created(location).build();
     }
 
-
-  @Autowired private LagaltUserServiceImpl lagaltUserService;
-
-  @Autowired private LagaltUserMapper lagaltUserMapper;
-
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Success",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = LagaltUserDto.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description = "User does not exist with given ID",
-            content = @Content)
-      })
-  @GetMapping("{id}")
-  @Operation(description = "id of User", summary = "search by id")
-  public ResponseEntity<LagaltUserDto> getById(@PathVariable int id) {
-    LagaltUser user = lagaltUserService.findById(id);
-    LagaltUserDto lagaltUserDto = lagaltUserMapper.lagaltUserDtoToLagaltUser(user);
-
-    return ResponseEntity.ok().body(lagaltUserDto);
-  }
-
-  @GetMapping
-  public Collection<LagaltUserDto> getAllUsers() {
-    Collection<LagaltUser> users = lagaltUserService.findAll();
-    return lagaltUserMapper.usersToUsersDto(users);
-  }
-
 }
