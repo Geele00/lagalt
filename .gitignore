@@ -54,3 +54,7 @@ build/
 
 ### Eclipse
 .metadata
+
+# Env
+.env
+!client/.env
