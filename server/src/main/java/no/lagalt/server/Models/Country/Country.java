@@ -13,13 +13,14 @@ import no.lagalt.server.Models.City.City;
 @Table(name = "Country")
 public class Country {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "CountryId", nullable = false)
-  private int countryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CountryId", nullable = false)
+    private int countryId;
 
-  @Column(name = "countryName", nullable = false)
-  private String countryName;
+    @Column(name = "countryName", nullable = false)
+    private String countryName;
 
-  @OneToOne private City city;
+    @OneToOne
+    private City city;
 }

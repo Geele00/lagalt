@@ -6,6 +6,7 @@ import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+
 @Service
 public class ProjectServiceImpl {
 
