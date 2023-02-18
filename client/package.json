@@ -8,16 +8,27 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "http": {
+    "proxy": {
+      "/api/v1/users": {
+        "target": "http://localhost:8080/api/v1/users",
+        "secure": "false",
+        "changeOrigin": true
+      }
+    }
+  },
   "dependencies": {
     "@tanstack/react-query": "^4.24.6",
-    "@tanstack/react-query-devtools": "^4.24.6",
     "@tanstack/react-router": "^0.0.1-beta.82",
     "@tanstack/react-router-devtools": "^0.0.1-beta.82",
+    "firebase": "^9.17.1",
+    "firebaseui": "^6.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.58.0"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.24.6",
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
