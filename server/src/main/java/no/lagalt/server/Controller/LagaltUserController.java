@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Tag(name = "Users")
 @RequestMapping(path = "api/v1/users")
+@CrossOrigin(origins = "*") // Required for front-end. Remove before deployment for security
 public class LagaltUserController {
 
   @Autowired private LagaltUserServiceImpl lagaltUserService;
@@ -44,6 +45,7 @@ public class LagaltUserController {
   public ResponseEntity<LagaltUserDto> getById(@PathVariable int id) {
     LagaltUser user = lagaltUserService.findById(id);
     LagaltUserDto lagaltUserDto = lagaltUserMapper.lagaltUserDtoToLagaltUser(user);
+
     return ResponseEntity.ok().body(lagaltUserDto);
   }
 
