@@ -1,15 +1,14 @@
 import { useMemo, useState } from "react";
 import { AuthContext } from "src/index";
-import { IAuthProviderState, IAuthProvider } from "./types";
+import { IAuthProviderState, IAuthProvider, IlogIn } from "./types";
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthProviderState>({
-    username: "",
     loggedIn: false,
   });
 
-  const logIn = (username: string) => {
-    setAuthState({ username: username, loggedIn: true });
+  const logIn = ({ username, uuid }: IlogIn) => {
+    setAuthState({ username, uuid, loggedIn: true });
   };
 
   const logOut = () => {

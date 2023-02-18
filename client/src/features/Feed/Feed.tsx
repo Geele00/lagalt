@@ -47,7 +47,7 @@ export const Feed = () => {
   const user = useUser();
 
   useEffect(() => {
-    user.logIn("wes");
+    user.logIn({ username: "wes", uuid: "2983usdljk" });
   }, []);
 
   console.log(user.username);
