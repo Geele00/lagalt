@@ -12,7 +12,8 @@ import java.util.List;
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int skillId;
+    @Column(name = "skill_id")
+    private int id;
 
     @Column(name = "name")
     private String name;

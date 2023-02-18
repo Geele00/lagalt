@@ -16,7 +16,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notificationId", nullable = false)
-    private int notificationId;
+    private int id;
 
     @Column(name = "ProjectName")
     private String nameOfProject;
