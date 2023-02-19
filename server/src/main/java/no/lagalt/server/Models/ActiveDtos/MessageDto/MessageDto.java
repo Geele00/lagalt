@@ -1,23 +1,30 @@
 package no.lagalt.server.Models.ActiveDtos.MessageDto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import no.lagalt.server.Models.LagaltUser.LagaltUser;
+import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class MessageDto {
-  @NotBlank(message = "Text field cannot be empty")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
+  private int messageDtoId;
   private  String text;
-  @NotNull(message = "User ID cannot be null")
-  private  LagaltUser lagaltUser;
+  private  MessageLagaltUserDto messageLagaltUserDto;
   private  LocalDateTime timeStamp;
-
   private int score;
+  private int channelId;
 
 }

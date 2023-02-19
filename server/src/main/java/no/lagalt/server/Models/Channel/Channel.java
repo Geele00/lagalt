@@ -1,6 +1,8 @@
 package no.lagalt.server.Models.Channel;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
@@ -19,13 +21,15 @@ public class Channel {
   private int id;
 
   private String name;
-
+/*
   @ManyToOne
   @JoinColumn(name = "messageBoardId")
-  private MessageBoard messageBoards;
+  private MessageBoard messageBoards;*/
+
+  private LocalDate creationDate;
 
 
 
-  @OneToMany
+  @OneToMany(mappedBy = "channel",cascade = CascadeType.ALL,orphanRemoval = true)
   private List<Message> messages = new ArrayList<>();
 }

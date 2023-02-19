@@ -23,21 +23,18 @@ public class MessageBoard {
 
   private String name;
 
-  @OneToMany(mappedBy = "messageBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Message> messages = new ArrayList<>();
-
   @OneToOne
   @JoinColumn(name = "projectId")
   private Project project;
-
+/*
   @OneToMany(mappedBy = "messageBoards")
-  private List<Channel> channel = new ArrayList<>();
+  private List<Channel> channel = new ArrayList<>();*/
 
   private LocalDate creationDate;
 
   private void removeMessageBoard() {
 
     project = null;
-    channel = null;
+  //  channel = null;
   }
 }

@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
-import no.lagalt.server.Models.LagaltUser.LagaltUser;
-import no.lagalt.server.Models.MessageBoard.MessageBoard;
+import no.lagalt.server.Models.ActiveDtos.MessageDto.MessageLagaltUserDto;
+import no.lagalt.server.Models.Channel.Channel;
 
 @Entity
 @Getter
@@ -23,13 +23,8 @@ public class Message {
 
   private int score;
 
-  @ManyToOne
-  @JoinColumn(name = "altuserId")
-  private LagaltUser lagaltUser;
-
-  @ManyToOne
-  @JoinColumn(name = "messageBoardId")
-  private MessageBoard messageBoard;
+ @Transient
+  private MessageLagaltUserDto lagaltUsername;
 
   @OneToMany(mappedBy = "parentMessage", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Message> replies = new ArrayList<>();
@@ -37,4 +32,9 @@ public class Message {
   @ManyToOne
   @JoinColumn(name = "parentMessageId")
   private Message parentMessage;
+
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "channelId")
+  private Channel channel;
 }
