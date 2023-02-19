@@ -12,4 +12,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException() {
         super("Could not find in system table");
     }
+
+    public NotFoundException(String Username) {
+        super("Could not find in system element with id: " + Username);
+    }
 }
