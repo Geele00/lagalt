@@ -8,21 +8,21 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 
-  // @Autowired protected SkillService skillService;
+    // @Autowired protected SkillService skillService;
 
-  // @Named("namedTest")
-  // public List<Skill> idListToSkillList1(List<SkillId> idList) {
-  //   return idList.stream()
-  //       .map(id -> skillService.findById(id.getId()))
-  //       .collect(Collectors.toList());
-  // }
+    // @Named("namedTest")
+    // public List<Skill> idListToSkillList1(List<SkillId> idList) {
+    //   return idList.stream()
+    //       .map(id -> skillService.findById(id.getId()))
+    //       .collect(Collectors.toList());
+    // }
 
-  // @Mapping(target = "skills", source = "skills", qualifiedByName = "namedTest")
-  // public abstract LagaltUser userDtoToUser(UserDto userDto);
+    // @Mapping(target = "skills", source = "skills", qualifiedByName = "namedTest")
+    // public abstract LagaltUser userDtoToUser(UserDto userDto);
 
-  // abstract UserDto userToUserDto(LagaltUser user);
-  //
-  public abstract LagaltUser newUserDtoToUser(NewUserDto newUserDto);
+    // abstract UserDto userToUserDto(LagaltUser user);
+    //
+    public abstract LagaltUser newUserDtoToUser(NewUserDto newUserDto);
 
-  public abstract LagaltUser usersToUsersUpdate(UpdateUserDto updateUserDto);
+    public abstract LagaltUser usersToUsersUpdate(UpdateUserDto updateUserDto);
 }

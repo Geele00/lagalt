@@ -10,15 +10,17 @@ import lombok.ToString;
 @ToString
 @Entity(name = "notification")
 public class Notification {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "notificationId", nullable = false)
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notificationId", nullable = false)
+    private int id;
 
-  @Column(name = "ProjectName")
-  private String nameOfProject;
+    @Column(name = "ProjectName")
+    private String nameOfProject;
 
-  private String content;
-  @ManyToOne() private LagaltUser lagaltUser;
-  @ManyToOne private Project project;
+    private String content;
+    @ManyToOne()
+    private LagaltUser lagaltUser;
+    @ManyToOne
+    private Project project;
 }

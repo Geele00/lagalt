@@ -7,4 +7,9 @@ values ('test', 'test@test.com', 'Abbas', 'Shihab', 0,'user1', '06-27-1994', '06
 
 
 INSERT INTO skill(skill_id, added_by, name)
-VALUES (1, 0, 'Backend');
+VALUES (1, 0, 'Frontend'),
+       (2, 0, 'Html'),
+       (3, 0, 'JavaScript'),
+       (4, 0, 'React'),
+       (5, 0, 'FullStack'),
+       (6, 0, 'Backend');

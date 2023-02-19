@@ -1,26 +1,27 @@
 package no.lagalt.server.Dtos.User;
 
-import java.time.LocalDate;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class UpdateUserDto {
 
-  private Integer userId;
+    private Integer userId;
 
-  private String avatarUrl;
+    private String avatarUrl;
 
-  private String userName;
+    private String userName;
 
-  private String firstName;
+    private String firstName;
 
-  private String lastName;
+    private String lastName;
 
-  private LocalDate dob;
+    private LocalDate dob;
 
-  private LocalDate dateOfCreation;
+    private LocalDate dateOfCreation;
 
-  private String email;
+    private String email;
 
-  private String bio;
+    private String bio;
 }
