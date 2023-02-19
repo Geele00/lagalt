@@ -1,6 +1,9 @@
 package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.lagalt.server.Dtos.IdList;
 import no.lagalt.server.Dtos.Skill.SkillId;
@@ -103,7 +106,9 @@ public class UserController {
     }
 
 
+
     @Operation(summary = "Set skills for user")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("{userName}/skills")
     public ResponseEntity<IdList> setSkills(
             @RequestBody IdList skillIdList, @PathVariable String userName) {
@@ -112,8 +117,7 @@ public class UserController {
 
         List<SkillId> idlisttest = skillMapper.skillToSkillDtoID(newSkills);
 
-        List<SkillId> updatedSkills = userService.setSkills(idlisttest, userName);
-
+        userService.setSkills(idlisttest, userName);
 
         return ResponseEntity.noContent().build();
     }

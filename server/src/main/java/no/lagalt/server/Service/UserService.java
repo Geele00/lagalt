@@ -41,6 +41,10 @@ public class UserService {
     }
 
     public List<SkillId> setSkills(List<SkillId> newSkills, String userName) {
+
+        if(userRepo.findByUserName(userName) == null){
+            throw new NotFoundException(userName);
+        }
         LagaltUser user = userRepo.findByUserName(userName);
 
         List<Skill> idlisttest = skillMapper.skillDtoIDToSkill(newSkills);
