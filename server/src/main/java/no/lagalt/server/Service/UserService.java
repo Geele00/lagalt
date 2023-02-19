@@ -36,11 +36,16 @@ public class UserService {
   public List<Skill> setSkills(List<Skill> newSkills, String userName) {
     LagaltUser user = userRepo.findByUserName(userName);
 
+    System.out.println("\n\n" + user.getSkills() + "\n\n");
+
     user.setSkills(newSkills);
 
-    System.out.println("\n\n" + user + "\n\n");
+    //System.out.println("\n\n" + user + "\n\n");
+
+    System.out.println("\n\n" + user.getSkills() + "\n\n");
 
     userRepo.saveAndFlush(user);
+
 
     return newSkills;
   }
@@ -48,15 +53,18 @@ public class UserService {
   public LagaltUser updateSkills(List<Skill> newSkills, String userName) {
     LagaltUser user = userRepo.findByUserName(userName);
 
+
     List<Skill> skills = user.getSkills();
+    System.out.println("\n\n" + skills + "\n\n");
 
-    newSkills.forEach(skills::add);
+    System.out.println("\n\n" + user.getSkills() + "\n\n");
 
-    user.setSkills(skills);
+
+    skills.addAll(newSkills);
 
     System.out.println("\n\n" + user + "\n\n");
 
-    return save(user);
+    return null;
 
     // return skills;
   }
@@ -70,13 +78,13 @@ public class UserService {
     }
   }
 
-  // public LagaltUser update(LagaltUser lagaltUser) {
-  //   if (!userRepo.existsById(lagaltUser.getUserId())) {
-  //     new NotFoundException();
-  //     return null;
-  //   }
-  //   userRepo.save(lagaltUser);
-  //   return lagaltUser;
-  // }
+public LagaltUser update(LagaltUser lagaltUser) {
+   if (!userRepo.existsById(lagaltUser.getUserId())) {
+     new NotFoundException();
+      return null;
+     }
+     userRepo.save(lagaltUser);
+     return lagaltUser;
+   }
 
 }

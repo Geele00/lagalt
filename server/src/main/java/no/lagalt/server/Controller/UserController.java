@@ -3,9 +3,11 @@ package no.lagalt.server.Controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import no.lagalt.server.Dtos.IdList;
 import no.lagalt.server.Dtos.User.NewUserDto;
+import no.lagalt.server.Dtos.User.UpdateUserDto;
 import no.lagalt.server.Entity.LagaltUser;
 import no.lagalt.server.Entity.Skill;
 import no.lagalt.server.Mappers.SkillMapper;
@@ -67,23 +69,22 @@ public class UserController {
     return ResponseEntity.created(location).build();
   }
 
-  // @Operation(summary = "Update a user")
-  // @PutMapping("{id}")
-  // public ResponseEntity updateUser(
-  //     @RequestBody UpdateUserDto updateUserDto, @PathVariable int id) {
-  //
-  //   if (id != updateUserDto.getId()) {
-  //     userService.findById(id);
-  //     return ResponseEntity.badRequest().build();
-  //   }
-  //
-  //   userService.findById(id);
-  //   LagaltUser user = userMapper.usersToUsersUpdate(updateUserDto);
-  //   userService.update(user);
-  //   return ResponseEntity.ok().body(updateUserDto);
-  // }
+   @Operation(summary = "Update a user")
+   @PutMapping("{id}")
+   public ResponseEntity updateUser(
+           @RequestBody UpdateUserDto updateUserDto, @PathVariable int id) {
 
-  // ~~~~~ Skills
+     if (id != updateUserDto.getUserId()) {
+       userService.findById(id);
+       return ResponseEntity.badRequest().build();
+     }
+
+     userService.findById(id);
+     LagaltUser user = userMapper.usersToUsersUpdate(updateUserDto);
+     userService.update(user);
+     return ResponseEntity.ok().body(updateUserDto);
+   }
+
 
   @Operation(summary = "Get list of skills from user")
   @GetMapping("{userId}/skills")
@@ -108,5 +109,19 @@ public class UserController {
     IdList updatedIdList = skillMapper.skillListToIdList(updatedSkills);
 
     return ResponseEntity.ok().body(updatedIdList);
+  }
+
+  @Operation(summary = "Set skills for user")
+  @PostMapping("{userName}/skills2")
+  public ResponseEntity<Skill> setSkills2(
+          @RequestBody Skill skillIdList, @PathVariable String userName) {
+
+    List<Skill> newSkills = skillService.findAllById(Collections.singletonList(skillIdList.getSkillId()));
+
+    System.out.println(userName);
+
+    userService.updateSkills(newSkills, userName);
+
+    return ResponseEntity.noContent().build();
   }
 }

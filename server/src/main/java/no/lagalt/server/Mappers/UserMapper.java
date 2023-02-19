@@ -1,6 +1,7 @@
 package no.lagalt.server.Mappers;
 
 import no.lagalt.server.Dtos.User.NewUserDto;
+import no.lagalt.server.Dtos.User.UpdateUserDto;
 import no.lagalt.server.Entity.LagaltUser;
 import org.mapstruct.Mapper;
 
@@ -22,4 +23,6 @@ public abstract class UserMapper {
   // abstract UserDto userToUserDto(LagaltUser user);
   //
   public abstract LagaltUser newUserDtoToUser(NewUserDto newUserDto);
+
+  public abstract LagaltUser usersToUsersUpdate(UpdateUserDto updateUserDto);
 }
