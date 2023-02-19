@@ -1,4 +1,4 @@
-package no.lagalt.server.Models.ActiveDtos.MessageBoardDto;
+package no.lagalt.server.Dtos.MessageBoardDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

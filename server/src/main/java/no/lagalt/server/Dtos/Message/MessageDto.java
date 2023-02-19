@@ -1,18 +1,30 @@
 package no.lagalt.server.Dtos.Message;
 
-import no.lagalt.server.Entity.LagaltUser;
-
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import no.lagalt.server.Dtos.MessageDto.MessageLagaltUserDto;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MessageDto {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
+  private int messageDtoId;
+  private  String text;
+  private MessageLagaltUserDto messageLagaltUserDto;
+  private  LocalDateTime timeStamp;
+  private int score;
+  private int channelId;
 
-    private final String text;
-    private final LagaltUser lagaltUser;
-    private final LocalDateTime timeStamp;
-
-    public MessageDto(String text, LagaltUser lagaltUser, LocalDateTime timeStamp) {
-        this.text = text;
-        this.lagaltUser = lagaltUser;
-        this.timeStamp = timeStamp;
-    }
 }

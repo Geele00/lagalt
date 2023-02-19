@@ -1,8 +1,8 @@
 package no.lagalt.server.Service;
 
 import no.lagalt.server.Mappers.MessageBoardMapper.MessageBoardMapper;
-import no.lagalt.server.Models.ActiveDtos.MessageBoardDto.MessageBoardDto;
-import no.lagalt.server.Models.MessageBoard.MessageBoard;
+import no.lagalt.server.Dtos.MessageBoardDto.MessageBoardDto;
+import no.lagalt.server.Entity.MessageBoard;
 import no.lagalt.server.Repository.MessageBoardRepository;
 import no.lagalt.server.Utils.Exception.MessageBoardNotFoundException;
 import org.springframework.stereotype.Service;

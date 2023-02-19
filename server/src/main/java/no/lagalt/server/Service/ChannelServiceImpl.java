@@ -1,16 +1,13 @@
 package no.lagalt.server.Service;
 
 import no.lagalt.server.Mappers.ChannelMapper.ChannelMapper;
-import no.lagalt.server.Models.ActiveDtos.Channel.ChannelDto;
-import no.lagalt.server.Models.Channel.Channel;
-import no.lagalt.server.Models.MessageBoard.MessageBoard;
+import no.lagalt.server.Dtos.Channel.ChannelDto;
+import no.lagalt.server.Entity.Channel;
 import no.lagalt.server.Repository.ChannelRepository;
 import no.lagalt.server.Repository.MessageBoardRepository;
 import no.lagalt.server.Utils.Exception.ChannelNotFoundException;
-import no.lagalt.server.Utils.Exception.MessageBoardNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.nio.channels.NotYetBoundException;
 import java.time.LocalDate;
 import java.util.List;
 

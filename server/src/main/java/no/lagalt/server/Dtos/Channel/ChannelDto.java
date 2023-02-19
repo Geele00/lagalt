@@ -1,4 +1,4 @@
-package no.lagalt.server.Models.ActiveDtos.Channel;
+package no.lagalt.server.Dtos.Channel;
 
 import lombok.Data;
 

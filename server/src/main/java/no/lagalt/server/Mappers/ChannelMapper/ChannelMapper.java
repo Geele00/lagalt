@@ -1,7 +1,7 @@
 package no.lagalt.server.Mappers.ChannelMapper;
 
-import no.lagalt.server.Models.ActiveDtos.Channel.ChannelDto;
-import no.lagalt.server.Models.Channel.Channel;
+import no.lagalt.server.Dtos.Channel.ChannelDto;
+import no.lagalt.server.Entity.Channel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

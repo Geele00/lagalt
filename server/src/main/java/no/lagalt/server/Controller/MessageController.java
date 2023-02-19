@@ -1,8 +1,7 @@
 package no.lagalt.server.Controller;
 
-import no.lagalt.server.Models.ActiveDtos.MessageDto.MessageDto;
+import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Service.MessageServiceImpl;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

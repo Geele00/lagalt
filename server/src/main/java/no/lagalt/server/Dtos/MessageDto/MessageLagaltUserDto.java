@@ -1,4 +1,4 @@
-package no.lagalt.server.Models.ActiveDtos.MessageDto;
+package no.lagalt.server.Dtos.MessageDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;

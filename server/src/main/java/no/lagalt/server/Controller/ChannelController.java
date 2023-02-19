@@ -1,6 +1,6 @@
 package no.lagalt.server.Controller;
 
-import no.lagalt.server.Models.ActiveDtos.Channel.ChannelDto;
+import no.lagalt.server.Dtos.Channel.ChannelDto;
 import no.lagalt.server.Service.ChannelServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

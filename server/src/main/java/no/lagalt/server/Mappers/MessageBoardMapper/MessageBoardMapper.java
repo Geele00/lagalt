@@ -1,12 +1,10 @@
 package no.lagalt.server.Mappers.MessageBoardMapper;
 
-import no.lagalt.server.Models.ActiveDtos.MessageBoardDto.MessageBoardDto;
-import no.lagalt.server.Models.MessageBoard.MessageBoard;
-import no.lagalt.server.Models.Project.Project;
+import no.lagalt.server.Dtos.MessageBoardDto.MessageBoardDto;
+import no.lagalt.server.Entity.MessageBoard;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 
 import java.util.List;
 

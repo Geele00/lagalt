@@ -1,6 +1,6 @@
 package no.lagalt.server.Controller;
 
-import no.lagalt.server.Models.ActiveDtos.MessageBoardDto.MessageBoardDto;
+import no.lagalt.server.Dtos.MessageBoardDto.MessageBoardDto;
 import no.lagalt.server.Service.MessageBoardServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
