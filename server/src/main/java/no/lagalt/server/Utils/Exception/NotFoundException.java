@@ -5,11 +5,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class NotFoundException extends RuntimeException {
-  public NotFoundException(int id) {
-    super("Could not find in system element with id: " + id);
-  }
+    public NotFoundException(int id) {
+        super("Could not find in system element with id: " + id);
+    }
 
-  public NotFoundException() {
-    super("Could not find in system table");
-  }
+    public NotFoundException() {
+        super("Could not find in system table");
+    }
+
+    public NotFoundException(String Username) {
+        super("Could not find in system element with id: " + Username);
+    }
 }
