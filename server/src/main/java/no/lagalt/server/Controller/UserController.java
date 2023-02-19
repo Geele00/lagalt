@@ -1,27 +1,25 @@
 package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URI;
+import java.util.List;
 import no.lagalt.server.Dtos.IdList;
 import no.lagalt.server.Dtos.Skill.SkillId;
 import no.lagalt.server.Dtos.User.NewUserDto;
 import no.lagalt.server.Dtos.User.UpdateUserDto;
+import no.lagalt.server.Dtos.User.UserDto;
 import no.lagalt.server.Entity.LagaltUser;
 import no.lagalt.server.Entity.Skill;
 import no.lagalt.server.Mappers.SkillMapper;
 import no.lagalt.server.Mappers.UserMapper;
 import no.lagalt.server.Service.SkillService;
 import no.lagalt.server.Service.UserService;
+import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
 
 @Tag(name = "Users")
 @CrossOrigin(origins = "*") // Required for front-end. Remove before deployment for security
@@ -29,96 +27,98 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @Autowired
-    private UserMapper userMapper;
+  @Autowired private UserMapper userMapper;
 
-    @Autowired
-    private SkillService skillService;
+  @Autowired private SkillService skillService;
 
-    @Autowired
-    private SkillMapper skillMapper;
+  @Autowired private SkillMapper skillMapper;
 
-    @Operation(summary = "Get user by ID")
-    @GetMapping("{id}")
-    public ResponseEntity<LagaltUser> getById(@PathVariable Integer id) {
-        LagaltUser user = userService.findById(id);
+  @Operation(summary = "Get user by username")
+  @GetMapping("?username={userName}")
+  public ResponseEntity<LagaltUser> getById(@PathVariable String userName)
+      throws NotFoundException {
+    LagaltUser user = userService.findByUserName(userName);
 
-        return ResponseEntity.ok().body(user);
-    }
+    return ResponseEntity.ok().body(user);
+  }
 
-    @Operation(summary = "Get all users")
-    @GetMapping
-    public ResponseEntity<List<LagaltUser>> getAllUsers() {
-        List<LagaltUser> users = userService.findAll();
-        // return userMapper.usersToUsersDto(users);
-        return ResponseEntity.ok().body(users);
-    }
+  @Operation(summary = "Get user by ID")
+  @GetMapping("{id}")
+  public ResponseEntity<LagaltUser> getById(@PathVariable Integer id) throws NotFoundException {
+    LagaltUser user = userService.findById(id);
 
-    @Operation(summary = "Delete user by ID")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable Integer id) {
-        userService.deleteById(id);
-    }
+    return ResponseEntity.ok().body(user);
+  }
 
-    @Operation(summary = "Create  new user")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public ResponseEntity<URI> createUser(@RequestBody NewUserDto newUserDto) {
-        LagaltUser user = userMapper.newUserDtoToUser(newUserDto);
+  @Operation(summary = "Get all users")
+  @GetMapping
+  public ResponseEntity<List<LagaltUser>> getAllUsers() {
+    List<LagaltUser> users = userService.findAll();
+    // return userMapper.usersToUsersDto(users);
+    return ResponseEntity.ok().body(users);
+  }
 
-        userService.save(user);
+  @Operation(summary = "Delete user by ID")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("{id}")
+  public void deleteById(@PathVariable Integer id) throws NotFoundException {
+    userService.deleteById(id);
+  }
 
-        URI location = URI.create("api/v1/users" + user.getUserId());
+  @Operation(summary = "Create  new user")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
+  public ResponseEntity<URI> createUser(@RequestBody NewUserDto newUserDto) {
+    LagaltUser user = userMapper.newUserDtoToUser(newUserDto);
 
-        return ResponseEntity.created(location).build();
-    }
+    userService.save(user);
 
-    @Operation(summary = "Update a user")
-    @PutMapping("{id}")
-    public ResponseEntity updateUser(
-            @RequestBody UpdateUserDto updateUserDto, @PathVariable int id) {
+    URI location = URI.create("api/v1/users" + user.getUserId());
 
-        if (id != updateUserDto.getUserId()) {
-            userService.findById(id);
-            return ResponseEntity.badRequest().build();
-        }
+    return ResponseEntity.created(location).build();
+  }
 
-        userService.findById(id);
-        LagaltUser user = userMapper.usersToUsersUpdate(updateUserDto);
-        userService.update(user);
-        return ResponseEntity.ok().body(updateUserDto);
-    }
+  @Operation(summary = "Update a user")
+  @PutMapping("{id}")
+  public ResponseEntity<UserDto> updateUser(
+      @RequestBody UpdateUserDto updateUserDto, @PathVariable int id) throws NotFoundException {
 
+    userService.existsById(id);
 
-    @Operation(summary = "Get list of skills from user")
-    @GetMapping("{userId}/skills")
-    public ResponseEntity<List<Skill>> getSkills(@PathVariable Integer userId) {
+    LagaltUser user = userMapper.usersToUsersUpdate(updateUserDto);
 
-        LagaltUser user = userService.findById(userId);
+    userService.save(user);
 
-        List<Skill> skills = user.getSkills();
+    UserDto savedUserDto = userMapper.userToUserDto(user);
 
-        return ResponseEntity.ok().body(skills);
-    }
+    return ResponseEntity.ok().body(savedUserDto);
+  }
 
+  @Operation(summary = "Get list of skills from user")
+  @GetMapping("{userId}/skills")
+  public ResponseEntity<List<Skill>> getSkills(@PathVariable Integer userId) {
 
+    LagaltUser user = userService.findById(userId);
 
-    @Operation(summary = "Set skills for user")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping("{userName}/skills")
-    public ResponseEntity<IdList> setSkills(
-            @RequestBody IdList skillIdList, @PathVariable String userName) {
+    List<Skill> skills = user.getSkills();
 
-        List<Skill> newSkills = skillService.findAllById(skillIdList.getIds());
+    return ResponseEntity.ok().body(skills);
+  }
 
-        List<SkillId> idlisttest = skillMapper.skillToSkillDtoID(newSkills);
+  @Operation(summary = "Set skills for user")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PostMapping("{userName}/skills")
+  public ResponseEntity<IdList> setSkills(
+      @RequestBody IdList skillIdList, @PathVariable String userName) throws NotFoundException {
 
-        userService.setSkills(idlisttest, userName);
+    List<Skill> newSkills = skillService.findAllById(skillIdList.getIds());
 
-        return ResponseEntity.noContent().build();
-    }
+    List<SkillId> idlisttest = skillMapper.skillToSkillDtoID(newSkills);
+
+    userService.setSkills(idlisttest, userName);
+
+    return ResponseEntity.noContent().build();
+  }
 }
