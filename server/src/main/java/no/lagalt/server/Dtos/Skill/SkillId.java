@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SkillId {
-  private Integer skillId;
+    private Integer skillId;
 }

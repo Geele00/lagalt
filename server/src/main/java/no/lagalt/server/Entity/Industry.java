@@ -10,12 +10,13 @@ import lombok.ToString;
 @ToString
 @Entity(name = "industry")
 public class Industry {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  @ManyToOne private Project projects;
+    @ManyToOne
+    private Project projects;
 }
