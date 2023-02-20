@@ -1,25 +1,34 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
+import no.lagalt.server.Entity.Message;
 
+@Entity
 @Getter
 @Setter
 @ToString
-@Entity(name = "channel")
+@Table(name = "channel")
 public class Channel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    private String name;
+  private String name;
+/*
+  @ManyToOne
+  @JoinColumn(name = "messageBoardId")
+  private MessageBoard messageBoards;*/
 
-    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MessageBoard> messageBoards = new ArrayList<>();
+  private LocalDate creationDate;
+
+
+
+  @OneToMany(mappedBy = "channel",cascade = CascadeType.ALL,orphanRemoval = true)
+  private List<Message> messages = new ArrayList<>();
 }
