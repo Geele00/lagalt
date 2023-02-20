@@ -1,5 +1,6 @@
 package no.lagalt.server.Dtos.Message;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +24,7 @@ public class MessageDto {
   private int messageDtoId;
   private  String text;
   private MessageLagaltUserDto messageLagaltUserDto;
-  private  LocalDateTime timeStamp;
+  private LocalDateTime timeStamp;
   private int score;
   private int channelId;
 

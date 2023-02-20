@@ -2,10 +2,10 @@ package no.lagalt.server.Controller;
 
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Service.MessageServiceImpl;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1/message")
@@ -19,8 +19,40 @@ public class MessageController {
     }
 
     @PostMapping
-    public MessageDto createMessage(@RequestBody MessageDto messageDto) {
-        return messageService.createMessage(messageDto);
+    public ResponseEntity<MessageDto> createMessage(@RequestBody MessageDto messageDto, @RequestParam("channelId") int channelId) {
+        MessageDto createdMessageDto = messageService.createMessage(messageDto, channelId);
+        return ResponseEntity.ok(createdMessageDto);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageDto> getMessageById(@PathVariable("id") int messageId) {
+        MessageDto messageDto = messageService.getMessageById(messageId);
+        if (messageDto != null) {
+            return ResponseEntity.ok(messageDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDto> updateMessage(@PathVariable("id") int messageId, @RequestBody MessageDto messageDto) {
+        messageDto.setMessageDtoId(messageId);
+        MessageDto updatedMessageDto = messageService.updateMessage(messageDto);
+        if (updatedMessageDto != null) {
+            return ResponseEntity.ok(updatedMessageDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMessage(@PathVariable("id") int messageId) {
+        messageService.deleteMessage(messageId);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -13,9 +13,18 @@ public interface ChannelMapper {
     ChannelMapper INSTANCE = Mappers.getMapper(ChannelMapper.class);
 
    // @Mapping(target = "messageBoardId", source = "messageBoards.messageBoardId")
-    ChannelDto channelToChannelDto(Channel channel);
+  //  ChannelDto channelToChannelDto(Channel channel);
 
     @Mapping(target = "messageBoardId", source = "messageBoards.messageBoardId")
     List<ChannelDto> channelsToChannelDto(List<Channel> channels);
+
+    List<Channel> channelDtoToChannels(List<ChannelDto> channelDtos);
+
+    @Mapping(target = "messageDto", ignore = true)
+    ChannelDto channelToChannelDto(Channel channel);
+
+    @Mapping(target = "messages", ignore = true)
+    Channel channelDtoToChannel(ChannelDto channelDto);
+
 
 }
