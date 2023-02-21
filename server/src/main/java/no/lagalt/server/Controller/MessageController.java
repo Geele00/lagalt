@@ -2,6 +2,7 @@ package no.lagalt.server.Controller;
 
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Service.MessageServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,15 @@ public class MessageController {
     public ResponseEntity<Void> deleteMessage(@PathVariable("id") int messageId) {
         messageService.deleteMessage(messageId);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+    @PostMapping("/{parentId}/reply")
+    public ResponseEntity<MessageDto> createReplyMessage(
+            @PathVariable int parentId, @RequestBody MessageDto messageDto) {
+        MessageDto replyMessage = messageService.createReplyMessage(parentId, messageDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(replyMessage);
     }
 
 }

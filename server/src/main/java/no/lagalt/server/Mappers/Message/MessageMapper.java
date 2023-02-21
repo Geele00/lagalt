@@ -14,6 +14,7 @@ public interface MessageMapper {
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
 
     List<MessageDto> toDto(List<Message> message);
+    MessageDto toDto(Message message);
 
     Message toEntity(MessageDto messageDto);
 

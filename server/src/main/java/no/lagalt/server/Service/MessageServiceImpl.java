@@ -9,10 +9,9 @@ import no.lagalt.server.Repository.ChannelRepository;
 import no.lagalt.server.Repository.MessageBoardRepository;
 import no.lagalt.server.Repository.MessageRepository;
 import no.lagalt.server.Repository.UserRepository;
+import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -56,8 +55,11 @@ public class MessageServiceImpl {
         // Save the message
         message = messageRepository.save(message);
 
+        LocalDateTime timestamp = message.getTimestamp();
+
+
         // Return a DTO for the saved message
-        return new MessageDto(message.getId(),message.getText(),message.getLagaltUsername(),message.getTimestamp(),
+        return new MessageDto(message.getId(),message.getText(),message.getLagaltUsername(),timestamp,
                 message.getScore(),message.getId());
     }
 
@@ -92,6 +94,38 @@ public class MessageServiceImpl {
     }
 
 
+
+
+    public MessageDto createReplyMessage(int messageId, MessageDto messageDto) {
+        // Find the parent message in the database
+        Message parentMessage = messageRepository.findById(messageId)
+                .orElseThrow(() -> new NotFoundException("Parent message not found"));
+
+        // Get the channelId from the parent message
+        int channelId = parentMessage.getChannel().getId();
+
+        // Create a new message entity for the reply
+        Message replyMessage = messageMapper.toEntity(messageDto);
+        replyMessage.setTimestamp(LocalDateTime.now());
+
+        // Set the channel of the reply message to the same channel as the parent message
+        Channel channel = new Channel();
+        channel.setId(channelId);
+        replyMessage.setChannel(channel);
+
+        // Set the parent message of the reply message
+        replyMessage.setParentMessage(parentMessage);
+
+        // Save the reply message to the database
+        replyMessage = messageRepository.save(replyMessage);
+
+        LocalDateTime timestamp = replyMessage.getTimestamp();
+
+
+        // Return the DTO representation of the reply message
+        return new MessageDto(replyMessage.getId(),replyMessage.getText(),replyMessage.
+                getLagaltUsername(),timestamp, replyMessage.getScore(), messageId);
+    }
 
 
 

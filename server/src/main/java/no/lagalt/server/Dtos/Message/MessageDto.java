@@ -1,8 +1,7 @@
 package no.lagalt.server.Dtos.Message;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
