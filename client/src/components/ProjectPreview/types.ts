@@ -1,4 +1,4 @@
-export interface IFeedItem {
+export interface IProjectPreview {
   title: string;
   description: string;
 }

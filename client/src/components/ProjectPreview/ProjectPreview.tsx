@@ -1,9 +1,10 @@
-import { IFeedItem } from ".";
+import { IProjectPreview } from "./types";
+import "./style.scss";
 
-export const FeedItem = ({ title, description }: IFeedItem) => {
+export const ProjectPreview = ({ title, description }: IProjectPreview) => {
   return (
-    <article className="feed-item">
-      <section className="feed-item__main">
+    <article className="project-preview">
+      <section className="project-preview__main">
         <h2>{title}</h2>
 
         <p>{description}</p>
@@ -16,7 +17,7 @@ export const FeedItem = ({ title, description }: IFeedItem) => {
         </footer>
       </section>
 
-      <section className="feed-item__right">
+      <section className="project-preview__right">
         <img />
         <ul></ul>
       </section>

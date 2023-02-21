@@ -7,10 +7,11 @@ import { fetchUsers } from "src/api/v1/users";
 export const indexRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "/",
-  onLoad: () =>
+  onLoad: async () =>
     queryClient.ensureQueryData({
       queryKey: ["/users"],
       queryFn: fetchUsers,
     }),
+
   component: Feed,
 });

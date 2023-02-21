@@ -1,18 +1,19 @@
 import { Route } from "@tanstack/react-router";
-import { ProjectPage } from "src/features/ProjectPage";
+import { fetchProjects } from "src/api/v1/projects";
+import { queryClient } from "src/index";
 import { userRoute } from "..";
+import { ProsjektSide } from "./ProsjektSide";
 
 // Project
 export const projectRoute = new Route({
   getParentRoute: () => userRoute,
   path: "$projectName",
-  component: ProjectPage,
-  // onLoad: () =>
-  //   queryClient.ensureQueryData({
-  //     queryKey: ["project"],
-  //     queryFn: () => 5,
-  //     // fetch("localhost:8080/projects")
-  //     //   .then((res) => res.json())
-  //     //   .then((data) => data),
-  //   }),
+  component: ProsjektSide,
+
+  onLoad: async () =>
+    queryClient.ensureQueryData({
+      queryKey: ["project"],
+      // queryFn: fetchProjects,
+      queryFn: () => 5,
+    }),
 });

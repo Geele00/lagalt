@@ -1,21 +1,26 @@
 import { FormEvent, forwardRef, useImperativeHandle, useRef } from "react";
-import { LinkListItem } from "./LinkListItem";
+import { LinkListItem } from "src/components";
+import "./style.scss";
 
-export const Menu = forwardRef(({}, forwardedCheckboxRef) => {
+const dropDownLinkSharedProps = { liOpts: { role: "menuitem" } };
+
+export const Menu = forwardRef(({}, forwardedRef) => {
   const checkboxRef = useRef<HTMLInputElement>(null);
 
   const onInput = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
-
-    console.log(target.checked);
   };
 
+  // ~ Close input after clicked. Check if possible with tanstack
+  // (checkboxRef.current as HTMLInputElement).checked = false;
+  // console.log(target.checked);
+
   useImperativeHandle(
-    forwardedCheckboxRef,
+    forwardedRef,
     () => {
       return {
-        setCheck(bool: boolean) {
-          (checkboxRef.current as HTMLInputElement).checked = bool;
+        unCheck() {
+          if (checkboxRef.current) checkboxRef.current.checked = false;
         },
       };
     },
@@ -24,8 +29,6 @@ export const Menu = forwardRef(({}, forwardedCheckboxRef) => {
 
   const username = "weskeiser";
 
-  const dropDownLinkSharedProps = { liOpts: { role: "menuitem" } };
-
   return (
     <nav className="menu" aria-haspopup="menu">
       <input
@@ -33,6 +36,7 @@ export const Menu = forwardRef(({}, forwardedCheckboxRef) => {
         id="burger-checkbox"
         onInput={onInput}
         ref={checkboxRef}
+        name="testName"
       />
 
       <i className="menu__hamburger-icon" aria-hidden>

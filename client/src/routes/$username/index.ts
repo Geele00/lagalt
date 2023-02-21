@@ -1,6 +1,6 @@
 import { Route } from "@tanstack/react-router";
-import { ProfilePage } from "src/features/ProfilePage";
 import { rootRoute } from "src/routes/__root";
+import { MinSide } from "./MinSide";
 
 export const userRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -10,5 +10,5 @@ export const userRoute = new Route({
 export const profilePageRoute = new Route({
   getParentRoute: () => userRoute,
   path: "/",
-  component: ProfilePage,
+  component: MinSide,
 });

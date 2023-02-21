@@ -1,10 +1,14 @@
-export const ProjectPage = () => {
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "@tanstack/react-router";
+import "./style.scss";
+
+export const ProsjektSide = () => {
+  // const { data } = useQuery(["project"]);
   // const { projectName } = useParams();
-  //
   // console.log(projectName);
 
   return (
-    <main className="project-page">
+    <div className="project-page">
       <h1>Project Title</h1>
       <ul className="project-page__details">
         <li>Project detail</li>
@@ -13,6 +17,6 @@ export const ProjectPage = () => {
         <li>Project detail</li>
       </ul>
       <p className="project-page__description">Project description</p>
-    </main>
+    </div>
   );
 };

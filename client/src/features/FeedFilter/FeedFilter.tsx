@@ -1,47 +1,36 @@
-import { useState } from "react";
-import { IFeedFilter } from ".";
-import { FilterItem } from "./FilterItem";
+import { FormEvent, useRef } from "react";
+import { uncheckCheckbox } from "src/utils";
+import { IFeedFilter } from "./types";
+import "./style.scss";
+import { LabelWithCheckbox } from "src/components/LabelWithCheckbox/LabelWithCheckbox";
+
+const classN = "feed-filter";
 
 export const FeedFilter = ({ filterName }: IFeedFilter) => {
-  // const defaultInputRef = useRef<HTMLInputElement>(null);
-  // const [selected, setSelected] = useState();
-  // const onFormInput = (e: any) => {
-  //   setSelected(e.target);
-  // };
+  const checkboxRef = useRef<HTMLInputElement>(null);
 
-  const [selectedFilter, setSelectedFilter] = useState("Pop");
-
-  const onPointerUp = (e: any) => {
-    setSelectedFilter(e.target.name);
+  const onFormInput = (e: FormEvent) => {
+    console.log(e.target);
+    // Change filter
   };
 
   return (
-    <div className="feed__filter">
-      <input className="feed__filter_toggle" type="checkbox" />
-      <div className="feed__filter_visual">
+    <div className={classN} onMouseLeave={() => uncheckCheckbox(checkboxRef)}>
+      <input className={`${classN}_toggle`} type="checkbox" ref={checkboxRef} />
+      <div className={`${classN}_visual`}>
         <div>
-          <p>{selectedFilter}</p>
+          <p>{filterName}</p>
           <i></i>
         </div>
       </div>
 
-      <ul className="feed__filter_dropdown" role="radiogroup">
-        <FilterItem
-          selectedFilter={selectedFilter}
-          onPointerUp={onPointerUp}
-          itemName="Populært"
-        />
-        <FilterItem
-          selectedFilter={selectedFilter}
-          onPointerUp={onPointerUp}
-          itemName="Nytt"
-        />
-        <FilterItem
-          selectedFilter={selectedFilter}
-          onPointerUp={onPointerUp}
-          itemName="Testie"
-        />
-      </ul>
+      <form className={`${classN}_dropdown`} onInput={onFormInput}>
+        <LabelWithCheckbox className={classN} label="Blabla" />
+
+        <LabelWithCheckbox className={classN} label="Blabla2" />
+
+        <LabelWithCheckbox className={classN} label="Blabla3" />
+      </form>
     </div>
   );
 };
