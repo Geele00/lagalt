@@ -1,16 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { fetchProjects } from "src/api/v1/projects";
+import { useUser } from "src/auth/AuthProvider/AuthProvider";
 import { ProjectPreview } from "src/components";
-import { useUser } from "src/index";
 import { placeholderProjects } from "./placeholderProjects";
 
 export const Feed = () => {
   const user = useUser();
-
-  useEffect(() => {
-    user.logIn({ username: "wes", uuid: "2983usdljk" });
-  }, []);
 
   // const { data, error, isLoading, isSuccess } = useQuery({
   //   queryKey: ["/projects"],

@@ -1,6 +1,20 @@
-import { useCallback, useMemo, useState } from "react";
-import { AuthContext } from "src/index";
-import { IAuthProviderState, IAuthProvider, IlogIn } from "./types";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import {
+  IAuthProviderState,
+  IAuthProvider,
+  IlogIn,
+  IAuthContext,
+} from "./types";
+import { getAuth } from "firebase/auth";
+import { firebaseApp } from "src/index";
+
+const AuthContext = createContext<IAuthContext>(null!);
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthProviderState>({
@@ -8,14 +22,17 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   });
 
   const logIn = useCallback(
-    ({ username, uuid }: IlogIn) =>
-      setAuthState({ username, uuid, loggedIn: true }),
+    ({ email }: IlogIn) => setAuthState({ email, loggedIn: true }),
     [setAuthState]
   );
 
   const logOut = useCallback(() => {
     setAuthState({ loggedIn: false });
   }, [setAuthState]);
+
+  // auth.onAuthStateChanged(user => {
+  //   user ? logIn(user.email) : logOut();
+  // })
 
   const contextValue = useMemo(
     () => ({
@@ -27,4 +44,8 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   );
 
   return <AuthContext.Provider value={contextValue} children={children} />;
+};
+
+export const useUser = () => {
+  return useContext(AuthContext);
 };

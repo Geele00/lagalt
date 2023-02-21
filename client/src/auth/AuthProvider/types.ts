@@ -2,8 +2,7 @@ import { ReactNode } from "react";
 
 export interface IAuthProviderState {
   loggedIn: boolean;
-  username?: string;
-  uuid?: string;
+  email?: string;
 }
 
 export interface IAuthProvider {
@@ -11,11 +10,10 @@ export interface IAuthProvider {
 }
 
 export interface IlogIn {
-  username: string;
-  uuid: string;
+  email: string;
 }
 
 export type IAuthContext = {
-  logIn: ({ username, uuid }: IlogIn) => void;
+  logIn: ({ email }: IlogIn) => void;
   logOut: () => void;
 } & IAuthProviderState;

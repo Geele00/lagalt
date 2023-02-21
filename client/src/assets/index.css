@@ -53,16 +53,16 @@
 
 
 #root {
-  min-height: 100svh;
-  min-height: 100vh;
+  /* min-height: 100svh; */
+  /* min-height: 100vh; */
   background-color: var(--c_page_bg_1);
 }
 
 main {
   /* display: flex; */
   /* flex-flow: column; */
+  height: 100svh;
   background-color: var(--c_page_bg_1);
-
 }
 
 
