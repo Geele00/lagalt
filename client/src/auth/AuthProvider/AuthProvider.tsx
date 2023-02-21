@@ -11,8 +11,8 @@ import {
   IlogIn,
   IAuthContext,
 } from "./types";
-import { getAuth } from "firebase/auth";
-import { firebaseApp } from "src/index";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "src/auth/firebase";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
@@ -20,6 +20,8 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthProviderState>({
     loggedIn: false,
   });
+
+  const firebaseApp = initializeApp(firebaseConfig);
 
   const logIn = useCallback(
     ({ email }: IlogIn) => setAuthState({ email, loggedIn: true }),
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
       ...authState,
       logIn,
       logOut,
+      firebaseApp,
     }),
     [authState]
   );
@@ -46,6 +49,6 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   return <AuthContext.Provider value={contextValue} children={children} />;
 };
 
-export const useUser = () => {
+export const useAuth = () => {
   return useContext(AuthContext);
 };

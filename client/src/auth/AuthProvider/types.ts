@@ -1,3 +1,4 @@
+import { FirebaseApp } from "firebase/app";
 import { ReactNode } from "react";
 
 export interface IAuthProviderState {
@@ -16,4 +17,5 @@ export interface IlogIn {
 export type IAuthContext = {
   logIn: ({ email }: IlogIn) => void;
   logOut: () => void;
+  firebaseApp: FirebaseApp;
 } & IAuthProviderState;
