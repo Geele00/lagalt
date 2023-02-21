@@ -1,1 +1,1 @@
-export { FilterItem } from "./FilterItem";
+export { LabelWithCheckbox } from "./LabelWithCheckbox";
