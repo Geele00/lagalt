@@ -1,15 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import {
+  connectAuthEmulator,
   createUserWithEmailAndPassword,
   getAuth,
-  UserCredential,
 } from "firebase/auth";
-import { createUser } from "src/api/v1/users";
-import { useUser } from "src/auth/AuthProvider/AuthProvider";
-import { firebaseApp } from "src/index";
-import { User } from "src/types/entities/User";
+import { useAuth } from "src/auth/AuthProvider";
+import { AuthInput } from "src/components/AuthInput";
+import { Button } from "src/components/Button";
 import "./style.scss";
+import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
   // const createUserMutation = useMutation({
@@ -18,9 +17,9 @@ export const NyBruker = () => {
   //   },
   // });
 
-  const { logIn } = useUser();
+  const { logIn, firebaseApp } = useAuth();
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: AuthFormEvent) => {
     e.preventDefault();
     // sanitize
 
@@ -28,6 +27,7 @@ export const NyBruker = () => {
     //check if username taken
 
     const auth = getAuth(firebaseApp);
+    connectAuthEmulator(auth, "http://localhost:9099");
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user: { email: returnedEmail } }) => {
@@ -48,43 +48,19 @@ export const NyBruker = () => {
         <h1>Ny Bruker</h1>
       </div>
       <form className="signup_form" onSubmit={onSubmit}>
-        <input
-          required
-          type="text"
-          minLength={5}
-          maxLength={17}
+        <AuthInput
           name="username"
           placeholder="Brukernavn"
-          autoComplete="off"
+          className="signup"
         />
-        <input
-          required
-          type="text"
-          minLength={5}
-          maxLength={17}
-          name="email"
-          placeholder="E-post"
-          autoComplete="off"
-        />
-        <input
-          required
-          type="text"
-          minLength={5}
-          maxLength={17}
-          name="password"
+        <AuthInput name="email" placeholder="E-post" className="signup" />
+        <AuthInput name="password" placeholder="Passord" className="signup" />
+        <AuthInput
+          name="passwordConfirmation"
           placeholder="Passord"
-          autoComplete="off"
+          className="signup"
         />
-        <input
-          required
-          type="text"
-          minLength={5}
-          maxLength={17}
-          name="passwordConfirm"
-          placeholder="Passord"
-          autoComplete="off"
-        />
-        <button />
+        <Button className="signup_submit-btn">Registrer</Button>
       </form>
     </div>
   );

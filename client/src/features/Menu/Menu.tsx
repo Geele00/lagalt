@@ -1,40 +1,38 @@
-import { FormEvent, forwardRef, useImperativeHandle, useRef } from "react";
-import { LinkListItem } from "src/components";
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
+import { useAuth } from "src/auth/AuthProvider";
+import { NavLink } from "src/components";
+import { uncheckCheckbox } from "src/utils";
 import "./style.scss";
 
-const dropDownLinkSharedProps = { liOpts: { role: "menuitem" } };
-
 export const Menu = forwardRef(({}, forwardedRef) => {
+  const user = useAuth();
+  const username = "weskeiser";
+
   const checkboxRef = useRef<HTMLInputElement>(null);
-
-  const onInput = (e: FormEvent) => {
-    const target = e.target as HTMLInputElement;
-  };
-
-  // ~ Close input after clicked. Check if possible with tanstack
-  // (checkboxRef.current as HTMLInputElement).checked = false;
-  // console.log(target.checked);
 
   useImperativeHandle(
     forwardedRef,
     () => {
-      return {
-        unCheck() {
-          if (checkboxRef.current) checkboxRef.current.checked = false;
-        },
-      };
+      return { unCheck: () => uncheckCheckbox(checkboxRef) };
     },
     []
   );
 
-  const username = "weskeiser";
+  const closeMenu = useCallback(() => {
+    uncheckCheckbox(checkboxRef);
+  }, [checkboxRef]);
 
   return (
     <nav className="menu" aria-haspopup="menu">
       <input
         type="checkbox"
         id="burger-checkbox"
-        onInput={onInput}
         ref={checkboxRef}
         name="testName"
       />
@@ -46,25 +44,25 @@ export const Menu = forwardRef(({}, forwardedRef) => {
       </i>
 
       <ul className="menu__dropdown" role="menubar">
-        <LinkListItem to="/" {...dropDownLinkSharedProps}>
+        <NavLink to="/" closeMenu={closeMenu}>
           Til forsiden
-        </LinkListItem>
+        </NavLink>
 
-        <LinkListItem to="logg-inn" {...dropDownLinkSharedProps}>
+        <NavLink to="logg-inn" closeMenu={closeMenu}>
           Logg inn
-        </LinkListItem>
+        </NavLink>
 
-        <LinkListItem to="/" {...dropDownLinkSharedProps}>
+        <NavLink to="/" closeMenu={closeMenu}>
           Hjelp
-        </LinkListItem>
+        </NavLink>
 
-        <LinkListItem
+        <NavLink
           to="$username"
-          {...dropDownLinkSharedProps}
-          linkOpts={{ params: { username } }}
+          closeMenu={closeMenu}
+          linkProps={{ params: { username } }}
         >
           Min side
-        </LinkListItem>
+        </NavLink>
       </ul>
     </nav>
   );
