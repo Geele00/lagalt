@@ -3,17 +3,17 @@ import { ProfileButton, Logo } from "src/components";
 import { Menu, SearchBar, FeedFilter } from "src/features";
 
 export const Header = () => {
-  const menuToggleRef = useRef<HTMLInputElement>(null);
+  const checkboxRef = useRef<HTMLInputElement>(null);
 
   // For computers, not mobile
   const onMouseLeave = () => {
-    (menuToggleRef.current as HTMLInputElement).checked = false;
+    (checkboxRef.current as any).setCheck(false);
   };
 
   return (
     <header className="main-header">
       <section className="main-header__left" onMouseLeave={onMouseLeave}>
-        <Menu menuToggleRef={menuToggleRef} />
+        <Menu ref={checkboxRef} />
         <Logo />
       </section>
 
