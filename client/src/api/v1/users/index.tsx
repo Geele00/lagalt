@@ -1,6 +1,6 @@
 import { User } from "src/types/entities/User";
 
-const apiUrl = import.meta.env.VITE_API_URL + "/users";
+const apiUrl = import.meta.env.VITE_API_V1_URL + "/users";
 
 const defaultOptions: RequestInit = {
   mode: "cors",

@@ -1,4 +1,6 @@
-export const ProfilePage = () => {
+import "./style.scss";
+
+export const MinSide = () => {
   const user = {
     firstName: "Wes",
     lastName: "Keiser",
@@ -20,7 +22,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <main className="profile">
+    <div className="profile">
       <h1>{user.username}</h1>
 
       <section className="profile__info">
@@ -67,6 +69,6 @@ export const ProfilePage = () => {
           <li>Project2</li>
         </ul>
       </section>
-    </main>
+    </div>
   );
 };

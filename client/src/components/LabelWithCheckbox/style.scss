@@ -1,0 +1,23 @@
+.label-with-checkbox {
+  border-right: 2px solid var(--c_text_1);
+  display: grid;
+  width: 6em;
+  height: 2em;
+
+  & > * {
+    grid-area: 1/1;
+    margin: auto;
+    text-align: center;
+  }
+
+  & > input {
+    appearance: none;
+    margin: 0;
+    z-index: 2;
+    cursor: pointer;
+
+    &:checked {
+      outline: 3px solid purple;
+    }
+  }
+}

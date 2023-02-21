@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AuthContext } from "src/index";
 import { IAuthProviderState, IAuthProvider, IlogIn } from "./types";
 
@@ -7,13 +7,15 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     loggedIn: false,
   });
 
-  const logIn = ({ username, uuid }: IlogIn) => {
-    setAuthState({ username, uuid, loggedIn: true });
-  };
+  const logIn = useCallback(
+    ({ username, uuid }: IlogIn) =>
+      setAuthState({ username, uuid, loggedIn: true }),
+    [setAuthState]
+  );
 
-  const logOut = () => {
+  const logOut = useCallback(() => {
     setAuthState({ loggedIn: false });
-  };
+  }, [setAuthState]);
 
   const contextValue = useMemo(
     () => ({

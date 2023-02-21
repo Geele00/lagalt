@@ -7,8 +7,7 @@ import ReactDOM from "react-dom/client";
 import { router } from "./router";
 import { AuthProvider } from "./auth/AuthProvider";
 import { IAuthContext } from "./auth/AuthProvider/types";
-
-const apiUrl = import.meta.env.VITE_API_URL;
+import { apiUrl } from "./api/v1";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

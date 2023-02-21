@@ -1,7 +1,5 @@
-.feed__filter {
+.feed-filter {
   height: 100%;
-  // width: fit-content;
-  // min-width: 2em;
   display: grid;
 
   &_toggle {
@@ -14,10 +12,11 @@
     margin: 0;
     grid-area: 1/1;
 
-    &:checked ~ .feed__filter_dropdown {
+    &:checked ~ .feed-filter_dropdown {
       display: unset;
       position: fixed;
       top: 100cqh;
+      // min-width: 100%;
     }
   }
 
@@ -51,30 +50,37 @@
     }
   }
 
-  // &_dropdown {
-  //   grid-area: 1/1;
-  //   display: none;
-  //   background-color: var(--c_menu_bg_1);
-  //   color: var(--c_text_1);
-  //   padding: 0.4em;
-  //   border-radius: 0 0 1em 0;
-  //
-  //   li {
-  //     button {
-  //       background-color: transparent;
-  //       color: var(--c_text_1);
-  //       width: 100%;
-  //       margin: 0;
-  //       padding: 0;
-  //       text-align: left;
-  //       border: none;
-  //       cursor: pointer;
-  //     }
-  //
-  //     &[aria-selected="true"] > button::after {
-  //       content: "<";
-  //       padding-left: 1ch;
-  //     }
-  //   }
-  // }
+  &_dropdown {
+    width: fit-content;
+    font-size: 1.2em;
+    position: fixed;
+    top: 100cqh;
+    display: none;
+    background-color: var(--c_menu_bg_1);
+    color: var(--c_text_1);
+
+    // label {
+    //   border-right: 2px solid var(--c_text_1);
+    //   display: grid;
+    //   width: 6em;
+    //   height: 2em;
+    //
+    //   & > * {
+    //     grid-area: 1/1;
+    //     margin: auto;
+    //     text-align: center;
+    //   }
+    //
+    //   input {
+    //     appearance: none;
+    //     margin: 0;
+    //     z-index: 2;
+    //     cursor: pointer;
+    //
+    //     // &:checked {
+    //     //   outline: 3px solid purple;
+    //     // }
+    //   }
+    // }
+  }
 }

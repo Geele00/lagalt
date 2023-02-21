@@ -1,5 +1,5 @@
 import { Link, ToPathOption } from "@tanstack/react-router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 interface LinkListItem {
   to: ToPathOption;
@@ -14,9 +14,6 @@ export const LinkListItem = ({
   linkOpts,
   children,
 }: LinkListItem) => {
-  // useEffect(() => {
-  //   const t = liOpts;
-  // }, []);
   return (
     <li {...liOpts}>
       <Link to={to} {...linkOpts}>

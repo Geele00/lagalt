@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import "./style.scss";
 // import firebase from "firebase/compat/app";
 // import firebaseui from "firebaseui";
 // import "firebaseui/dist/firebaseui.css";
 
-export const Login = () => {
+export const LoggInn = () => {
   return (
-    <main className="login__main">
+    <section className="login__main">
       <section className="login">
         <div className="login_title">
           <h1>Logg inn</h1>
@@ -38,6 +39,6 @@ export const Login = () => {
         <p className="login_google">Google Login</p>
         <p>Ny bruker</p>
       </section>
-    </main>
+    </section>
   );
 };
