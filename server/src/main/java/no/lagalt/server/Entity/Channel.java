@@ -3,6 +3,7 @@ package no.lagalt.server.Entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
@@ -25,7 +26,7 @@ public class Channel {
   @JoinColumn(name = "messageBoardId")
   private MessageBoard messageBoards;*/
 
-  private LocalDate creationDate;
+  private LocalDateTime creationDate;
 
 
 
