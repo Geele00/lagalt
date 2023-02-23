@@ -65,6 +65,10 @@ main {
   background-color: var(--c_page_bg_1);
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 
 
 /* :root { */

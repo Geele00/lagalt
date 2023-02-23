@@ -1,26 +1,39 @@
+import { useRouter } from "@tanstack/react-router";
 import { RefObject, useRef } from "react";
 import { Logo } from "src/components";
-import { Menu, SearchBar, FeedFilter } from "src/features";
+import { Menu, SearchBar } from "src/features";
+import { PopFilter } from "./PopFilter";
+import { SkillsFilter } from "./SkillsFilter";
 import "./style.scss";
 
 // For computers, not mobile. Remember to test.
-const uncheckCheckbox = (ref: RefObject<any>) => ref.current.unCheck();
+const closeMenu = (ref: RefObject<any>) => ref.current.unCheck();
 
 export const Header = () => {
   const menuToggleRef = useRef<HTMLInputElement>(null);
+
+  const {
+    state: {
+      currentLocation: { pathname },
+    },
+  } = useRouter();
 
   return (
     <header className="main-header">
       <section
         className="main-header__left"
-        onMouseLeave={() => uncheckCheckbox(menuToggleRef)}
+        onMouseLeave={() => closeMenu(menuToggleRef)}
       >
         <Menu ref={menuToggleRef} />
         <Logo />
       </section>
 
-      <FeedFilter filterName="Pop" />
-      <FeedFilter filterName="Type" />
+      {pathname === "/" ? (
+        <>
+          <PopFilter />
+          <SkillsFilter />
+        </>
+      ) : null}
 
       <SearchBar />
       <button className="profile-button">

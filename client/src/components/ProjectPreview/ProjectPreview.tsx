@@ -1,9 +1,13 @@
 import { IProjectPreview } from "./types";
 import "./style.scss";
 
-export const ProjectPreview = ({ title, description }: IProjectPreview) => {
+export const ProjectPreview = ({
+  title,
+  description,
+  className,
+}: IProjectPreview) => {
   return (
-    <article className="project-preview">
+    <article className={`${className} project-preview`}>
       <section className="project-preview__main">
         <h2>{title}</h2>
 

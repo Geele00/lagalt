@@ -10,7 +10,12 @@
   &__left {
     container: main-header__left / size;
     display: flex;
-    width: 22em;
+    // flex-grow: 1;
+    border-top-right-radius: 3em;
+    // border: 1px solid red;
+    min-width: 10em;
+    width: 100%;
+    background-color: var(--c_menu_bg_1);
     height: 100%;
   }
 
