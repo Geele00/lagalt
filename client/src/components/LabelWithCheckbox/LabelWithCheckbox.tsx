@@ -1,10 +1,5 @@
 import "./style.scss";
-
-interface ILabelWithCheckbox {
-  className: string;
-  label: string;
-  labelProps?: any;
-}
+import { ILabelWithCheckbox } from "./types";
 
 export const LabelWithCheckbox = (props: ILabelWithCheckbox) => {
   return (

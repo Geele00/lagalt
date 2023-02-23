@@ -1,18 +1,21 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { uncheckCheckbox } from "src/utils";
 import { IFeedFilter } from "./types";
 import "./style.scss";
-import { LabelWithCheckbox } from "src/components/LabelWithCheckbox/LabelWithCheckbox";
+import { queryClient } from "src/index";
 
 const classN = "feed-filter";
 
-export const FeedFilter = ({ filterName }: IFeedFilter) => {
-  const checkboxRef = useRef<HTMLInputElement>(null);
+const onFormInput = (e: FormEvent) => {
+  // Change filter. With auth state?
 
-  const onFormInput = (e: FormEvent) => {
-    console.log(e.target);
-    // Change filter
-  };
+  // queryClient.invalidateQueries(["feed"]);
+
+  console.log(e.target);
+};
+
+export const FeedFilter = ({ filterName, children }: IFeedFilter) => {
+  const checkboxRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className={classN} onMouseLeave={() => uncheckCheckbox(checkboxRef)}>
@@ -25,11 +28,7 @@ export const FeedFilter = ({ filterName }: IFeedFilter) => {
       </div>
 
       <form className={`${classN}_dropdown`} onInput={onFormInput}>
-        <LabelWithCheckbox className={classN} label="Blabla" />
-
-        <LabelWithCheckbox className={classN} label="Blabla2" />
-
-        <LabelWithCheckbox className={classN} label="Blabla3" />
+        {children}
       </form>
     </div>
   );

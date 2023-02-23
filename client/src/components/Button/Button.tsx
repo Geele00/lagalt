@@ -6,7 +6,7 @@ interface IButton {
 }
 export const Button = ({ children, className, ...props }: IButton) => {
   return (
-    <button {...props} className={`${className} button`}>
+    <button {...props} className={`${className}-button primary-button`}>
       {children}
     </button>
   );

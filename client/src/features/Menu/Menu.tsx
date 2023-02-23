@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
   forwardRef,
   useCallback,
@@ -48,7 +49,7 @@ export const Menu = forwardRef(({}, forwardedRef) => {
           Til forsiden
         </NavLink>
 
-        <NavLink to="logg-inn" closeMenu={closeMenu}>
+        <NavLink to="/logg-inn" closeMenu={closeMenu}>
           Logg inn
         </NavLink>
 
@@ -57,7 +58,7 @@ export const Menu = forwardRef(({}, forwardedRef) => {
         </NavLink>
 
         <NavLink
-          to="$username"
+          to="/$username"
           closeMenu={closeMenu}
           linkProps={{ params: { username } }}
         >

@@ -1,16 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { fetchProjects } from "src/api/v1/projects";
+import { useMemo } from "react";
 import { useAuth } from "src/auth/AuthProvider";
 import { ProjectPreview } from "src/components";
 import { placeholderProjects } from "./placeholderProjects";
+import "./style.scss";
 
 export const Feed = () => {
   const user = useAuth();
 
+  const isLoggedIn = true;
+
   // const { data, error, isLoading, isSuccess } = useQuery({
-  //   queryKey: ["/projects"],
-  //   queryFn: fetchProjects,
+  //   queryKey: ["/projects", "feed"],
+  //   queryFn: () =>
+  //     fetchProjects({
+  //       // custom if logged in
+  //       // filterOpts
+  //     }),
   // });
 
   const feedItems = useMemo(() => {
@@ -29,6 +36,7 @@ export const Feed = () => {
     // return data.map((project) => (
     return placeholderProjects.map((project) => (
       <ProjectPreview
+        className="feed__project-preview"
         title={project.title}
         description={project.description}
         key={project.id}
