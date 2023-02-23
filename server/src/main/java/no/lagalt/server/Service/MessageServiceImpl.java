@@ -128,5 +128,25 @@ public class MessageServiceImpl {
     }
 
 
+    public void upvoteMessage(int id) {
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Message not found with this id"));
+
+        int upvotes = message.getScore();
+        message.setScore(upvotes + 1);
+
+        messageRepository.save(message);
+    }
+
+    public void downvoteMessage(int id) {
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Message id"));
+
+        int downvotes = message.getScore();
+        message.setScore(downvotes + 1);
+
+        messageRepository.save(message);
+    }
+
 
 }
