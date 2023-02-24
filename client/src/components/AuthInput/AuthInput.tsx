@@ -9,7 +9,7 @@ export const AuthInput = ({ className, ...props }: IAuthInput) => {
       required
       type="text"
       minLength={5}
-      maxLength={17}
+      maxLength={30}
       autoComplete="off"
       className={`${className} auth-input`}
       {...props}

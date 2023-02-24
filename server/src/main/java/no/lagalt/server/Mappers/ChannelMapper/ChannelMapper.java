@@ -20,8 +20,8 @@ public interface ChannelMapper {
 
     List<Channel> channelDtoToChannels(List<ChannelDto> channelDtos);
 
-    @Mapping(target = "messageDto", ignore = true)
-    ChannelDto channelToChannelDto(Channel channel);
+    //@Mapping(target = "MessageDto", ignore = true)
+    //ChannelDto channelToChannelDto(Channel channel);
 
     @Mapping(target = "messages", ignore = true)
     Channel channelDtoToChannel(ChannelDto channelDto);
