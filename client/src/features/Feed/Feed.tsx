@@ -12,14 +12,14 @@ export const Feed = () => {
   const isLoggedIn = true;
 
   // const { data, error, isLoading, isSuccess } = useQuery({
-  //   queryKey: ["/projects", "feed"],
+  //   queryKey: ["/projects"],
   //   queryFn: () =>
   //     fetchProjects({
   //       // custom if logged in
   //       // filterOpts
   //     }),
   // });
-
+  //
   const feedItems = useMemo(() => {
     // return (
     //   <p>Error</p> ??

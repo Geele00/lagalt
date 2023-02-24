@@ -23,11 +23,11 @@ const sampleProject = {
 //     </tr>
 //   );
 // };
-//
+
 export const ProsjektSide = () => {
-  // const { data } = useQuery(["project"]);
-  // const { projectName } = useParams();
-  // console.log(projectName);
+  const { data } = useQuery(["project"]);
+  const { projectName } = useParams();
+  console.log(projectName);
 
   return (
     <div className="project-page">

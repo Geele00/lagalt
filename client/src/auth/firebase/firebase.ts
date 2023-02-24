@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging } from "firebase/messaging";
-import { getAuth } from "firebase/auth";
+// import { getAnalytics } from "firebase/analytics";
+// import { getMessaging } from "firebase/messaging";
 
-// Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 export const firebaseConfig = {
   apiKey: "AIzaSyAOkmeiUE96UKSy-Io51pDLFCHUEQflrLU",
   authDomain: "lagalt-app-case.firebaseapp.com",
@@ -16,11 +15,11 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const firebaseApp = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(firebaseApp);
 
 // Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
+// const auth = getAuth(app);
 
 // Initialize Firebase Cloud Messaging and get a reference to the service
-const messaging = getMessaging(app);
+// const messaging = getMessaging(app);

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 
 import { router } from "./router";
-import { AuthProvider } from "./auth/AuthProvider";
+import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { apiUrl } from "./api/v1";
 
 export const queryClient = new QueryClient({
@@ -28,12 +28,12 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
+          <RouterProvider router={router} context={{ queryClient }} />
+        </QueryClientProvider>
+      </AuthProvider>
     </StrictMode>
   );
 }

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useAuth } from "src/auth/AuthProvider";
 import { AuthInput } from "src/components/AuthInput";
 import "./style.scss";
@@ -8,26 +8,30 @@ import "./style.scss";
 // import "firebaseui/dist/firebaseui.css";
 
 export const LoggInn = () => {
-  const { logIn } = useAuth();
+  const { signIn, auth } = useAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    console.log(user);
+    console.log(auth);
+  });
 
   const onSubmit = (e: any) => {
     e.preventDefault();
     // sanitize
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const auth = getAuth();
+    // usn:   sdlkfj@gmail.com
+    //  pw:   ;lkj;lkj123
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(({ user: { email } }) => {
-        if (!email) throw new Error();
-        logIn({ email });
-        return <Link to="/" />;
-      })
-      .catch((err) => {
-        console.log(err.code);
-        console.log(err.message);
-      });
+    const {
+      email: { value: email },
+      password: { value: password },
+    } = e.target;
+
+    try {
+      signIn({ email, password });
+    } catch (err) {
+      return <Link to="/" />;
+    }
   };
 
   return (

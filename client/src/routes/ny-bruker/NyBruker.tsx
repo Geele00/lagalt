@@ -1,9 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import {
-  connectAuthEmulator,
-  createUserWithEmailAndPassword,
-  getAuth,
-} from "firebase/auth";
 import { useAuth } from "src/auth/AuthProvider";
 import { AuthInput } from "src/components/AuthInput";
 import { Button } from "src/components/Button";
@@ -11,35 +6,27 @@ import "./style.scss";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
-  // const createUserMutation = useMutation({
-  //   mutationFn: (newUser: UserCredential) => {
-  //     // return createUser(newUser);
-  //   },
-  // });
+  const { createUser } = useAuth();
 
-  const { logIn, firebaseApp } = useAuth();
-
-  const onSubmit = (e: AuthFormEvent) => {
+  const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
-    // sanitize
 
-    const { username, email, password } = e.target;
-    //check if username taken
+    const {
+      username: { value: username },
+      email: { value: email },
+      password: { value: password },
+      passwordConfirmation: { value: passwordConfirmation },
+    } = e.target;
 
-    const auth = getAuth(firebaseApp);
-    connectAuthEmulator(auth, "http://localhost:9099");
+    if (password !== passwordConfirmation) {
+      // passwords don't match exception
+    }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(({ user: { email: returnedEmail } }) => {
-        if (!returnedEmail) throw new Error();
-
-        logIn({ email });
-        return <Link to="/" />;
-      })
-      .catch((err) => {
-        console.log(err.code);
-        console.log(err.message);
-      });
+    try {
+      await createUser(email, password, username);
+    } catch (err) {
+      return <Link to="/" />;
+    }
   };
 
   return (
