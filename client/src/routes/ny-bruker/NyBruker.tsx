@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/AuthProvider";
 import { AuthInput } from "src/components/AuthInput";
 import { Button } from "src/components/Button";
@@ -7,6 +7,7 @@ import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
   const { createUser } = useAuth();
+  const nav = useNavigate();
 
   const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ export const NyBruker = () => {
     try {
       await createUser(email, password, username);
     } catch (err) {
-      return <Link to="/" />;
+      nav({ to: "/" });
     }
   };
 

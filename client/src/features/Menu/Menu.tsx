@@ -1,18 +1,12 @@
-import { Link } from "@tanstack/react-router";
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import { useAuth } from "src/auth/AuthProvider";
 import { NavLink } from "src/components";
 import { uncheckCheckbox } from "src/utils";
 import "./style.scss";
 
 export const Menu = forwardRef(({}, forwardedRef) => {
-  const user = useAuth();
+  const { authState } = useAuth();
+
   const username = "weskeiser";
 
   const checkboxRef = useRef<HTMLInputElement>(null);
@@ -49,9 +43,15 @@ export const Menu = forwardRef(({}, forwardedRef) => {
           Til forsiden
         </NavLink>
 
-        <NavLink to="/logg-inn" closeMenu={closeMenu}>
-          Logg inn
+        <NavLink to="/ny-bruker" closeMenu={closeMenu}>
+          Ny bruker
         </NavLink>
+
+        {authState.signedIn ? null : (
+          <NavLink to="/logg-inn" closeMenu={closeMenu}>
+            Logg inn
+          </NavLink>
+        )}
 
         <NavLink to="/" closeMenu={closeMenu}>
           Hjelp

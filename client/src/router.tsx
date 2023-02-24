@@ -6,7 +6,6 @@ import { projectRoute } from "./routes/$username/$projectName";
 import { forgotRoute } from "./routes/glemt-passord";
 import { loginRoute } from "./routes/logg-inn";
 import { signupRoute } from "./routes/ny-bruker";
-import { useAuth } from "./auth/AuthProvider";
 
 export const routeTree = rootRoute.addChildren([
   indexRoute,

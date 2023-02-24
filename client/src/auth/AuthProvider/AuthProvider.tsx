@@ -2,13 +2,21 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { IAuthProvider, IAuthContext, IsignIn } from "./types";
 import {
+  IAuthProvider,
+  IAuthContext,
+  IsignIn,
+  IAuthProviderState,
+} from "./types";
+import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
-  getAuth,
+  initializeAuth,
+  setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
@@ -16,43 +24,42 @@ import { firebaseConfig } from "../firebase";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
-interface IAuthProviderState {
-  signedIn: boolean;
-  uid?: string;
-}
+const firebaseApp = initializeApp(firebaseConfig);
+
+const auth = initializeAuth(firebaseApp, {
+  persistence: browserLocalPersistence,
+});
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthProviderState>({
     signedIn: false,
   });
 
-  const firebaseApp = initializeApp(firebaseConfig);
-  const auth = getAuth(firebaseApp);
-
-  // auth.onAuthStateChanged((user) => {
-  //   console.log(user.uid);
-  //   user && user.uid
-  //     ? setAuthState({
-  //         signedIn: true,
-  //         uid: user.uid,
-  //       })
-  //     : setAuthState({ signedIn: false });
-  // });
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      console.log(user);
+      user
+        ? setAuthState({ signedIn: true, uid: user.uid })
+        : setAuthState({ signedIn: false });
+    });
+  }, []);
 
   const signIn = useCallback(({ email, password }: IsignIn) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(({ user: { email, uid } }) => {
-        if (!email) throw new Error();
+    setPersistence(auth, browserLocalPersistence)
+      .then(() =>
+        signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
+          if (!user.email) throw new Error();
 
-        setAuthState({
-          signedIn: true,
-          uid,
-        });
+          setAuthState({
+            signedIn: true,
+            uid: user.uid,
+          });
 
-        // fetch userData
+          // fetch userData
 
-        console.log(email);
-      })
+          console.log(email);
+        })
+      )
       .catch((err) => {
         console.log(err.code);
         console.log(err.message);
@@ -62,15 +69,11 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
 
   const signOut = useCallback(() => {
     auth.signOut();
-
-    setAuthState({
-      signedIn: false,
-    });
   }, []);
 
   const createUser = useCallback(
-    (email: string, password: string, username: string) => {
-      createUserWithEmailAndPassword(auth, email, password)
+    async (email: string, password: string, username: string) => {
+      await createUserWithEmailAndPassword(auth, email, password)
         .then(({ user: { email: returnedEmail } }) => {
           console.log(returnedEmail);
 
@@ -91,15 +94,12 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
       signIn,
       signOut,
       createUser,
-      auth,
       authState,
     }),
-    []
+    [authState, setAuthState]
   );
 
-  return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue} children={children} />;
 };
 
 export const useAuth = () => {
