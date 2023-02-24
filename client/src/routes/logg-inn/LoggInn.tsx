@@ -40,12 +40,23 @@ export const LoggInn = () => {
 
       <form className="login__form" onSubmit={onSubmit}>
         <AuthInput
+          type="text"
           name="username"
           placeholder="Brukernavn"
           className="signup"
         />
-        <AuthInput name="email" placeholder="E-post" className="signup" />
-        <AuthInput name="password" placeholder="Passord" className="signup" />
+        <AuthInput
+          type="email"
+          name="email"
+          placeholder="E-post"
+          className="signup"
+        />
+        <AuthInput
+          type="password"
+          name="password"
+          placeholder="Passord"
+          className="signup"
+        />
         <button>Logg inn</button>
       </form>
 
