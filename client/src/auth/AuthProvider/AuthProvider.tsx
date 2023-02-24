@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -21,22 +22,40 @@ interface IAuthProviderState {
   uid?: string;
 }
 
+const firebaseApp = initializeApp(firebaseConfig);
+
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthProviderState>({
     signedIn: false,
   });
 
-  const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+        setAuthState({
+          signedIn: true,
+          uid: user.uid,
+        });
+      } else {
+        setAuthState({ signedIn: false });
+      }
+    });
+
+    return unsubscribe();
+  }, []);
+
   // auth.onAuthStateChanged((user) => {
-  //   console.log(user.uid);
-  //   user && user.uid
-  //     ? setAuthState({
-  //         signedIn: true,
-  //         uid: user.uid,
-  //       })
-  //     : setAuthState({ signedIn: false });
+  //   if (user) {
+  //     setAuthState({
+  //       signedIn: true,
+  //       uid: user.uid,
+  //     });
+  //   } else {
+  //     setAuthState({ signedIn: false });
+  //   }
   // });
 
   const signIn = useCallback(({ email, password }: IsignIn) => {

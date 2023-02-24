@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 import { useAuth } from "src/auth/AuthProvider";
 import { AuthInput } from "src/components/AuthInput";
 import "./style.scss";
@@ -8,12 +9,7 @@ import "./style.scss";
 // import "firebaseui/dist/firebaseui.css";
 
 export const LoggInn = () => {
-  const { signIn, auth } = useAuth();
-
-  onAuthStateChanged(auth, (user) => {
-    console.log(user);
-    console.log(auth);
-  });
+  const { signIn, auth, authState } = useAuth();
 
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -34,10 +30,15 @@ export const LoggInn = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(authState);
+  }, [authState]);
+
   return (
     <div className="login">
       <div className="login_title">
         <h1>Logg inn</h1>
+        <h1>{authState.signedIn}</h1>
       </div>
       <form className="login__form" onSubmit={onSubmit}>
         <AuthInput
