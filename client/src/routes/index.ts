@@ -8,9 +8,11 @@ export const indexRoute = new Route({
   getParentRoute: () => rootRoute,
   component: Feed,
   path: "/",
-  onLoad: async () =>
-    queryClient.ensureQueryData({
-      queryKey: ["/users"],
-      queryFn: fetchUsers,
-    }),
+  onLoad: async ({ context }) => {
+    console.log(context);
+  },
+  // queryClient.ensureQueryData({
+  //   queryKey: ["/users"],
+  //   queryFn: fetchUsers,
+  // }),
 });
