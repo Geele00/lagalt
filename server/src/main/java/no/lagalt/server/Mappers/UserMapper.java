@@ -1,5 +1,6 @@
 package no.lagalt.server.Mappers;
 
+import java.util.List;
 import no.lagalt.server.Dtos.User.NewUserDto;
 import no.lagalt.server.Dtos.User.UpdateUserDto;
 import no.lagalt.server.Dtos.User.UserDto;
@@ -23,9 +24,12 @@ public abstract class UserMapper {
 
   // abstract UserDto userToUserDto(LagaltUser user);
   //
-  public abstract LagaltUser newUserDtoToUser(NewUserDto newUserDto);
 
-  public abstract LagaltUser usersToUsersUpdate(UpdateUserDto updateUserDto);
+  public abstract LagaltUser toUser(NewUserDto newUserDto);
+  //
+  public abstract LagaltUser toUser(UpdateUserDto updateUserDto);
 
-  public abstract UserDto userToUserDto(LagaltUser user);
+  public abstract UserDto toDto(LagaltUser user);
+
+  public abstract List<UserDto> toDto(List<LagaltUser> user);
 }

@@ -7,12 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SkillDto {
-  private Integer skillId;
-
+public class SkillName {
   private String name;
-
-  private String addedBy;
-
-  // private List<Industry> industries;
 }

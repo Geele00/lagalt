@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SkillDto {
-  private Integer skillId;
-
+public class NewSkill {
   private String name;
 
   private String addedBy;

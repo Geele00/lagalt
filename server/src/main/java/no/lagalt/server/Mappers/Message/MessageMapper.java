@@ -1,22 +1,18 @@
 package no.lagalt.server.Mappers.Message;
 
+import java.util.List;
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Entity.Message;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-
-import java.util.List;
-import java.util.Optional;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface MessageMapper {
+public abstract class MessageMapper {
 
-    MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
+  // @Autowired private MessageServiceImpl messageService;
 
-    List<MessageDto> toDto(List<Message> message);
-    MessageDto toDto(Message message);
+  public abstract List<MessageDto> toDto(List<Message> message);
 
-    Message toEntity(MessageDto messageDto);
-
+  @Mapping(target = "channelId", source = "channel.channelId")
+  public abstract MessageDto toDto(Message message);
 }
-
