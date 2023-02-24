@@ -40,18 +40,21 @@ export const LoggInn = () => {
 
       <form className="login__form" onSubmit={onSubmit}>
         <AuthInput
+          maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
           className="signup"
         />
         <AuthInput
+          maxLength={40}
           type="email"
           name="email"
           placeholder="E-post"
           className="signup"
         />
         <AuthInput
+          maxLength={20}
           type="password"
           name="password"
           placeholder="Passord"

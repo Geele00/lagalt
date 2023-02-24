@@ -3,6 +3,7 @@ interface IAuthInput {
   placeholder: string;
   className: string;
   type: string;
+  maxLength: number;
 }
 
 export const AuthInput = ({ className, ...props }: IAuthInput) => {
@@ -10,7 +11,6 @@ export const AuthInput = ({ className, ...props }: IAuthInput) => {
     <input
       required
       minLength={5}
-      maxLength={className.match("mail") ? 30 : 18}
       autoComplete="off"
       className={`${className} auth-input`}
       {...props}

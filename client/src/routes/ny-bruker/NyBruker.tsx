@@ -37,24 +37,28 @@ export const NyBruker = () => {
       </div>
       <form className="signup_form" onSubmit={onSubmit}>
         <AuthInput
+          maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
           className="signup"
         />
         <AuthInput
+          maxLength={40}
           type="email"
           name="email"
           placeholder="E-post"
           className="mail"
         />
         <AuthInput
+          maxLength={20}
           type="password"
           name="password"
           placeholder="Passord"
           className="password"
         />
         <AuthInput
+          maxLength={20}
           type="password"
           name="passwordConfirmation"
           placeholder="Confirm Password"
