@@ -37,13 +37,25 @@ export const NyBruker = () => {
       </div>
       <form className="signup_form" onSubmit={onSubmit}>
         <AuthInput
+          type="text"
           name="username"
           placeholder="Brukernavn"
           className="signup"
         />
-        <AuthInput name="email" placeholder="E-post" className="mail" />
-        <AuthInput name="password" placeholder="Passord" className="password" />
         <AuthInput
+          type="email"
+          name="email"
+          placeholder="E-post"
+          className="mail"
+        />
+        <AuthInput
+          type="password"
+          name="password"
+          placeholder="Passord"
+          className="password"
+        />
+        <AuthInput
+          type="password"
           name="passwordConfirmation"
           placeholder="Confirm Password"
           className="password"
