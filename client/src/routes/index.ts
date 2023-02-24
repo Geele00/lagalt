@@ -1,8 +1,6 @@
 import { Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
 import { Feed } from "src/features/Feed";
-import { queryClient } from "src/index";
-import { fetchUsers } from "src/api/v1/users";
 
 export const indexRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -10,9 +8,9 @@ export const indexRoute = new Route({
   path: "/",
   onLoad: async ({ context }) => {
     console.log(context);
+    // context.queryClient.ensureQueryData({
+    //   queryKey: ["/users"],
+    //   queryFn: fetchUsers,
+    // })
   },
-  // queryClient.ensureQueryData({
-  //   queryKey: ["/users"],
-  //   queryFn: fetchUsers,
-  // }),
 });

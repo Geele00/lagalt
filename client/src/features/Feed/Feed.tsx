@@ -7,9 +7,9 @@ import { placeholderProjects } from "./placeholderProjects";
 import "./style.scss";
 
 export const Feed = () => {
-  const user = useAuth();
+  const { authState } = useAuth();
 
-  const isLoggedIn = true;
+  const user = useAuth();
 
   // const { data, error, isLoading, isSuccess } = useQuery({
   //   queryKey: ["/projects"],

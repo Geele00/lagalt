@@ -2,6 +2,7 @@ import { useRouter } from "@tanstack/react-router";
 import { RefObject, useRef } from "react";
 import { Logo } from "src/components";
 import { Menu, SearchBar } from "src/features";
+import { ProfileButton } from "../ProfileButton";
 import { PopFilter } from "./PopFilter";
 import { SkillsFilter } from "./SkillsFilter";
 import "./style.scss";
@@ -36,12 +37,8 @@ export const Header = () => {
       ) : null}
 
       <SearchBar />
-      <button className="profile-button">
-        <div className="profile-button__logo">
-          <div className="profile-button__logo_top"></div>
-          <div className="profile-button__logo_bottom"></div>
-        </div>
-      </button>
+
+      <ProfileButton />
     </header>
   );
 };

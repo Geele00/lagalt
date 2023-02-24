@@ -1,6 +1,4 @@
-import { Route } from "@tanstack/react-router";
-import { getAuth } from "firebase/auth";
-import { queryClient } from "src/index";
+import { Navigate, Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
 import { LoggInn } from "./LoggInn";
 
@@ -15,9 +13,6 @@ export const loginRoute = new Route({
       //   .then((res) => res.json())
       //   .then((data) => data),
     });
-
-    const t = getAuth();
-    console.log(t);
   },
   component: LoggInn,
 });
