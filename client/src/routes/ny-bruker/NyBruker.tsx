@@ -41,12 +41,12 @@ export const NyBruker = () => {
           placeholder="Brukernavn"
           className="signup"
         />
-        <AuthInput name="email" placeholder="E-post" className="signup" />
-        <AuthInput name="password" placeholder="Passord" className="signup" />
+        <AuthInput name="email" placeholder="E-post" className="mail" />
+        <AuthInput name="password" placeholder="Passord" className="password" />
         <AuthInput
           name="passwordConfirmation"
-          placeholder="Passord"
-          className="signup"
+          placeholder="Confirm Password"
+          className="password"
         />
         <Button className="signup_submit-btn">Registrer</Button>
       </form>
