@@ -29,15 +29,15 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
 
-  auth.onAuthStateChanged((user) => {
-    console.log(user.uid);
-    user && user.uid
-      ? setAuthState({
-          signedIn: true,
-          uid: user.uid,
-        })
-      : setAuthState({ signedIn: false });
-  });
+  // auth.onAuthStateChanged((user) => {
+  //   console.log(user.uid);
+  //   user && user.uid
+  //     ? setAuthState({
+  //         signedIn: true,
+  //         uid: user.uid,
+  //       })
+  //     : setAuthState({ signedIn: false });
+  // });
 
   const signIn = useCallback(({ email, password }: IsignIn) => {
     signInWithEmailAndPassword(auth, email, password)
