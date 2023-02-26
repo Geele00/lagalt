@@ -15,15 +15,12 @@ public class Channel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int channelId;
+  @Column(nullable = false)
+  private Integer channelId;
 
   private String name;
 
-  /*
-  @ManyToOne
-  @JoinColumn(name = "messageBoardId")
-  private MessageBoard messageBoards;*/
-
+  @Column(nullable = false)
   private LocalDateTime creationDate;
 
   @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)

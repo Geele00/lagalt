@@ -20,11 +20,11 @@ public class MessageDto {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer messageId;
 
-  private String text;
+  private String content;
 
   private LagaltUser author;
 
-  private LocalDateTime timeStamp;
+  private LocalDateTime creationDateTime;
 
   // private int score;
 

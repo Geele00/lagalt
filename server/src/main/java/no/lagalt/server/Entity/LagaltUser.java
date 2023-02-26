@@ -1,12 +1,14 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import no.lagalt.server.Utils.Enum.Gender;
+import no.lagalt.server.Utils.Enum.ProfileStatus;
 
 @Getter
 @Setter
@@ -31,14 +33,12 @@ public class LagaltUser {
   private String lastName;
 
   @Column(nullable = false)
-  private Date dob;
-
-  @Column(nullable = false)
-  private Date dateOfCreation;
+  private LocalDate dob;
 
   @Column(nullable = false)
   private String email;
 
+  @Column(nullable = false)
   private Gender gender;
 
   @OneToOne private Country country;
@@ -57,6 +57,19 @@ public class LagaltUser {
       inverseJoinColumns = {@JoinColumn(name = "skill_id")})
   private List<Skill> skills;
 
-  @OneToMany(mappedBy = "lagaltUsers")
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "users_notifications",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "notification_id")})
+  private List<Notification> notifications;
+
+  @OneToMany(mappedBy = "owner")
   private List<Project> projects;
+
+  @Column(nullable = false)
+  private ProfileStatus profileStatus;
+
+  @Column(nullable = false)
+  private LocalDateTime creationDate;
 }

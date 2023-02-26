@@ -1,17 +1,16 @@
 package no.lagalt.server.Dtos.MessageBoardDto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
 import lombok.Data;
-
-import java.time.LocalDate;
 
 @Data
 public class MessageBoardDto {
-    @JsonIgnore
-    private int id;
-    @JsonIgnore
-    private int projectId;
-    private String name;
-    private LocalDate creationDate;
 
+  private Integer messageBoardId;
+
+  private String name;
+
+  private Integer project;
+
+  private LocalDateTime creationDateTime;
 }

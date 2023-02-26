@@ -1,4 +1,4 @@
-package no.lagalt.server.Mappers.ChannelMapper;
+package no.lagalt.server.Mapper;
 
 import org.mapstruct.Mapper;
 

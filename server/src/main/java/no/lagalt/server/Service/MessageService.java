@@ -3,14 +3,14 @@ package no.lagalt.server.Service;
 import java.util.List;
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Entity.Message;
-import no.lagalt.server.Mappers.Message.MessageMapper;
+import no.lagalt.server.Mapper.MessageMapper;
 import no.lagalt.server.Repository.MessageRepository;
 import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageServiceImpl {
+public class MessageService {
   @Autowired private MessageRepository messageRepo;
   @Autowired private MessageMapper messageMapper;
 

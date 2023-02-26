@@ -2,10 +2,10 @@ package no.lagalt.server.Service;
 //
 // import no.lagalt.server.Dtos.Message.MessageDto;
 // import no.lagalt.server.Entity.Message;
-// import no.lagalt.server.Mappers.ChannelMapper.ChannelMapper;
+// import no.lagalt.server.Mapper.ChannelMapper.ChannelMapper;
 // import no.lagalt.server.Dtos.Channel.ChannelDto;
 // import no.lagalt.server.Entity.Channel;
-// import no.lagalt.server.Mappers.Message.MessageMapper;
+// import no.lagalt.server.Mapper.Message.MessageMapper;
 // import no.lagalt.server.Repository.ChannelRepository;
 // import no.lagalt.server.Repository.MessageBoardRepository;
 // import no.lagalt.server.Repository.MessageRepository;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 // import java.util.List;
 
 @Service
-public class ChannelServiceImpl {
+public class ChannelService {
 
   // private final ChannelRepository channelRepository;
   // private final MessageBoardRepository messageBoardRepository;
