@@ -14,11 +14,14 @@ public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false)
   private Integer messageId;
 
-  private String text;
+  @Column(nullable = false)
+  private String content;
 
-  private LocalDateTime timeStamp;
+  @Column(nullable = false)
+  private LocalDateTime creationDateTime;
 
   // private int score;
 

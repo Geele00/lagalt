@@ -1,6 +1,7 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,17 +11,22 @@ import lombok.ToString;
 @ToString
 @Entity(name = "notification")
 public class Notification {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notificationId", nullable = false)
-    private int id;
 
-    @Column(name = "ProjectName")
-    private String nameOfProject;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false)
+  private int notificationId;
 
-    private String content;
-    @ManyToOne()
-    private LagaltUser lagaltUser;
-    @ManyToOne
-    private Project project;
+  @Column(nullable = false)
+  private String title;
+
+  @Column(nullable = false)
+  private String content;
+
+  @Transient
+  @ManyToMany(fetch = FetchType.LAZY)
+  private List<LagaltUser> recipients;
+
+  // @ManyToMany
+  // private Project project;
 }

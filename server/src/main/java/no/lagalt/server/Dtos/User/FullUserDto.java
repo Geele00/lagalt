@@ -1,20 +1,19 @@
 package no.lagalt.server.Dtos.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import no.lagalt.server.Dtos.Skill.SkillDto;
+import no.lagalt.server.Entity.Country;
+import no.lagalt.server.Entity.History;
+import no.lagalt.server.Entity.Project;
 import no.lagalt.server.Utils.Enum.Gender;
-import no.lagalt.server.Utils.Enum.ProfileStatus;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class NewUserDto {
+public class FullUserDto {
 
-  private String avatarUrl;
+  private Integer userId;
 
   private String userName;
 
@@ -24,6 +23,10 @@ public class NewUserDto {
 
   private LocalDate dob;
 
+  private String avatarUrl;
+
+  private LocalDateTime creationDate;
+
   private String email;
 
   private Gender gender;
@@ -32,10 +35,9 @@ public class NewUserDto {
 
   private List<SkillDto> skills;
 
-  private ProfileStatus profileStatus;
+  private History history;
 
-  // private CountryDto country;
-  //
-  // private CityDto city;
+  private List<Project> projects;
 
+  private Country country;
 }

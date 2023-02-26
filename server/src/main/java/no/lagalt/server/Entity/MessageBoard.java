@@ -1,37 +1,27 @@
 package no.lagalt.server.Entity;
 
-
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-
 
 @Entity(name = "messageBoard")
 @Getter
 @Setter
 @ToString
 public class MessageBoard {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  @Column(nullable = false)
+  private int messageBoardId;
 
+  @Column(nullable = false)
   private String name;
 
-  @OneToOne
-  @JoinColumn(name = "projectId")
-  private Project project;
-/*
-  @OneToMany(mappedBy = "messageBoards")
-  private List<Channel> channel = new ArrayList<>();*/
+  @OneToOne private Project project;
 
-  private LocalDate creationDate;
-
-  private void removeMessageBoard() {
-
-    project = null;
-  //  channel = null;
-  }
+  @Column(nullable = false)
+  private LocalDateTime creationDatetime;
 }

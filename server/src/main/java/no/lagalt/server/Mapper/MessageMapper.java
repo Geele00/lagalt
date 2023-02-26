@@ -1,4 +1,4 @@
-package no.lagalt.server.Mappers.Message;
+package no.lagalt.server.Mapper;
 
 import java.util.List;
 import no.lagalt.server.Dtos.Message.MessageDto;

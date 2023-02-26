@@ -14,5 +14,5 @@ public class SkillDto {
 
   private String addedBy;
 
-  // private List<Industry> industries;
+  // private List<IndustryDto> industries;
 }
