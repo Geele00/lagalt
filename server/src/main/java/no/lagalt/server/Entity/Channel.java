@@ -9,7 +9,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name = "channel")
 public class Channel {
 

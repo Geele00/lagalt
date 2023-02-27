@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import no.lagalt.server.Utils.Enum.AddedBy;
 
 @Getter
 @Setter
-@ToString
 @Entity(name = "skill")
 public class Skill {
 
