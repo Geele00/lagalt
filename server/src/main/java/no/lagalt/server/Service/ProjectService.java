@@ -1,16 +1,12 @@
 package no.lagalt.server.Service;
 
-import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
-import no.lagalt.server.Dtos.Project.NewProjectDto;
-import no.lagalt.server.Dtos.Project.ProjectDto;
-import no.lagalt.server.Dtos.Project.UpdateProjectDto;
+import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.ProjectRepository;
-import no.lagalt.server.Utils.Exception.AlreadyExistsException;
-import no.lagalt.server.Utils.Exception.NotFoundException;
+import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +14,7 @@ import org.springframework.stereotype.Service;
 public class ProjectService {
 
   @Autowired private ProjectRepository projectRepo;
-
   @Autowired private UserService userService;
-
   @Autowired private ProjectMapper projectMapper;
 
   public boolean validateExists(Integer id) {
@@ -51,35 +45,20 @@ public class ProjectService {
     return projectMapper.toDto(savedProject);
   }
 
-  @Transient
-  private void check(LagaltUser owner, String projectTitle) throws AlreadyExistsException {
-    List<Project> existingProjects = owner.getProjects();
-
-    System.out.println(existingProjects);
-
-    // try {
-    //   existingProjects.forEach(
-    //       project -> {
-    //         System.out.println(project + "777");
-    //         if (project.getTitle() == projectTitle) {
-    //           throw new AlreadyExistsException(
-    //               "Project with title \"" + projectTitle + "\" already exists on your account.");
-    //         }
-    //       });
-    // } catch (AlreadyExistsException err) {
-    //   throw err;
-    // }
-  }
-
   public ProjectDto createProject(NewProjectDto newProjectDto, Integer ownerId)
       throws AlreadyExistsException {
     LagaltUser owner = userService.findById(ownerId);
 
     String projectTitle = newProjectDto.getTitle();
 
-    // fix verification problem
+    List<Project> existingProjects = owner.getProjects();
 
-    // check(owner, projectTitle);
+    boolean alreadyExists =
+        existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
+
+    if (alreadyExists)
+      throw new AlreadyExistsException(
+          "Project with title \"" + projectTitle + "\" already exists on your account.");
 
     Project newProject = projectMapper.toProject(newProjectDto);
 
