@@ -1,12 +1,7 @@
 import { NewDbUser, User } from "src/types/entities/User";
+import { defaultOptions } from "src/api/v1/defaults";
 
 const apiUrl = import.meta.env.VITE_API_V1_URL + "/users";
-
-const defaultOptions: RequestInit = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
 
 export const fetchUsers = async (
   fetchOptions?: RequestInit
@@ -23,8 +18,9 @@ export const fetchUsers = async (
   return res.json();
 };
 
-export const createDbUser = (newDbUser: NewDbUser) =>
+export const createDbUser = (newDbUser: NewDbUser, options?: RequestInit) =>
   fetchUsers({
     method: "POST",
     body: JSON.stringify(newDbUser),
+    ...options,
   });

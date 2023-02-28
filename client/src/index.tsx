@@ -1,13 +1,13 @@
-import "./assets/index.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 
+import "./assets/index.css";
 import { router } from "./router";
-import { AuthProvider, useAuth } from "./auth/AuthProvider";
-import { apiUrl } from "./api/v1";
+import { AuthProvider } from "./auth";
+import { apiUrl } from "./api/v1/defaults";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,5 +1,5 @@
 import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth";
 import { NavLink } from "src/components";
 import { uncheckCheckbox } from "src/utils";
 import "./style.scss";

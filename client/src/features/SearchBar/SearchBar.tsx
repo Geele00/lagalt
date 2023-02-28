@@ -1,6 +1,10 @@
 import "./style.scss";
 
-export const SearchBar = () => {
+interface ISearchBar {
+  className: string;
+}
+
+export const SearchBar = ({ className, ...props }: ISearchBar) => {
   const onInput = (e: any) => {
     // preview logic
   };
@@ -11,13 +15,13 @@ export const SearchBar = () => {
 
   return (
     <form
-      className="search"
+      className={`${className} search-bar`}
       role="search"
       onInput={onInput}
       onSubmit={onSubmit}
     >
       <img src="/images/magnifying-glass.png" />
-      <input className="search_input" type="text" />
+      <input className="search-bar__input" type="text" />
     </form>
   );
 };

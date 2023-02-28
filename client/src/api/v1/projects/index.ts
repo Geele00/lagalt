@@ -1,12 +1,7 @@
 import { Project } from "src/types/entities/Project";
+import { defaultOptions } from "src/api/v1/defaults";
 
 const projectsUri = import.meta.env.VITE_API_V1_URL + "/projects";
-
-const defaultOptions: RequestInit = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
 
 export const fetchProjects = async (
   fetchOptions?: RequestInit

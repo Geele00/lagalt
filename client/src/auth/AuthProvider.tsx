@@ -6,25 +6,17 @@ import {
   useMemo,
   useState,
 } from "react";
-import { IAuthProvider, IAuthContext, IsignIn, IAuthState } from "./types";
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
-  initializeAuth,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase";
+import { IAuthProvider, IAuthContext, IsignIn, IAuthState } from "./types";
 import { createDbUser } from "src/api/v1/users";
+import { auth } from "./firebase";
 
 const AuthContext = createContext<IAuthContext>(null!);
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = initializeAuth(firebaseApp, {
-  persistence: browserLocalPersistence,
-});
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthState>({
@@ -68,8 +60,8 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   }, [auth]);
 
   const createFirebaseUser = useCallback(
-    async (email: string, password: string, username: string) => {
-      await createUserWithEmailAndPassword(auth, email, password)
+    (email: string, password: string, username: string) => {
+      createUserWithEmailAndPassword(auth, email, password)
         .then(async ({ user }) => {
           if (!user) throw new Error();
 
@@ -84,12 +76,17 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
             uid: user.uid,
           });
 
-          // setAuthState({ token });
+          user.getIdToken().then((token) => {
+            setAuthState({ token, username: user.displayName || "" });
+          });
 
           // do something
         })
         .catch((err) => {
-          // TODO: Handle errors properly
+          auth.signOut();
+
+          // delete newly created user from db
+
           console.log(err.code);
           console.log(err.message);
         });

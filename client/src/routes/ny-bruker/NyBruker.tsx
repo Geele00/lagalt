@@ -1,8 +1,7 @@
-import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "src/auth/AuthProvider";
-import { AuthInput } from "src/components/AuthInput";
-import { Button } from "src/components/Button";
 import "./style.scss";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "src/auth";
+import { AuthInput, Button } from "src/components";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
@@ -24,9 +23,10 @@ export const NyBruker = () => {
     }
 
     try {
-      await createFirebaseUser(email, password, username);
-    } catch (err) {
+      createFirebaseUser(email, password, username);
       nav({ to: "/" });
+    } catch (err) {
+      // error logic
     }
   };
 
