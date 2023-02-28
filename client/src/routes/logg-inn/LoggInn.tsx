@@ -13,7 +13,7 @@ export const LoggInn = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    if (authState.signedIn) nav({ to: "/" });
+    if (authState.token) nav({ to: "/" });
   }, [authState]);
 
   const onSubmit = (e: any) => {

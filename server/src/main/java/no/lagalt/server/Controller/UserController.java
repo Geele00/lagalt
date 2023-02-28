@@ -2,6 +2,7 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
@@ -14,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
-@CrossOrigin(origins = "*") // Required for front-end. Remove before deployment for security
+@CrossOrigin // Required for front-end. Remove before deployment for security
 @RequestMapping(path = "api/v1/users")
 @RestController
 public class UserController {
@@ -26,9 +27,12 @@ public class UserController {
   @Operation(summary = "Get a list of users")
   @GetMapping
   List<UserDto> getUsers(
+      Principal p,
       @RequestParam(name = "username", required = false) String username,
       @RequestParam(name = "id", required = false) List<String> id)
       throws NotFoundException {
+
+    System.out.println(p.getName());
 
     if (username != null) return List.of(userService.getByUserName(username));
 

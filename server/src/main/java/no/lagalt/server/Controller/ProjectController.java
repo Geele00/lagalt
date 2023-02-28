@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Projects")
-@CrossOrigin(origins = "*") // Required for front-end. Remove before deployment for security
+@CrossOrigin // Required for front-end. Remove before deployment for security
 @RequestMapping(path = "api/v1/projects")
 @RestController
 public class ProjectController {
