@@ -1,5 +1,5 @@
 import "./style.scss";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth";
 
 export const ProfileButton = () => {
   const { signOut, authState } = useAuth();

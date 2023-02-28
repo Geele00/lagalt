@@ -22,5 +22,5 @@ export type IAuthContext = {
     email: string,
     password: string,
     username: string
-  ) => Promise<void>;
+  ) => void;
 };

@@ -3,7 +3,7 @@
 // import "firebaseui/dist/firebaseui.css";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth";
 import { AuthInput } from "src/components/AuthInput";
 import "./style.scss";
 

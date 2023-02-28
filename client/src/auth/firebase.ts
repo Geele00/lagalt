@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// import { getMessaging } from "firebase/messaging";
+import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyAOkmeiUE96UKSy-Io51pDLFCHUEQflrLU",
   authDomain: "lagalt-app-case.firebaseapp.com",
   projectId: "lagalt-app-case",
@@ -14,8 +13,12 @@ export const firebaseConfig = {
   measurementId: "G-LD3S9ZSC4C",
 };
 
-// Initialize Firebase
-export const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+
+export const auth = initializeAuth(firebaseApp, {
+  persistence: browserLocalPersistence,
+});
+
 // const analytics = getAnalytics(firebaseApp);
 
 // Initialize Firebase Authentication and get a reference to the service

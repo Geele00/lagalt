@@ -1,4 +1,3 @@
-import { useRouter } from "@tanstack/react-router";
 import { RefObject, useRef } from "react";
 import { Logo } from "src/components";
 import { Menu, SearchBar } from "src/features";
@@ -13,30 +12,24 @@ const closeMenu = (ref: RefObject<any>) => ref.current.unCheck();
 export const Header = () => {
   const menuToggleRef = useRef<HTMLInputElement>(null);
 
-  const {
-    state: {
-      currentLocation: { pathname },
-    },
-  } = useRouter();
-
   return (
     <header className="main-header">
       <section
-        className="main-header__left"
+        className="main-header__burger-and-logo"
         onMouseLeave={() => closeMenu(menuToggleRef)}
       >
         <Menu ref={menuToggleRef} />
         <Logo />
       </section>
 
-      {pathname === "/" ? (
-        <>
+      {window.location.pathname === "/" ? (
+        <section className="main-header__filters">
           <PopFilter />
           <SkillsFilter />
-        </>
+        </section>
       ) : null}
 
-      <SearchBar />
+      <SearchBar className="main-header__search-bar" />
 
       <ProfileButton />
     </header>

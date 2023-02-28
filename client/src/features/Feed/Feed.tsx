@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchProjects } from "src/api/v1/projects";
+import { fetchProjects } from "src/api/v1";
 import { useMemo } from "react";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth";
 import { ProjectPreview } from "src/components";
-import { placeholderProjects } from "./placeholderProjects";
 import "./style.scss";
 
 export const Feed = () => {
@@ -14,18 +13,19 @@ export const Feed = () => {
     queryFn: () => {
       const { token } = authState;
 
-      if (token)
-        return fetchProjects({
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            // filterOpts
-          },
-        });
-
-      return null;
+      return token
+        ? fetchProjects({
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+              // filterOpts
+            },
+          })
+        : null;
     },
   });
+
+  console.log(data);
 
   const feedItems = useMemo(() => {
     return data?.map((project) => (
@@ -36,24 +36,7 @@ export const Feed = () => {
         key={project.id}
       />
     ));
-
-    // // if (!data) return <p>Error</p>;
-    // // return data.map((project) => (
-    //   return placeholderProjects.map((project) => (
-    //     <ProjectPreview
-    //       className="feed__project-preview"
-    //       title={project.title}
-    //       description={project.description}
-    //       key={project.id}
-    //     />
-    //   ));
   }, [data, error]);
-
-  // return (
-  //   <section className="feed" role="feed">
-  //     {feedItems}
-  //   </section>
-  // );
 
   return isLoading ? (
     <div>Loading gif</div>
