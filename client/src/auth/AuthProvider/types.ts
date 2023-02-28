@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { ReactNode } from "react";
 
 export interface IAuthProvider {
   children: ReactNode;
@@ -9,16 +9,16 @@ export interface IsignIn {
   email: string;
 }
 
-export interface IAuthProviderState {
-  signedIn: boolean;
-  uid?: string;
+export interface IAuthState {
+  token: string;
+  username: string;
 }
 
 export type IAuthContext = {
+  authState: IAuthState;
   signIn: (arg0: IsignIn) => void;
   signOut: () => void;
-  authState: IAuthProviderState;
-  createUser: (
+  createFirebaseUser: (
     email: string,
     password: string,
     username: string

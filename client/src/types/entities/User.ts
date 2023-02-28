@@ -29,3 +29,9 @@ export interface User {
 
   country: null;
 }
+
+export interface NewDbUser {
+  username: string;
+  email: string;
+  uid: string;
+}

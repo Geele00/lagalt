@@ -6,7 +6,7 @@ import "./style.scss";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
-  const { createUser } = useAuth();
+  const { createFirebaseUser } = useAuth();
   const nav = useNavigate();
 
   const onSubmit = async (e: AuthFormEvent) => {
@@ -24,7 +24,7 @@ export const NyBruker = () => {
     }
 
     try {
-      await createUser(email, password, username);
+      await createFirebaseUser(email, password, username);
     } catch (err) {
       nav({ to: "/" });
     }

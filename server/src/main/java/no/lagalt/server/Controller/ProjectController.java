@@ -7,11 +7,10 @@ import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Service.ProjectService;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Projects")
-@CrossOrigin(origins = "*") // Required for front-end. Remove before deployment for security
+@CrossOrigin // Required for front-end. Remove before deployment for security
 @RequestMapping(path = "api/v1/projects")
 @RestController
 public class ProjectController {
@@ -28,13 +27,6 @@ public class ProjectController {
   @GetMapping("{id}")
   public ProjectDto getOneById(@PathVariable Integer id) throws NotFoundException {
     return projectService.getById(id);
-  }
-
-  @Operation(summary = "Delete one project by ID")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @DeleteMapping("{id}")
-  public void deleteOneById(@PathVariable Integer id) throws NotFoundException {
-    projectService.deleteById(id);
   }
 
   @Operation(summary = "Update a project")

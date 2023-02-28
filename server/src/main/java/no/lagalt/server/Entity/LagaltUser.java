@@ -6,13 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import no.lagalt.server.Utils.Enum.Gender;
 import no.lagalt.server.Utils.Enum.ProfileStatus;
 
 @Getter
 @Setter
-@ToString
 @Entity(name = "lagaltUser")
 public class LagaltUser {
 

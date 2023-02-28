@@ -6,12 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  IAuthProvider,
-  IAuthContext,
-  IsignIn,
-  IAuthProviderState,
-} from "./types";
+import { IAuthProvider, IAuthContext, IsignIn, IAuthState } from "./types";
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
@@ -21,6 +16,7 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
+import { createDbUser } from "src/api/v1/users";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
@@ -31,57 +27,69 @@ const auth = initializeAuth(firebaseApp, {
 });
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
-  const [authState, setAuthState] = useState<IAuthProviderState>({
-    signedIn: false,
+  const [authState, setAuthState] = useState<IAuthState>({
+    token: "",
+    username: "",
   });
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      user
-        ? setAuthState({ signedIn: true, uid: user.uid })
-        : setAuthState({ signedIn: false });
+    const unsub = auth.onAuthStateChanged((user) => {
+      if (user)
+        user.getIdToken().then((token) => {
+          setAuthState({ token, username: user.displayName || "" });
+        });
+
+      return unsub;
     });
   }, []);
 
-  const signIn = useCallback(({ email, password }: IsignIn) => {
-    setPersistence(auth, browserLocalPersistence)
-      .then(() =>
-        signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
-          if (!user.email) throw new Error();
-
-          setAuthState({
-            signedIn: true,
-            uid: user.uid,
-          });
-
-          // fetch userData
-
-          console.log(email);
-        })
-      )
-      .catch((err) => {
-        console.log(err.code);
-        console.log(err.message);
-        // handle errors
-      });
-  }, []);
+  const signIn = useCallback(
+    ({ email, password }: IsignIn) => {
+      setPersistence(auth, browserLocalPersistence)
+        .then(() =>
+          signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
+            user.getIdToken().then((token) => {
+              setAuthState({ token, username: user.displayName || "" });
+            });
+          })
+        )
+        .catch((err) => {
+          console.log(err.code);
+          console.log(err.message);
+          // handle errors
+        });
+    },
+    [auth]
+  );
 
   const signOut = useCallback(() => {
     auth.signOut();
-  }, []);
+    setAuthState({ token: "", username: "" });
+  }, [auth]);
 
-  const createUser = useCallback(
+  const createFirebaseUser = useCallback(
     async (email: string, password: string, username: string) => {
       await createUserWithEmailAndPassword(auth, email, password)
-        .then(({ user: { email: returnedEmail } }) => {
-          console.log(returnedEmail);
+        .then(async ({ user }) => {
+          if (!user) throw new Error();
 
-          if (!returnedEmail) throw new Error();
+          auth.updateCurrentUser({
+            ...user,
+            displayName: username,
+          });
+
+          createDbUser({
+            username,
+            email,
+            uid: user.uid,
+          });
+
+          // setAuthState({ token });
 
           // do something
         })
         .catch((err) => {
+          // TODO: Handle errors properly
           console.log(err.code);
           console.log(err.message);
         });
@@ -93,7 +101,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     () => ({
       signIn,
       signOut,
-      createUser,
+      createFirebaseUser,
       authState,
     }),
     [authState, setAuthState]

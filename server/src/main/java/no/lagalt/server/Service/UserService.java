@@ -16,13 +16,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   @Autowired private UserRepository userRepo;
-
   @Autowired private UserMapper userMapper;
-
   @Autowired private SkillService skillService;
-
   @Autowired private SkillMapper skillMapper;
-
   @Autowired private ProjectMapper projectMapper;
 
   public boolean validateExists(String userName) {
@@ -103,7 +99,6 @@ public class UserService {
 
   public List<SkillDto> getSkills(Integer userId) throws NotFoundException {
     LagaltUser user = userRepo.findById(userId).orElseThrow(() -> new NotFoundException(userId));
-
     return skillMapper.toDto(user.getSkills());
   }
 

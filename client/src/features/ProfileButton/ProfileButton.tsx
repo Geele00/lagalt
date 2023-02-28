@@ -4,8 +4,7 @@ import { useAuth } from "src/auth/AuthProvider";
 export const ProfileButton = () => {
   const { signOut, authState } = useAuth();
 
-  console.log(authState);
-  const signedInClassname = authState.signedIn
+  const signedInClassname = authState.token
     ? "profile-button__logo-signed-in"
     : null;
 
