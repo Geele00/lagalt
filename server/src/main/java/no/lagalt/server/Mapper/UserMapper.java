@@ -18,6 +18,7 @@ public interface UserMapper {
   @Mapping(target = "userId", ignore = true)
   @Mapping(target = "country", ignore = true)
   @Mapping(target = "notifications", ignore = true)
+  @Mapping(target = "avatarUrl", ignore = true)
   LagaltUser toUser(NewUserDto newUserDto);
 
   UserDto toDto(LagaltUser user);

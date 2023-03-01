@@ -30,13 +30,13 @@ public class LagaltUser {
   @Column(nullable = false)
   private String lastName;
 
-  @Column(nullable = false)
+  // @Column(nullable = false)
   private LocalDate dob;
 
   @Column(nullable = false)
   private String email;
 
-  @Column(nullable = false)
+  // @Column(nullable = false)
   private Gender gender;
 
   @OneToOne private Country country;

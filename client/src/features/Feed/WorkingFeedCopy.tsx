@@ -6,7 +6,6 @@ import { queryClient } from "src/index";
 import { fetchProjects } from "src/api/v1";
 import { ProjectPreview } from "src/components";
 import { INewProject } from "src/types/entities/Project";
-import { useInfiniteQuery } from "@tanstack/react-query";
 
 const newProject = (title: string) => {
   return {
@@ -58,7 +57,7 @@ export const Feed = () => {
   // Implement pagination on scroll
   // onScroll => setPage(prev => Math.max(prev - 1, 0))
   const {
-    data: projectsPage,
+    data: projects,
     error,
     isLoading,
     isPreviousData,
@@ -80,33 +79,10 @@ export const Feed = () => {
     keepPreviousData: true,
   });
 
-  console.log(projectsPage);
-
-  // const {
-  //   data,
-  //   error,
-  //   fetchNextPage,
-  //   fetchPreviousPage,
-  // } = useInfiniteQuery({
-  //   queryKey: ["/projects", authState],
-  //   getNextPageParam: (lastPage, pages) => lastPage?;
-  //   queryFn: () => {
-  //     const { token } = authState;
-  //
-  //     const params = `?size=${pageSize}&sort=creationDateTime&page=${page}`;
-  //     const headers = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
-  //
-  //     return token ? fetchProjects(headers, params) : null;
-  //   },
-  // });
+  console.log(projects);
 
   const feedItems = useMemo(() => {
-    return projectsPage?.content.map((project) => (
+    return projects?.map((project) => (
       <ProjectPreview
         className="feed__project-preview"
         title={project.title}
@@ -114,7 +90,7 @@ export const Feed = () => {
         key={project.id + project.title}
       />
     ));
-  }, [projectsPage]);
+  }, [projects]);
 
   return isLoading ? (
     <div>Loading gif</div>

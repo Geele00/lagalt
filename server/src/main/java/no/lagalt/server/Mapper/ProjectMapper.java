@@ -17,7 +17,6 @@ public interface ProjectMapper {
   @Mapping(target = "updatedDateTime", ignore = true)
   @Mapping(target = "projectId", ignore = true)
   @Mapping(target = "messageBoard", ignore = true)
-  @Mapping(target = "owner", ignore = true)
   Project toProject(NewProjectDto newProjectDto);
 
   Project toProject(UpdateProjectDto updateProjectDto);
@@ -25,4 +24,8 @@ public interface ProjectMapper {
   ProjectDto toDto(Project project);
 
   List<ProjectDto> toDto(List<Project> project);
+
+  // List<ProjectDto> pageToListDto(Page<Project> projectPage);
+
+  // Page<ProjectDto> pageToListDto(Page<Project> projectPage);
 }

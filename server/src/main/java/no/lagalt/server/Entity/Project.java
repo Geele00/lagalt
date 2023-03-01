@@ -16,8 +16,11 @@ public class Project {
   @Column(nullable = false)
   private Integer projectId;
 
-  @ManyToOne
-  @JoinColumn(name = "projects")
+  @ManyToOne(
+  // fetch = FetchType.LAZY,
+  // cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
+  )
+  @JoinColumn(name = "owner", nullable = false)
   private LagaltUser owner;
 
   @Column(nullable = false)

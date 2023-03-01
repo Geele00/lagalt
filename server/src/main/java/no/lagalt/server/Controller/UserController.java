@@ -22,8 +22,6 @@ public class UserController {
 
   @Autowired private UserService userService;
 
-  @Autowired private ProjectService projectService;
-
   @Operation(summary = "Get a list of users")
   @GetMapping
   List<UserDto> getUsers(
@@ -101,23 +99,9 @@ public class UserController {
 
   // ~~~ Projects
 
-  @Operation(summary = "Delete a project")
-  @DeleteMapping("{userId}/projects/{projectId}")
-  void deleteProjectById(@PathVariable Integer id) throws NotFoundException {
-    projectService.deleteById(id);
-  }
-
   @Operation(summary = "Get projects from user")
   @GetMapping("{userId}/projects")
   List<ProjectDto> getProjects(@PathVariable Integer userId) {
     return userService.getProjects(userId);
-  }
-
-  @Operation(summary = "Create new project")
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("{userId}/projects")
-  ProjectDto createProject(@RequestBody NewProjectDto newProjectDto, @PathVariable Integer userId)
-      throws AlreadyExistsException {
-    return projectService.createProject(newProjectDto, userId);
   }
 }
