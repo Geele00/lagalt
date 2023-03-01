@@ -1,4 +1,4 @@
-import { ReactRouter } from "@tanstack/react-router";
+import { ReactRouter } from "src/utils/tanstack";
 import { rootRoute } from "./routes/__root";
 import { indexRoute } from "./routes/index";
 import { profilePageRoute, userRoute } from "./routes/$username";

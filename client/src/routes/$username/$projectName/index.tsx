@@ -1,4 +1,4 @@
-import { Route } from "@tanstack/react-router";
+import { Route } from "src/utils/tanstack";
 import { fetchProjects } from "src/api/v1/projects";
 import { queryClient } from "src/index";
 import { userRoute } from "..";

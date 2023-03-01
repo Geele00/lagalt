@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { useQuery, useParams } from "src/utils/tanstack";
 import { ProjectPreview } from "src/components";
 import "./style.scss";
 

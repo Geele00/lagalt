@@ -1,7 +1,7 @@
 // import firebase from "firebase/compat/app";
 // import firebaseui from "firebaseui";
 // import "firebaseui/dist/firebaseui.css";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "src/utils/tanstack";
 import { useEffect } from "react";
 import { useAuth } from "src/auth";
 import { AuthInput } from "src/components/AuthInput";

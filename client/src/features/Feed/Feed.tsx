@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "src/utils/tanstack";
 import { fetchProjects } from "src/api/v1";
 import { useMemo } from "react";
 import { useAuth } from "src/auth";
