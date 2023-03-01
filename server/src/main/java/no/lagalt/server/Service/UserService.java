@@ -7,8 +7,8 @@ import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Mapper.*;
-import no.lagalt.server.Repository.UserRepository;
-import no.lagalt.server.Utils.Exception.NotFoundException;
+import no.lagalt.server.Repository.*;
+import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,10 @@ public class UserService {
 
   @Autowired private UserRepository userRepo;
   @Autowired private UserMapper userMapper;
-  @Autowired private SkillService skillService;
+
+  @Autowired private SkillRepository skillRepo;
   @Autowired private SkillMapper skillMapper;
+
   @Autowired private ProjectMapper projectMapper;
 
   public boolean validateExists(String userName) {
@@ -39,14 +41,15 @@ public class UserService {
     return userMapper.toDto(user);
   }
 
+  private LagaltUser findByUserName(String userName) throws NotFoundException {
+    return userRepo
+        .findByUserName(userName)
+        .orElseThrow(
+            () -> new NotFoundException("User not found in database with username: " + userName));
+  }
+
   public UserDto getByUserName(String userName) throws NotFoundException {
-    LagaltUser user =
-        userRepo
-            .findByUserName(userName)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Resource not found in database with username: " + userName));
+    LagaltUser user = findByUserName(userName);
 
     return userMapper.toDto(user);
   }
@@ -104,15 +107,9 @@ public class UserService {
 
   public void setSkills(List<Integer> idList, String userName) throws NotFoundException {
 
-    LagaltUser user =
-        userRepo
-            .findByUserName(userName)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Resource not found in database with username: " + userName));
+    LagaltUser user = findByUserName(userName);
 
-    List<Skill> newSkills = skillService.findAllById(idList);
+    List<Skill> newSkills = skillRepo.findAllById(idList);
 
     user.setSkills(newSkills);
 
@@ -125,5 +122,21 @@ public class UserService {
     List<Project> projects = findById(userId).getProjects();
 
     return projectMapper.toDto(projects);
+  }
+
+  public UserDto returnOwnerIfNewProject(Integer ownerId, String projectTitle)
+      throws AlreadyExistsException {
+    LagaltUser owner = findById(ownerId);
+
+    List<Project> existingProjects = owner.getProjects();
+
+    boolean alreadyExists =
+        existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
+
+    if (alreadyExists)
+      throw new AlreadyExistsException(
+          "Project with title \"" + projectTitle + "\" already exists on your account.");
+
+    return userMapper.toDto(owner);
   }
 }

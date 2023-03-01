@@ -1,5 +1,5 @@
 import "./style.scss";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "src/utils/tanstack";
 import { useAuth } from "src/auth";
 import { AuthInput, Button } from "src/components";
 import { AuthFormEvent } from "./types";

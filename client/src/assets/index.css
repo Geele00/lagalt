@@ -18,28 +18,33 @@
 }
 
 :root {
-    /* Colors */
+  /* ~~~ Colors ~~~ */
   --c_yellow: #ffc75f;
   --c_yellow-dark: #e7b355;
+
   --c_purple: #845ec2;
+
   --c_grey_1: #969696;
   --c_grey: #969696;
+
   --c_light-grey: #efefef;
+
   --c_white: #f2f2f2;
+
   --c_black: #222222;
   --c_black_2: #555555;
 
-    /* Sizes */
+  /* ~~~ Sizes ~~~ */
   --s_title_1: 2em;
 
-    /* --c_page_bg_1: #b1f1fb; */
   --c_page_bg_1: #d2dde5;
 
   --c_text_1: #f2f2f2;
   --c_menu_bg_1: #066f7f;
   --c_menu_bg_2: #0ab3cd;
 
-  --c_temp_1: #f2f2f2;
+  --c_profile_icon: #b1f1fb;
+
 
   font-family: Roboto;
 

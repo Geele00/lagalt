@@ -1,4 +1,4 @@
-import { Link, ToPathOption } from "@tanstack/react-router";
+import { Link, ToPathOption } from "src/utils/tanstack";
 import { ReactNode } from "react";
 
 interface INavLink {

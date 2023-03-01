@@ -4,7 +4,7 @@ import { defaultOptions } from "src/api/v1/defaults";
 const apiUrl = import.meta.env.VITE_API_V1_URL + "/users";
 
 export const fetchUsers = async (
-  fetchOptions?: RequestInit
+  fetchOptions: RequestInit
 ): Promise<User[]> => {
   const res = await fetch(apiUrl, {
     ...defaultOptions,

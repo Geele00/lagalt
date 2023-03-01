@@ -5,16 +5,19 @@ import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Mapper.*;
-import no.lagalt.server.Repository.ProjectRepository;
+import no.lagalt.server.Repository.*;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
 
   @Autowired private ProjectRepository projectRepo;
-  @Autowired private UserService userService;
+  @Autowired private UserRepository userRepo;
+
   @Autowired private ProjectMapper projectMapper;
 
   public boolean validateExists(Integer id) {
@@ -25,6 +28,17 @@ public class ProjectService {
     Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
 
     return projectMapper.toDto(project);
+  }
+
+  public Page<ProjectDto> getPage(Pageable pageable) {
+
+    Page<Project> projectsPage = projectRepo.findAll(pageable);
+
+    return projectsPage.map(
+        projecttt -> {
+          ProjectDto dto = projectMapper.toDto(projecttt);
+          return dto;
+        });
   }
 
   public List<ProjectDto> getAll() {
@@ -45,13 +59,19 @@ public class ProjectService {
     return projectMapper.toDto(savedProject);
   }
 
-  public ProjectDto createProject(NewProjectDto newProjectDto, Integer ownerId)
-      throws AlreadyExistsException {
-    LagaltUser owner = userService.findById(ownerId);
+  public ProjectDto createProject(NewProjectDto newProjectDto) {
 
-    String projectTitle = newProjectDto.getTitle();
+    Integer ownerId = newProjectDto.getOwnerId();
+
+    LagaltUser owner =
+        userRepo
+            .findById(ownerId)
+            .orElseThrow(
+                () -> new NotFoundException("User not found in database with ID: " + ownerId));
 
     List<Project> existingProjects = owner.getProjects();
+
+    String projectTitle = newProjectDto.getTitle();
 
     boolean alreadyExists =
         existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
@@ -63,6 +83,7 @@ public class ProjectService {
     Project newProject = projectMapper.toProject(newProjectDto);
 
     newProject.setOwner(owner);
+
     newProject.setCreationDateTime(LocalDateTime.now());
 
     Project savedProject = save(newProject);

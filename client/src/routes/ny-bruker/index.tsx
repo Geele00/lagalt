@@ -1,4 +1,4 @@
-import { Route } from "@tanstack/react-router";
+import { Route } from "src/utils/tanstack";
 import { queryClient } from "src/index";
 import { rootRoute } from "src/routes/__root";
 import { NyBruker } from "./NyBruker";

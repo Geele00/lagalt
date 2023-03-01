@@ -17,7 +17,7 @@
     display: grid;
     overflow: hidden;
 
-    &-signed-in {
+    &.signed-in {
       border: 2px solid greenyellow;
     }
 
@@ -27,22 +27,28 @@
       width: 40%;
       height: 40%;
       border-radius: 50%;
-      background-color: var(--c_white);
-      background-color: var(--c_menu_bg_1);
+      background-color: var(--c_profile_icon);
       margin: auto;
       margin-top: 25%;
+
+      &.signed-in {
+        background-color: var(--c_profile_icon);
+      }
     }
 
     &_bottom {
       grid-row: 1;
       grid-column: 1;
-      background-color: var(--c_white);
-      background-color: var(--c_menu_bg_1);
+      background-color: var(--c_profile_icon);
       margin: 65% auto 0 auto;
       width: 70%;
       height: 70%;
       border-radius: 30% 60% 0 60%;
       transform: rotate(45deg);
+
+      &.signed-in {
+        background-color: var(--c_profile_icon);
+      }
     }
   }
 }
