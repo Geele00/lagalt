@@ -21,5 +21,5 @@ public class MessageBoard {
   @OneToOne private Project project;
 
   @Column(nullable = false)
-  private LocalDateTime creationDatetime;
+  private LocalDateTime createdAt;
 }

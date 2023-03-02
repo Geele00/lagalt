@@ -14,9 +14,9 @@ public class ProjectPageDto {
 
   private String description;
 
-  private LocalDateTime creationDateTime;
+  private LocalDateTime createdAt;
 
-  private LocalDateTime updatedDateTime;
+  private LocalDateTime updatedAt;
 
   // private List<Integer> notifications;
   //

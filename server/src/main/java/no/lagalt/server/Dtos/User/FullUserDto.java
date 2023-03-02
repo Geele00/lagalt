@@ -25,7 +25,7 @@ public class FullUserDto {
 
   private String avatarUrl;
 
-  private LocalDateTime creationDate;
+  private LocalDateTime createdAt;
 
   private String email;
 

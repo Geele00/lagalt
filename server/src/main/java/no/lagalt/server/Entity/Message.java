@@ -20,7 +20,7 @@ public class Message {
   private String content;
 
   @Column(nullable = false)
-  private LocalDateTime creationDateTime;
+  private LocalDateTime createdAt;
 
   // private int score;
 

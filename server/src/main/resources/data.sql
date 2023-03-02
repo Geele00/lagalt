@@ -1,4 +1,4 @@
-INSERT INTO lagalt_user(bio, email, first_name,last_name,gender, user_name, creation_date, dob, profile_status)
+INSERT INTO lagalt_user(bio, email, first_name,last_name,gender, user_name, created_at, dob, profile_status)
 values ('test', 'test@test.com', 'Abbas', 'Shihab', 0,'user1', '06-27-1994', '06-27-1994', 1),
        ('test', 'test@test.com', 'Wes', 'keiser', 0,'user2', '01-01-2000', '01-01-2000', 1),
        ('test', 'test@test.com', 'Maria', 'J', 1,'user3', '01-01-2000', '01-01-2000', 1),

@@ -12,7 +12,7 @@ public class ChannelDto {
 
   private String name;
 
-  private LocalDateTime creationDate;
+  private LocalDateTime createdAt;
 
   private List<MessageDto> messages;
 }

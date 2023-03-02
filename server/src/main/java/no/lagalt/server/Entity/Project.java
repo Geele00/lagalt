@@ -45,7 +45,7 @@ public class Project {
   private MessageBoard messageBoard;
 
   @Column(nullable = false)
-  private LocalDateTime creationDateTime;
+  private LocalDateTime createdAt;
 
-  private LocalDateTime updatedDateTime;
+  private LocalDateTime updatedAt;
 }

@@ -84,7 +84,7 @@ public class ProjectService {
 
     newProject.setOwner(owner);
 
-    newProject.setCreationDateTime(LocalDateTime.now());
+    newProject.setCreatedAt(LocalDateTime.now());
 
     Project savedProject = save(newProject);
 

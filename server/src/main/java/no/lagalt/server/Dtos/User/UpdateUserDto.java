@@ -18,7 +18,7 @@ public class UpdateUserDto {
 
   private LocalDate dob;
 
-  private LocalDate creationDate;
+  private LocalDate createdAt;
 
   private String email;
 
