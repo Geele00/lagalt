@@ -1,7 +1,7 @@
 import "./style.scss";
 import { useNavigate } from "src/utils/tanstack";
 import { useAuth } from "src/auth";
-import { AuthInput, Button } from "src/components";
+import { LoginInput, Button } from "src/components";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
@@ -23,7 +23,7 @@ export const NyBruker = () => {
     }
 
     try {
-      createFirebaseUser(email, password, username);
+      createFirebaseUser({ email, password, username });
       nav({ to: "/" });
     } catch (err) {
       // error logic
@@ -32,37 +32,37 @@ export const NyBruker = () => {
 
   return (
     <div className="signup">
-      <div className="signup_title">
+      <div className="signup__title">
         <h1>Ny Bruker</h1>
       </div>
-      <form className="signup_form" onSubmit={onSubmit}>
-        <AuthInput
+      <form className="signup__form" onSubmit={onSubmit}>
+        <LoginInput
           maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
-          className="signup"
+          className="username"
         />
-        <AuthInput
+        <LoginInput
           maxLength={40}
           type="email"
           name="email"
           placeholder="E-post"
           className="mail"
         />
-        <AuthInput
+        <LoginInput
           maxLength={20}
           type="password"
           name="password"
           placeholder="Passord"
           className="password"
         />
-        <AuthInput
+        <LoginInput
           maxLength={20}
           type="password"
           name="passwordConfirmation"
           placeholder="Confirm Password"
-          className="password"
+          className="password confirmation"
         />
         <Button className="signup_submit-btn">Registrer</Button>
       </form>

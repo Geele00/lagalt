@@ -4,7 +4,7 @@
 import { Link, useNavigate } from "src/utils/tanstack";
 import { useEffect } from "react";
 import { useAuth } from "src/auth";
-import { AuthInput } from "src/components/AuthInput";
+import { LoginInput } from "src/components";
 import "./style.scss";
 
 export const LoggInn = () => {
@@ -18,8 +18,6 @@ export const LoggInn = () => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    // sanitize
 
     // usn:   sdlkfj@gmail.com
     //  pw:   ;lkj;lkj123
@@ -39,26 +37,26 @@ export const LoggInn = () => {
       </div>
 
       <form className="login__form" onSubmit={onSubmit}>
-        <AuthInput
+        <LoginInput
           maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
-          className="signup"
+          className="login__username"
         />
-        <AuthInput
+        <LoginInput
           maxLength={40}
           type="email"
           name="email"
           placeholder="E-post"
-          className="signup"
+          className="login__email"
         />
-        <AuthInput
+        <LoginInput
           maxLength={20}
           type="password"
           name="password"
           placeholder="Passord"
-          className="signup"
+          className="login__password"
         />
         <button>Logg inn</button>
       </form>

@@ -1,4 +1,6 @@
-interface IAuthInput {
+import "./style.scss";
+
+interface ILoginInput {
   name: string;
   placeholder: string;
   className: string;
@@ -6,7 +8,7 @@ interface IAuthInput {
   maxLength: number;
 }
 
-export const AuthInput = ({ className, ...props }: IAuthInput) => {
+export const LoginInput = ({ className, ...props }: ILoginInput) => {
   return (
     <input
       required

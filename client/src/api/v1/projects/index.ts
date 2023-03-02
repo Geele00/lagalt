@@ -1,15 +1,11 @@
-import {
-  INewProject,
-  IProject,
-  IProjectsPage,
-} from "src/types/entities/Project";
+import { INewProject, IProjectsPage } from "src/types/entities/Project";
 import { defaultOptions } from "src/api/v1/defaults";
 
 const projectsUri = import.meta.env.VITE_API_V1_URL + "/projects";
 
 export const fetchProjects = async (
   fetchOptions?: RequestInit,
-  params: string = "?size=15&sort=creationDateTime&page=0"
+  params: string = "?size=15&sort=createdAt&page=0"
 ): Promise<IProjectsPage> => {
   const res = await fetch(`${projectsUri}${params}`, {
     ...defaultOptions,

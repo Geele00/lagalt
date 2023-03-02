@@ -42,7 +42,9 @@ export const Feed = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["/projects"]);
     },
-    onError: () => {},
+    onError: (err) => {
+      console.log(err);
+    },
   });
 
   const makeDummies = () => {
@@ -63,11 +65,11 @@ export const Feed = () => {
     isLoading,
     isPreviousData,
   } = useQuery({
-    queryKey: ["/projects", page, authState],
+    queryKey: ["/projects", authState],
     queryFn: () => {
       const { token } = authState;
 
-      const params = `?size=${pageSize}&sort=creationDateTime&page=${page}`;
+      const params = `?size=${pageSize}&sort=createdAt&page=${page}`;
       const headers = {
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +95,7 @@ export const Feed = () => {
   //   queryFn: () => {
   //     const { token } = authState;
   //
-  //     const params = `?size=${pageSize}&sort=creationDateTime&page=${page}`;
+  //     const params = `?size=${pageSize}&sort=createdAt&page=${page}`;
   //     const headers = {
   //       headers: {
   //         "Content-Type": "application/json",

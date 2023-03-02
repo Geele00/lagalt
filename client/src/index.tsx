@@ -7,13 +7,18 @@ import {
   RouterProvider,
 } from "./utils/tanstack";
 import "./assets/index.css";
-import { router } from "./router";
+import { router } from "./routes/router";
 import { AuthProvider } from "./auth";
 import { apiUrl } from "./api/v1/defaults";
+import { App } from "./App";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: 1,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
       queryFn: async ({ queryKey }) => {
         const res = await fetch(`${apiUrl}${queryKey[0]}`);
         if (!res.ok) {
@@ -33,7 +38,8 @@ if (!rootElement.innerHTML) {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
-          <RouterProvider router={router} context={{ queryClient }} />
+          <App />
+          {/* <RouterProvider router={router} context={{ queryClient }} /> */}
         </QueryClientProvider>
       </AuthProvider>
     </StrictMode>

@@ -19,9 +19,10 @@ export const Menu = forwardRef(({}, forwardedRef) => {
     []
   );
 
-  const closeMenu = useCallback(() => {
-    uncheckCheckbox(checkboxRef);
-  }, [checkboxRef.current]);
+  const closeMenu = useCallback(
+    () => uncheckCheckbox(checkboxRef),
+    [checkboxRef.current]
+  );
 
   return (
     <nav className="menu" aria-haspopup="menu">
@@ -43,14 +44,15 @@ export const Menu = forwardRef(({}, forwardedRef) => {
           Til forsiden
         </NavLink>
 
-        <NavLink to="/ny-bruker" closeMenu={closeMenu}>
-          Ny bruker
-        </NavLink>
-
-        {!!authState.token ?? (
-          <NavLink to="/logg-inn" closeMenu={closeMenu}>
-            Logg inn
-          </NavLink>
+        {!authState.token && (
+          <>
+            <NavLink to="/logg-inn" closeMenu={closeMenu}>
+              Logg inn
+            </NavLink>
+            <NavLink to="/ny-bruker" closeMenu={closeMenu}>
+              Ny bruker
+            </NavLink>
+          </>
         )}
 
         <NavLink to="/" closeMenu={closeMenu}>
