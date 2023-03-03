@@ -1,13 +1,15 @@
 import { IProjectPreview } from "./types";
 import "./style.scss";
+import { forwardRef } from "react";
 
 export const ProjectPreview = ({
   title,
   description,
   className,
+  scrollRef,
 }: IProjectPreview) => {
   return (
-    <article className={`${className} project-preview`}>
+    <article className={`${className} project-preview`} ref={scrollRef}>
       <section className="project-preview__main">
         <h2>{title}</h2>
 

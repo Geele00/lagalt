@@ -13,9 +13,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { IAuthProvider, IAuthContext, IAuthState } from "./types";
-import { auth } from "./firebase";
-import { createFirebaseUserCB, signInCB } from "./firebase/helpers";
-import { queryClient } from "..";
+import { createUserCB, signInCB, auth } from "./firebase";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
@@ -39,7 +37,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const signIn = useMemo(() => signInCB(auth, setAuthState), [auth]);
 
   const createFirebaseUser = useMemo(
-    () => createFirebaseUserCB(auth, setAuthState),
+    () => createUserCB(auth, setAuthState),
     [auth]
   );
 

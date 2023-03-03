@@ -8,12 +8,11 @@ export const homeRoute = new Route({
   component: Feed,
   path: "/",
   onLoad: async ({ context }) => {
-    console.log(context);
+    // console.log(context);
     // const t = context.queryClient.getQueryData(["blabla"]);
     // console.log(t);
     // const t = getAuth();
     // console.log(auth);
-
     // context.queryClient.ensureQueryData({
     //   queryKey: ["/users"],
     //   queryFn: fetchUsers,

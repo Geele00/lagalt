@@ -21,7 +21,7 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
       onSubmit={onSubmit}
     >
       <img src="/images/magnifying-glass.png" />
-      <input className="search-bar__input" type="text" />
+      <input className="search-bar__input .input" type="text" />
     </form>
   );
 };

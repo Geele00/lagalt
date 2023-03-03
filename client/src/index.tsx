@@ -1,3 +1,4 @@
+import "./assets/index.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -6,11 +7,9 @@ import {
   QueryClientProvider,
   RouterProvider,
 } from "./utils/tanstack";
-import "./assets/index.css";
 import { router } from "./routes/router";
 import { AuthProvider } from "./auth";
 import { apiUrl } from "./api/v1/defaults";
-import { App } from "./App";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,13 +18,13 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: true,
       refetchOnMount: true,
       refetchOnReconnect: true,
-      queryFn: async ({ queryKey }) => {
-        const res = await fetch(`${apiUrl}${queryKey[0]}`);
-        if (!res.ok) {
-          throw new Error("Network error.");
-        }
-        return res.json();
-      },
+      // queryFn: async ({ queryKey }) => {
+      //   const res = await fetch(`${apiUrl}${queryKey[0]}`);
+      //   if (!res.ok) {
+      //     throw new Error("Network error.");
+      //   }
+      //   return res.json();
+      // },
     },
   },
 });
@@ -38,8 +37,7 @@ if (!rootElement.innerHTML) {
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
-          <App />
-          {/* <RouterProvider router={router} context={{ queryClient }} /> */}
+          <RouterProvider router={router} context={{ queryClient }} />
         </QueryClientProvider>
       </AuthProvider>
     </StrictMode>

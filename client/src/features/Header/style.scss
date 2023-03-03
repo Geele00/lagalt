@@ -12,14 +12,22 @@
     min-width: 10em;
     background-color: var(--c_menu_bg_1);
     height: 100%;
+    margin-right: auto;
   }
 
   &__filters {
     display: flex;
-    margin-left: auto;
   }
 
   &__search-bar {
     flex-basis: 15em;
   }
+
+  &:has(input:focus) {
+    background-color: red;
+    display: block;
+  }
+
+  // &__profile-button {
+  // }
 }

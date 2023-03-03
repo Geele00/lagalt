@@ -1,20 +1,21 @@
 import { Auth } from "firebase/auth";
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 // Create user
+type SetAuthState = Dispatch<SetStateAction<IAuthState>>;
 
-export interface ICreateFirebaseUser {
+interface ICreateUser {
   password: string;
   email: string;
   username: string;
 }
 
-type CreateFirebaseUser = (arg0: ICreateFirebaseUser) => CreateFirebaseUser;
+type CreateUser = (arg0: ICreateUser) => void;
 
-export type CreateFirebaseUserCB = (
+export type CreateUserCB = (
   auth: Auth,
-  setAuthState: any
-) => CreateFirebaseUser;
+  setAuthState: SetAuthState
+) => CreateUser;
 
 // Sign in
 
@@ -25,7 +26,7 @@ interface ISignIn {
 
 type SignIn = (arg0: ISignIn) => void;
 
-export type SignInCB = (auth: Auth, setAuthState: any) => SignIn;
+export type SignInCB = (auth: Auth, setAuthState: SetAuthState) => SignIn;
 
 // AuthProvider
 
@@ -40,7 +41,7 @@ export interface IAuthProvider {
 
 export interface IAuthContext {
   authState: IAuthState;
-  createFirebaseUser: (arg0: ICreateFirebaseUser) => void;
+  createUser: (arg0: ICreateUser) => void;
   signIn: SignIn;
   signOut: () => void;
 }

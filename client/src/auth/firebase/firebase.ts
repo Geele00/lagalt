@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { browserLocalPersistence, initializeAuth } from "firebase/auth";
+import {
+  initializeAuth,
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { createDbUser } from "src/api/v1";
+import type { CreateUserCB, SignInCB } from "../types";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -13,13 +21,62 @@ const firebaseConfig = {
   measurementId: "G-LD3S9ZSC4C",
 };
 
-console.log(123);
-
 const firebaseApp = initializeApp(firebaseConfig);
 
 export const auth = initializeAuth(firebaseApp, {
   persistence: browserLocalPersistence,
 });
+
+export const signInCB: SignInCB = (auth, setAuthState) => {
+  return ({ email, password }) => {
+    setPersistence(auth, browserLocalPersistence)
+      .then(() =>
+        signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
+          user.getIdToken().then((token) => {
+            setAuthState({ token, username: user.displayName || "" });
+          });
+        })
+      )
+      .catch((err) => {
+        console.log(err.code);
+        console.log(err.message);
+        // handle errors
+      });
+  };
+};
+
+export const createUserCB: CreateUserCB = (auth, setAuthState) => {
+  return ({ email, password, username }) =>
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async ({ user }) => {
+        if (!user) throw new Error();
+
+        auth.updateCurrentUser({
+          ...user,
+          displayName: username,
+        });
+
+        createDbUser({
+          username,
+          email,
+          uid: user.uid,
+        });
+
+        user.getIdToken().then((token) => {
+          setAuthState({ token, username: user.displayName || "" });
+        });
+
+        // do something
+      })
+      .catch((err) => {
+        auth.signOut();
+
+        // delete newly created user from db
+
+        console.log(err.code);
+        console.log(err.message);
+      });
+};
 
 // const analytics = getAnalytics(firebaseApp);
 
