@@ -1,6 +1,6 @@
 import "./style.scss";
 import { useQuery, useMutation } from "src/utils/tanstack";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "src/auth";
 import { queryClient } from "src/index";
 import { fetchProjects } from "src/api/v1";
@@ -16,7 +16,7 @@ const newProject = (title: string) => {
   };
 };
 
-const pageSize = 15;
+const pageSize = 30;
 
 export const Feed = () => {
   const { authState } = useAuth();
@@ -55,6 +55,30 @@ export const Feed = () => {
     newProjectMutation.mutate(newProject("New project title 5"));
     newProjectMutation.mutate(newProject("New project title 6"));
     newProjectMutation.mutate(newProject("New project title 7"));
+    newProjectMutation.mutate(newProject("New project title 11"));
+    newProjectMutation.mutate(newProject("New project title 21"));
+    newProjectMutation.mutate(newProject("New project title 31"));
+    newProjectMutation.mutate(newProject("New project title 41"));
+    newProjectMutation.mutate(newProject("New project title 51"));
+    newProjectMutation.mutate(newProject("New project title 61"));
+    newProjectMutation.mutate(newProject("New project title 111"));
+    newProjectMutation.mutate(newProject("New project title 211"));
+    newProjectMutation.mutate(newProject("New project title 311"));
+    newProjectMutation.mutate(newProject("New project title 411"));
+    newProjectMutation.mutate(newProject("New project title 511"));
+    newProjectMutation.mutate(newProject("New project title 611"));
+    newProjectMutation.mutate(newProject("New project title 1111"));
+    newProjectMutation.mutate(newProject("New project title 2111"));
+    newProjectMutation.mutate(newProject("New project title 3111"));
+    newProjectMutation.mutate(newProject("New project title 4111"));
+    newProjectMutation.mutate(newProject("New project title 5111"));
+    newProjectMutation.mutate(newProject("New project title 6111"));
+    newProjectMutation.mutate(newProject("New project title 1112"));
+    newProjectMutation.mutate(newProject("New project title 2112"));
+    newProjectMutation.mutate(newProject("New project title 3112"));
+    newProjectMutation.mutate(newProject("New project title 4112"));
+    newProjectMutation.mutate(newProject("New project title 5112"));
+    newProjectMutation.mutate(newProject("New project title 6112"));
   };
 
   // Implement pagination on scroll
@@ -107,25 +131,70 @@ export const Feed = () => {
   //   },
   // });
 
+  const scrollRef = useRef<HTMLButtonElement>(null);
+
   const feedItems = useMemo(() => {
-    return projectsPage?.content.map((project) => (
-      <ProjectPreview
-        className="feed__project-preview"
-        title={project.title}
-        description={project.description}
-        key={project.id + project.title}
-      />
-    ));
+    const projects = projectsPage?.content;
+    if (!projects) return null;
+
+    const lastIndex = projects.length - 1;
+
+    return projects.map((project, idx) => {
+      if (idx !== lastIndex)
+        return (
+          <ProjectPreview
+            className="feed__project-preview"
+            title={project.title}
+            description={project.description}
+            key={project.id + project.title}
+          />
+        );
+
+      return (
+        <ProjectPreview
+          className="feed__project-preview"
+          title={project.title}
+          description={project.description}
+          key={project.id + project.title}
+          scrollRef={scrollRef}
+        />
+      );
+    });
   }, [projectsPage]);
+
+  const [offsetTop, setOffsetTop] = useState(0);
+
+  const onScroll = (e: any) => {
+    const lastItem = scrollRef?.current;
+    if (!lastItem) return;
+
+    if (lastItem.offsetTop < offsetTop) return;
+
+    const { top, height } = lastItem.getClientRects()[0];
+
+    if (top < height * 5 + window.innerHeight) {
+      setOffsetTop((prev) => prev + lastItem.offsetTop);
+      console.log(offsetTop);
+      // refetch logic
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [onScroll]);
 
   return isLoading ? (
     <div>Loading gif</div>
   ) : error ? (
     <div>Error</div>
   ) : (
-    <main className="feed" role="feed">
-      <button onClick={makeDummies}>New Project</button>
+    <div className="feed" role="feed">
       {feedItems}
-    </main>
+      <button onClick={makeDummies}>New Project</button>
+    </div>
   );
 };
