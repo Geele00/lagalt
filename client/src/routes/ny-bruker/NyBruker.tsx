@@ -5,7 +5,7 @@ import { LoginInput, Button } from "src/components";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {
-  const { createFirebaseUser } = useAuth();
+  const { createUser } = useAuth();
   const nav = useNavigate();
 
   const onSubmit = async (e: AuthFormEvent) => {
@@ -23,7 +23,7 @@ export const NyBruker = () => {
     }
 
     try {
-      createFirebaseUser({ email, password, username });
+      createUser({ email, password, username });
       nav({ to: "/" });
     } catch (err) {
       // error logic

@@ -5,7 +5,7 @@ const projectsUri = import.meta.env.VITE_API_V1_URL + "/projects";
 
 export const fetchProjects = async (
   fetchOptions?: RequestInit,
-  params: string = "?size=15&sort=createdAt&page=0"
+  params: string = ""
 ): Promise<IProjectsPage> => {
   const res = await fetch(`${projectsUri}${params}`, {
     ...defaultOptions,

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import "./style.scss";
 
 interface ISearchBar {
@@ -5,12 +6,26 @@ interface ISearchBar {
 }
 
 export const SearchBar = ({ className, ...props }: ISearchBar) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   const onInput = (e: any) => {
-    // preview logic
+    // const input = e.target as HTMLInputElement;
   };
 
   const onSubmit = (e: any) => {
+    e.preventDefault();
     // submit logic
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!searchInputRef.current) return;
+
+    switch (e.key) {
+      case "Escape":
+        searchInputRef.current.value = "";
+        searchInputRef.current.blur();
+    }
+    console.log(e.key);
   };
 
   return (
@@ -21,7 +36,12 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
       onSubmit={onSubmit}
     >
       <img src="/images/magnifying-glass.png" />
-      <input className="search-bar__input .input" type="text" />
+      <input
+        onKeyDown={onKeyDown}
+        className="search-bar__input .input"
+        type="text"
+        ref={searchInputRef}
+      />
     </form>
   );
 };

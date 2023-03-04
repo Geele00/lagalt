@@ -34,17 +34,18 @@
   --c_black: #222222;
   --c_black_2: #555555;
 
-  /* ~~~ Sizes ~~~ */
-  --s_title_1: 2em;
-
   --c_page_bg_1: #d2dde5;
 
   --c_text_1: #f2f2f2;
+  --c_text_2: #a6accd;
+
   --c_menu_bg_1: #066f7f;
   --c_menu_bg_2: #0ab3cd;
 
   --c_profile_icon: #b1f1fb;
 
+  /* ~~~ Sizes ~~~ */
+  --s_title_1: 2em;
 
   font-family: Roboto;
 
@@ -55,7 +56,6 @@
   /* -moz-osx-font-smoothing: grayscale; */
   /* -webkit-text-size-adjust: 100%; */
 }
-
 
 #root {
   /* min-height: 100svh; */
@@ -74,22 +74,20 @@ main {
   text-transform: capitalize;
 }
 
-
-
 /* :root { */
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
-  /* line-height: 1.5; */
-  /* font-weight: 400; */
-  /*  */
-  /* color-scheme: light dark; */
-  /* color: rgba(255, 255, 255, 0.87); */
-  /* background-color: #242424; */
+/* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
+/* line-height: 1.5; */
+/* font-weight: 400; */
+/*  */
+/* color-scheme: light dark; */
+/* color: rgba(255, 255, 255, 0.87); */
+/* background-color: #242424; */
 
-  /* font-synthesis: none; */
-  /* text-rendering: optimizeLegibility; */
-  /* -webkit-font-smoothing: antialiased; */
-  /* -moz-osx-font-smoothing: grayscale; */
-  /* -webkit-text-size-adjust: 100%; */
+/* font-synthesis: none; */
+/* text-rendering: optimizeLegibility; */
+/* -webkit-font-smoothing: antialiased; */
+/* -moz-osx-font-smoothing: grayscale; */
+/* -webkit-text-size-adjust: 100%; */
 /* } */
 /*  */
 /* a { */

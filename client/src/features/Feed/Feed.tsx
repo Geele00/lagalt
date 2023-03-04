@@ -7,6 +7,7 @@ import { fetchProjects } from "src/api/v1";
 import { ProjectPreview } from "src/components";
 import { INewProject } from "src/types/entities/Project";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchFeed } from "src/api/v1/feed";
 
 const newProject = (title: string) => {
   return {
@@ -40,7 +41,7 @@ export const Feed = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["/projects"]);
+      queryClient.invalidateQueries(["/feed"]);
     },
     onError: (err) => {
       console.log(err);
@@ -48,37 +49,9 @@ export const Feed = () => {
   });
 
   const makeDummies = () => {
-    newProjectMutation.mutate(newProject("New project title 1"));
-    newProjectMutation.mutate(newProject("New project title 2"));
-    newProjectMutation.mutate(newProject("New project title 3"));
-    newProjectMutation.mutate(newProject("New project title 4"));
-    newProjectMutation.mutate(newProject("New project title 5"));
-    newProjectMutation.mutate(newProject("New project title 6"));
-    newProjectMutation.mutate(newProject("New project title 7"));
-    newProjectMutation.mutate(newProject("New project title 11"));
-    newProjectMutation.mutate(newProject("New project title 21"));
-    newProjectMutation.mutate(newProject("New project title 31"));
-    newProjectMutation.mutate(newProject("New project title 41"));
-    newProjectMutation.mutate(newProject("New project title 51"));
-    newProjectMutation.mutate(newProject("New project title 61"));
-    newProjectMutation.mutate(newProject("New project title 111"));
-    newProjectMutation.mutate(newProject("New project title 211"));
-    newProjectMutation.mutate(newProject("New project title 311"));
-    newProjectMutation.mutate(newProject("New project title 411"));
-    newProjectMutation.mutate(newProject("New project title 511"));
-    newProjectMutation.mutate(newProject("New project title 611"));
-    newProjectMutation.mutate(newProject("New project title 1111"));
-    newProjectMutation.mutate(newProject("New project title 2111"));
-    newProjectMutation.mutate(newProject("New project title 3111"));
-    newProjectMutation.mutate(newProject("New project title 4111"));
-    newProjectMutation.mutate(newProject("New project title 5111"));
-    newProjectMutation.mutate(newProject("New project title 6111"));
-    newProjectMutation.mutate(newProject("New project title 1112"));
-    newProjectMutation.mutate(newProject("New project title 2112"));
-    newProjectMutation.mutate(newProject("New project title 3112"));
-    newProjectMutation.mutate(newProject("New project title 4112"));
-    newProjectMutation.mutate(newProject("New project title 5112"));
-    newProjectMutation.mutate(newProject("New project title 6112"));
+    for (let i = 0; i < 20; i++) {
+      newProjectMutation.mutate(newProject("New project title " + i));
+    }
   };
 
   // Implement pagination on scroll
@@ -89,7 +62,7 @@ export const Feed = () => {
     isLoading,
     isPreviousData,
   } = useQuery({
-    queryKey: ["/projects", authState],
+    queryKey: ["/feed", "/projects", authState],
     queryFn: () => {
       const { token } = authState;
 
@@ -101,7 +74,7 @@ export const Feed = () => {
         },
       };
 
-      return token ? fetchProjects(headers, params) : null;
+      return token ? fetchFeed(headers, params) : null;
     },
     keepPreviousData: true,
   });
@@ -194,7 +167,7 @@ export const Feed = () => {
   ) : (
     <div className="feed" role="feed">
       {feedItems}
-      <button onClick={makeDummies}>New Project</button>
+      <button onClick={makeDummies}>Spawn projects</button>
     </div>
   );
 };

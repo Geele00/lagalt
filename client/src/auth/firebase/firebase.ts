@@ -5,6 +5,8 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
+  updateProfile,
+  updateCurrentUser,
 } from "firebase/auth";
 import { createDbUser } from "src/api/v1";
 import type { CreateUserCB, SignInCB } from "../types";
@@ -33,7 +35,7 @@ export const signInCB: SignInCB = (auth, setAuthState) => {
       .then(() =>
         signInWithEmailAndPassword(auth, email, password).then(({ user }) => {
           user.getIdToken().then((token) => {
-            setAuthState({ token, username: user.displayName || "" });
+            setAuthState({ token, username: user.displayName || null });
           });
         })
       )
@@ -51,10 +53,7 @@ export const createUserCB: CreateUserCB = (auth, setAuthState) => {
       .then(async ({ user }) => {
         if (!user) throw new Error();
 
-        auth.updateCurrentUser({
-          ...user,
-          displayName: username,
-        });
+        updateProfile(user, { displayName: username, photoURL: "" });
 
         createDbUser({
           username,
@@ -63,7 +62,7 @@ export const createUserCB: CreateUserCB = (auth, setAuthState) => {
         });
 
         user.getIdToken().then((token) => {
-          setAuthState({ token, username: user.displayName || "" });
+          setAuthState({ token, username: user.displayName || null });
         });
 
         // do something

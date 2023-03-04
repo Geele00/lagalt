@@ -5,8 +5,7 @@
   grid-template-columns: 4fr 2fr;
   width: fit-content;
   margin-right: 0.5em;
-  // border: 1px solid white;
-  // background-color: green;
+  display: flex;
 
   &__logo {
     border: 2px solid var(--c_white);

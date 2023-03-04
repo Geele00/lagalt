@@ -11,6 +11,9 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
+  updateCurrentUser,
+  updateProfile,
+  User,
 } from "firebase/auth";
 import { IAuthProvider, IAuthContext, IAuthState } from "./types";
 import { createUserCB, signInCB, auth } from "./firebase";
@@ -27,7 +30,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     const unsub = auth.onAuthStateChanged((user) => {
       if (user)
         user.getIdToken().then((token) => {
-          setAuthState({ token, username: user.displayName || "" });
+          setAuthState({ token, username: user.displayName });
         });
 
       return unsub;
@@ -36,10 +39,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
 
   const signIn = useMemo(() => signInCB(auth, setAuthState), [auth]);
 
-  const createFirebaseUser = useMemo(
-    () => createUserCB(auth, setAuthState),
-    [auth]
-  );
+  const createUser = useMemo(() => createUserCB(auth, setAuthState), [auth]);
 
   const signOut = useCallback(() => {
     auth.signOut();
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
     () => ({
       signIn,
       signOut,
-      createFirebaseUser,
+      createUser,
       authState,
     }),
     [authState]

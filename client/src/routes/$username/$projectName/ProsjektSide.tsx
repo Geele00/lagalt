@@ -1,6 +1,8 @@
 import { useQuery, useParams } from "src/utils/tanstack";
 import { ProjectPreview } from "src/components";
 import "./style.scss";
+import { fetchProjects, fetchUsers } from "src/api/v1";
+import { useAuth } from "src/auth";
 
 const sampleProject = {
   id: 55,
@@ -24,9 +26,27 @@ const sampleProject = {
 // };
 
 export const ProsjektSide = () => {
-  const { data } = useQuery(["project"]);
+  const { authState } = useAuth();
   const { projectName } = useParams();
-  console.log(projectName);
+
+  const { data } = useQuery({
+    queryKey: ["/projects", authState, projectName],
+    queryFn: () => {
+      const params = `?title=${projectName}`;
+
+      const { token } = authState;
+
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return token ? fetchProjects(headers, params) : null;
+    },
+  });
+  console.log(data);
 
   return (
     <div className="project-page">

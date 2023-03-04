@@ -1,4 +1,4 @@
-import "./assets/index.css";
+import "./assets/index.scss";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -9,7 +9,6 @@ import {
 } from "./utils/tanstack";
 import { router } from "./routes/router";
 import { AuthProvider } from "./auth";
-import { apiUrl } from "./api/v1/defaults";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

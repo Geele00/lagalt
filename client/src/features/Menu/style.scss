@@ -10,7 +10,9 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    grid-area: 1/1;
+    background-color: var(--c_menu_bg_1);
+    border: 0;
+    cursor: pointer;
 
     div {
       margin: auto;
@@ -21,25 +23,24 @@
     }
   }
 
-  #burger-checkbox {
-    cursor: pointer;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    margin: 0;
-    grid-area: 1/1;
-
-    &:checked ~ .menu__dropdown {
-      background-color: var(--c_menu_bg_1);
-      color: var(--c_text_1);
-      display: unset;
-      position: fixed;
-      top: 100cqh;
-      min-width: 100%;
-    }
-  }
-
   &__dropdown {
+    background-color: var(--c_menu_bg_1);
+    color: var(--c_text_1);
+    padding-block: 1em;
+    border-radius: 0 0 1em 0;
+    position: fixed;
+    top: 100cqh;
+    height: 100vh;
+    min-width: 100%;
     display: none;
+
+    li {
+      margin-inline: auto;
+      padding-block: 1em;
+      line-height: 1.5em;
+      font-size: 1.5em;
+      text-indent: 2ch;
+      border-bottom: 1px solid var(--c_grey);
+    }
   }
 }

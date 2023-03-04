@@ -1,10 +1,11 @@
+import { Link } from "src/utils/tanstack";
 import "./style.scss";
 
 export const Logo = () => {
   return (
-    <h1 className="logo">
+    <Link className="header__logo" to="/">
       <span>LAG</span>
       <span>ALT</span>
-    </h1>
+    </Link>
   );
 };
