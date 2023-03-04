@@ -1,4 +1,4 @@
-.logo {
+.header__logo {
   font-family: Codystar;
   font-weight: 600;
   color: var(--c_text_1);
@@ -6,8 +6,11 @@
   font-size: 1.3em;
   height: 100%;
   display: grid;
-  // align-self: center;
-  // width: 100%;
+  text-decoration: none;
+
+  &:visited {
+    text-decoration: none;
+  }
 
   span {
     margin-block: auto;

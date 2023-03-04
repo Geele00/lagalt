@@ -12,5 +12,5 @@ public class MessageBoardDto {
 
   private Integer project;
 
-  private LocalDateTime creationDateTime;
+  private LocalDateTime createdAt;
 }

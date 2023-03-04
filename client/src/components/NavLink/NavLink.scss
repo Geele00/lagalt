@@ -1,0 +1,12 @@
+.nav-link {
+  text-transform: uppercase;
+
+  a {
+    text-decoration: none;
+    color: var(--c_text_2);
+
+    &:visited {
+      text-decoration: none;
+    }
+  }
+}

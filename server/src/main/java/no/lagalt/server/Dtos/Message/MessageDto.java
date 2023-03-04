@@ -24,7 +24,7 @@ public class MessageDto {
 
   private LagaltUser author;
 
-  private LocalDateTime creationDateTime;
+  private LocalDateTime createdAt;
 
   // private int score;
 

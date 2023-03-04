@@ -39,7 +39,7 @@ public class ChannelService {
   //     Channel channel = new Channel();
   //     channel.setName(channelDto.getName());
   //  //   channel.setMessageBoards(messageBoard);
-  //     channel.setCreationDate(LocalDateTime.now());
+  //     channel.setCreatedAt(LocalDateTime.now());
   //     Channel savedChannel = channelRepository.save(channel);
   //     return ChannelMapper.INSTANCE.channelToChannelDto(savedChannel);
   // }

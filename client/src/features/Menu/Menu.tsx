@@ -1,70 +1,47 @@
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import { useAuth } from "src/auth";
 import { NavLink } from "src/components";
-import { uncheckCheckbox } from "src/utils";
 import "./style.scss";
 
-export const Menu = forwardRef(({}, forwardedRef) => {
+export const Menu = ({}) => {
   const { authState } = useAuth();
 
-  const username = "weskeiser";
-
-  const checkboxRef = useRef<HTMLInputElement>(null);
-
-  useImperativeHandle(
-    forwardedRef,
-    () => {
-      return { unCheck: () => uncheckCheckbox(checkboxRef) };
-    },
-    []
-  );
-
-  const closeMenu = useCallback(() => {
-    uncheckCheckbox(checkboxRef);
-  }, [checkboxRef.current]);
-
+  // Fix button
   return (
     <nav className="menu" aria-haspopup="menu">
-      <input
-        type="checkbox"
-        id="burger-checkbox"
-        ref={checkboxRef}
-        name="testName"
-      />
-
-      <i className="menu__hamburger-icon" aria-hidden>
+      <button className="menu__hamburger-icon" aria-hidden>
         <div></div>
         <div></div>
         <div></div>
-      </i>
+      </button>
 
       <ul className="menu__dropdown" role="menubar">
-        <NavLink to="/" closeMenu={closeMenu}>
-          Til forsiden
-        </NavLink>
+        <NavLink to="/">Forsiden</NavLink>
 
-        <NavLink to="/ny-bruker" closeMenu={closeMenu}>
-          Ny bruker
-        </NavLink>
-
-        {!!authState.token ?? (
-          <NavLink to="/logg-inn" closeMenu={closeMenu}>
-            Logg inn
-          </NavLink>
-        )}
-
-        <NavLink to="/" closeMenu={closeMenu}>
-          Hjelp
+        <NavLink
+          to="/$username/nytt-prosjekt"
+          linkProps={{ params: { username: authState.username } }}
+        >
+          Nytt prosjekt
         </NavLink>
 
         <NavLink
           to="/$username"
-          closeMenu={closeMenu}
-          linkProps={{ params: { username } }}
+          linkProps={{ params: { username: authState.username } }}
         >
           Min side
         </NavLink>
+
+        <NavLink to="/">Hjelp</NavLink>
+
+        {!authState.token ? (
+          <>
+            <NavLink to="/logg-inn">Logg inn</NavLink>
+            <NavLink to="/ny-bruker">Ny bruker</NavLink>
+          </>
+        ) : (
+          <NavLink to="/logg-ut">Logg ut</NavLink>
+        )}
       </ul>
     </nav>
   );
-});
+};

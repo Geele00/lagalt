@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
   @Mapping(target = "history", ignore = true)
-  @Mapping(target = "creationDate", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "projects", ignore = true)
   @Mapping(target = "userId", ignore = true)
   @Mapping(target = "country", ignore = true)

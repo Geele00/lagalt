@@ -6,7 +6,7 @@
   display: grid;
   grid-template-rows: 2fr 4fr 1fr 2fr 1fr;
 
-  &_title {
+  &__title {
     background-color: lightsalmon;
     display: flex;
 
@@ -17,21 +17,9 @@
     }
   }
 
-  &_form {
+  &__form {
     background-color: lightyellow;
     display: grid;
-    // grid-template-rows: 2fr 2fr 1fr;
-
-    input {
-      border-radius: 1em;
-      border-style: none;
-      background-color: lightgreen;
-      margin: auto;
-      width: 90%;
-      height: 60%;
-      font-size: 1em;
-      padding-inline: 0.5em;
-    }
 
     button {
       margin: auto;
@@ -39,12 +27,5 @@
       height: 60%;
     }
   }
-
-  &_options {
-    background-color: lightgreen;
-  }
-
-  &_google {
-    background-color: lightsalmon;
-  }
 }
+// :in-range

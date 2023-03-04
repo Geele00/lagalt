@@ -1,25 +1,55 @@
 .main-header {
+  position: sticky;
+  top: 0;
   container: main-header / size;
   background-color: var(--c_menu_bg_2);
   display: flex;
   height: 3em;
   width: 100%;
+  // Flex-row reversed to select filters when search bar is active
+  flex-direction: row-reverse;
 
   &__burger-and-logo {
     container: main-header__left / size;
-    display: flex;
-    border-top-right-radius: 3em;
-    min-width: 10em;
     background-color: var(--c_menu_bg_1);
+    color: var(--c_text_1);
+    border-top-right-radius: 3em;
+    display: flex;
+    min-width: 10em;
     height: 100%;
+    margin-right: auto;
+
+    &:focus-within {
+      left: 0;
+      bottom: 0;
+      width: 90vw;
+      z-index: 99999;
+
+      position: fixed;
+
+      .menu__dropdown {
+        z-index: 99999;
+        position: fixed;
+        display: block;
+      }
+    }
   }
 
   &__filters {
     display: flex;
-    margin-left: auto;
+  }
+
+  &__search-bar:focus-within + &__filters {
+    @container main-header (max-width: 570px) {
+      display: none;
+      border: 10px solid red;
+    }
   }
 
   &__search-bar {
     flex-basis: 15em;
   }
+
+  // &__profile-button {
+  // }
 }

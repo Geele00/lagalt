@@ -20,7 +20,7 @@ public class Channel {
   private String name;
 
   @Column(nullable = false)
-  private LocalDateTime creationDate;
+  private LocalDateTime createdAt;
 
   @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Message> messages = new ArrayList<>();

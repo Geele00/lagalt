@@ -1,3 +1,4 @@
+import "./NavLink.scss";
 import { Link, ToPathOption } from "src/utils/tanstack";
 import { ReactNode } from "react";
 
@@ -5,13 +6,15 @@ interface INavLink {
   to: ToPathOption;
   children: ReactNode;
   linkProps?: any;
-  closeMenu?: () => void;
 }
 
-export const NavLink = ({ to, children, linkProps, closeMenu }: INavLink) => {
+export const NavLink = ({ to, children, linkProps }: INavLink) => {
+  const onClick = (e: any) => {
+    e.target.blur();
+  };
   return (
-    <li role="menuitem">
-      <Link to={to} onClick={closeMenu} {...linkProps}>
+    <li className="nav-link" role="menuitem">
+      <Link to={to} {...linkProps} onClick={onClick}>
         {children}
       </Link>
     </li>

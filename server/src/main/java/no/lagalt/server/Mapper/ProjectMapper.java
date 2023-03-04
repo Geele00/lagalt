@@ -13,8 +13,8 @@ import org.mapstruct.Mapping;
     uses = {SkillMapper.class, UserMapper.class})
 public interface ProjectMapper {
 
-  @Mapping(target = "creationDateTime", ignore = true)
-  @Mapping(target = "updatedDateTime", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "projectId", ignore = true)
   @Mapping(target = "messageBoard", ignore = true)
   Project toProject(NewProjectDto newProjectDto);

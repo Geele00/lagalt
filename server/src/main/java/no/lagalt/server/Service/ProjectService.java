@@ -24,6 +24,13 @@ public class ProjectService {
     return projectRepo.existsById(id);
   }
 
+  public ProjectDto getByTitle(String title) throws NotFoundException {
+    Project project =
+        projectRepo.findByTitle(title).orElseThrow(() -> new NotFoundException(title));
+
+    return projectMapper.toDto(project);
+  }
+
   public ProjectDto getById(Integer id) throws NotFoundException {
     Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
 
@@ -35,8 +42,8 @@ public class ProjectService {
     Page<Project> projectsPage = projectRepo.findAll(pageable);
 
     return projectsPage.map(
-        projecttt -> {
-          ProjectDto dto = projectMapper.toDto(projecttt);
+        project -> {
+          ProjectDto dto = projectMapper.toDto(project);
           return dto;
         });
   }
@@ -84,7 +91,7 @@ public class ProjectService {
 
     newProject.setOwner(owner);
 
-    newProject.setCreationDateTime(LocalDateTime.now());
+    newProject.setCreatedAt(LocalDateTime.now());
 
     Project savedProject = save(newProject);
 

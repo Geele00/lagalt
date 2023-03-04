@@ -83,7 +83,7 @@ public class UserService {
   public UserDto save(NewUserDto newUserDto) {
     LagaltUser newUser = userMapper.toUser(newUserDto);
 
-    newUser.setCreationDate(LocalDateTime.now());
+    newUser.setCreatedAt(LocalDateTime.now());
 
     LagaltUser savedUser = save(newUser);
 

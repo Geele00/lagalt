@@ -1,3 +1,4 @@
+import "./assets/index.scss";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -6,21 +7,23 @@ import {
   QueryClientProvider,
   RouterProvider,
 } from "./utils/tanstack";
-import "./assets/index.css";
-import { router } from "./router";
+import { router } from "./routes/router";
 import { AuthProvider } from "./auth";
-import { apiUrl } from "./api/v1/defaults";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: async ({ queryKey }) => {
-        const res = await fetch(`${apiUrl}${queryKey[0]}`);
-        if (!res.ok) {
-          throw new Error("Network error.");
-        }
-        return res.json();
-      },
+      retry: 1,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      // queryFn: async ({ queryKey }) => {
+      //   const res = await fetch(`${apiUrl}${queryKey[0]}`);
+      //   if (!res.ok) {
+      //     throw new Error("Network error.");
+      //   }
+      //   return res.json();
+      // },
     },
   },
 });

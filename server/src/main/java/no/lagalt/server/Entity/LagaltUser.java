@@ -69,5 +69,5 @@ public class LagaltUser {
   private ProfileStatus profileStatus;
 
   @Column(nullable = false)
-  private LocalDateTime creationDate;
+  private LocalDateTime createdAt;
 }
