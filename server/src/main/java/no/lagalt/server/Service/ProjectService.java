@@ -24,6 +24,12 @@ public class ProjectService {
     return projectRepo.existsById(id);
   }
 
+  public ProjectDto getByTitle(String title) throws NotFoundException {
+    Project project = projectRepo.findByTitle(title).orElseThrow(() -> new NotFoundException(title));
+
+    return projectMapper.toDto(project);
+  }
+
   public ProjectDto getById(Integer id) throws NotFoundException {
     Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
 
