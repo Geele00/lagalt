@@ -6,13 +6,14 @@ import { projectRoute } from "./$username/$projectName";
 import { forgotRoute } from "./glemt-passord";
 import { loginRoute } from "./logg-inn";
 import { signupRoute } from "./ny-bruker";
+import { newProjectRoute } from "./$username/nytt-prosjekt";
 
 export const routeTree = rootRoute.addChildren([
   homeRoute,
   loginRoute,
   signupRoute,
   forgotRoute,
-  userRoute.addChildren([profilePageRoute, projectRoute]),
+  userRoute.addChildren([profilePageRoute, projectRoute, newProjectRoute]),
 ]);
 
 export const router = new ReactRouter({ routeTree });

@@ -9,7 +9,7 @@ interface INavLink {
 }
 
 export const NavLink = ({ to, children, linkProps }: INavLink) => {
-  const onClick = (e) => {
+  const onClick = (e: any) => {
     e.target.blur();
   };
   return (

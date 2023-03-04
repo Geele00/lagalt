@@ -17,6 +17,12 @@
   font-style: normal;
 }
 
+a,
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
 :root {
   /* ~~~ Colors ~~~ */
   --c_yellow: #ffc75f;

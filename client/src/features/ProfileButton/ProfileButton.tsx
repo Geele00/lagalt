@@ -7,8 +7,6 @@ export const ProfileButton = () => {
 
   const isSignedIn = authState.token && "signed-in";
 
-  console.log(authState.username);
-
   return (
     <Link
       to="/$username"

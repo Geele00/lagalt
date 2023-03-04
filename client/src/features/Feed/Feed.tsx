@@ -1,72 +1,27 @@
 import "./style.scss";
-import { useQuery, useMutation } from "src/utils/tanstack";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useAuth } from "src/auth";
-import { queryClient } from "src/index";
-import { fetchProjects } from "src/api/v1";
 import { ProjectPreview } from "src/components";
-import { INewProject } from "src/types/entities/Project";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchFeed } from "src/api/v1/feed";
-
-const newProject = (title: string) => {
-  return {
-    ownerId: 1,
-    title,
-    description: "Descirptionsdlkfja",
-  };
-};
-
-const pageSize = 30;
+import { NyttProsjekt } from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
 
 export const Feed = () => {
   const { authState } = useAuth();
 
-  const [page, setPage] = useState(0);
-
-  const newProjectMutation = useMutation({
-    mutationFn: (newProject: INewProject) => {
-      const { token } = authState;
-
-      if (!token) throw new Error("No token error blabla");
-
-      return fetchProjects({
-        method: "POST",
-        body: JSON.stringify(newProject),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          // filterOpts
-        },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["/feed"]);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const makeDummies = () => {
-    for (let i = 0; i < 20; i++) {
-      newProjectMutation.mutate(newProject("New project title " + i));
-    }
-  };
-
-  // Implement pagination on scroll
-  // onScroll => setPage(prev => Math.max(prev - 1, 0))
   const {
-    data: projectsPage,
+    isFetching,
+    data,
     error,
-    isLoading,
-    isPreviousData,
-  } = useQuery({
+    fetchNextPage,
+    fetchPreviousPage,
+    isInitialLoading,
+  } = useInfiniteQuery({
     queryKey: ["/feed", "/projects", authState],
-    queryFn: () => {
+    queryFn: ({ pageParam = 0 }) => {
       const { token } = authState;
 
-      const params = `?size=${pageSize}&sort=createdAt&page=${page}`;
+      const params = `?size=22&sort=projectId&page=${pageParam}`;
       const headers = {
         headers: {
           "Content-Type": "application/json",
@@ -76,81 +31,43 @@ export const Feed = () => {
 
       return token ? fetchFeed(headers, params) : null;
     },
-    keepPreviousData: true,
+    getNextPageParam: (lastPage, pages) => pages.length,
   });
 
-  console.log(projectsPage);
-
-  // const {
-  //   data,
-  //   error,
-  //   fetchNextPage,
-  //   fetchPreviousPage,
-  // } = useInfiniteQuery({
-  //   queryKey: ["/projects", authState],
-  //   getNextPageParam: (lastPage, pages) => lastPage?;
-  //   queryFn: () => {
-  //     const { token } = authState;
-  //
-  //     const params = `?size=${pageSize}&sort=createdAt&page=${page}`;
-  //     const headers = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     };
-  //
-  //     return token ? fetchProjects(headers, params) : null;
-  //   },
-  // });
-
-  const scrollRef = useRef<HTMLButtonElement>(null);
-
-  const feedItems = useMemo(() => {
-    const projects = projectsPage?.content;
-    if (!projects) return null;
-
-    const lastIndex = projects.length - 1;
-
-    return projects.map((project, idx) => {
-      if (idx !== lastIndex)
-        return (
+  const feedItems = useMemo(
+    () =>
+      data?.pages.map((page) =>
+        page?.content.map((project) => (
           <ProjectPreview
             className="feed__project-preview"
             title={project.title}
             description={project.description}
             key={project.id + project.title}
           />
-        );
+        ))
+      ),
+    [data]
+  );
 
-      return (
-        <ProjectPreview
-          className="feed__project-preview"
-          title={project.title}
-          description={project.description}
-          key={project.id + project.title}
-          scrollRef={scrollRef}
-        />
-      );
-    });
-  }, [projectsPage]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [offsetTop, setOffsetTop] = useState(0);
+  const onScroll = (e: Event) => {
+    const lastItem = containerRef?.current?.lastChild as HTMLButtonElement;
 
-  const onScroll = (e: any) => {
-    const lastItem = scrollRef?.current;
     if (!lastItem) return;
 
-    if (lastItem.offsetTop < offsetTop) return;
+    const { top } = lastItem.getClientRects()[0];
 
-    const { top, height } = lastItem.getClientRects()[0];
+    const hasPassedBoundary = top < window.innerHeight * 2;
 
-    if (top < height * 5 + window.innerHeight) {
-      setOffsetTop((prev) => prev + lastItem.offsetTop);
-      console.log(offsetTop);
-      // refetch logic
+    if (hasPassedBoundary && !isFetching) {
+      fetchNextPage();
     }
   };
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -160,14 +77,14 @@ export const Feed = () => {
     };
   }, [onScroll]);
 
-  return isLoading ? (
+  return isInitialLoading ? (
     <div>Loading gif</div>
   ) : error ? (
     <div>Error</div>
   ) : (
-    <div className="feed" role="feed">
+    <div className="feed" role="feed" ref={containerRef}>
+      <NyttProsjekt />
       {feedItems}
-      <button onClick={makeDummies}>Spawn projects</button>
     </div>
   );
 };

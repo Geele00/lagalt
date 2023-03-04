@@ -1,8 +1,13 @@
 .feed {
-  // background-color: lightpink;
+  // container: feed / size;
+
   padding-top: 0.5em;
+  max-width: 700px;
+  margin-inline: auto;
 
   &__project-preview {
+    font-size: 2.5vh;
     margin-bottom: 0.5em;
+    height: 20vh;
   }
 }

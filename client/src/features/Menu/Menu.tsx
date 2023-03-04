@@ -17,14 +17,12 @@ export const Menu = ({}) => {
       <ul className="menu__dropdown" role="menubar">
         <NavLink to="/">Forsiden</NavLink>
 
-        {!authState.token && (
-          <>
-            <NavLink to="/logg-inn">Logg inn</NavLink>
-            <NavLink to="/ny-bruker">Ny bruker</NavLink>
-          </>
-        )}
-
-        <NavLink to="/">Hjelp</NavLink>
+        <NavLink
+          to="/$username/nytt-prosjekt"
+          linkProps={{ params: { username: authState.username } }}
+        >
+          Nytt prosjekt
+        </NavLink>
 
         <NavLink
           to="/$username"
@@ -32,6 +30,17 @@ export const Menu = ({}) => {
         >
           Min side
         </NavLink>
+
+        <NavLink to="/">Hjelp</NavLink>
+
+        {!authState.token ? (
+          <>
+            <NavLink to="/logg-inn">Logg inn</NavLink>
+            <NavLink to="/ny-bruker">Ny bruker</NavLink>
+          </>
+        ) : (
+          <NavLink to="/logg-ut">Logg ut</NavLink>
+        )}
       </ul>
     </nav>
   );
