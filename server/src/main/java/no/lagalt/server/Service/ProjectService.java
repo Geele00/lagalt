@@ -25,7 +25,8 @@ public class ProjectService {
   }
 
   public ProjectDto getByTitle(String title) throws NotFoundException {
-    Project project = projectRepo.findByTitle(title).orElseThrow(() -> new NotFoundException(title));
+    Project project =
+        projectRepo.findByTitle(title).orElseThrow(() -> new NotFoundException(title));
 
     return projectMapper.toDto(project);
   }
@@ -41,8 +42,8 @@ public class ProjectService {
     Page<Project> projectsPage = projectRepo.findAll(pageable);
 
     return projectsPage.map(
-        projecttt -> {
-          ProjectDto dto = projectMapper.toDto(projecttt);
+        project -> {
+          ProjectDto dto = projectMapper.toDto(project);
           return dto;
         });
   }
