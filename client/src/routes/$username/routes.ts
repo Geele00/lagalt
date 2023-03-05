@@ -1,4 +1,4 @@
-import { Route } from "src/utils/tanstack";
+import { Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
 import { MinSide } from "./MinSide";
 

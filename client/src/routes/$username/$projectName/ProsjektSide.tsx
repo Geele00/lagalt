@@ -1,8 +1,9 @@
-import { useQuery, useParams } from "src/utils/tanstack";
-import { ProjectPreview } from "src/components";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "@tanstack/react-router";
+import { fetchProjects } from "src/api/v1/projects/projects";
+import { useAuth } from "src/auth/AuthProvider";
+import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import "./style.scss";
-import { fetchProjects, fetchUsers } from "src/api/v1";
-import { useAuth } from "src/auth";
 
 const sampleProject = {
   id: 55,

@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef } from "react";
 import { uncheckCheckbox } from "src/utils";
 import { IFeedFilter } from "./types";
 import "./style.scss";

@@ -1,8 +1,8 @@
-import { fetchProjects } from "src/api/v1";
-import { useAuth } from "src/auth";
+import { useMutation } from "@tanstack/react-query";
+import { fetchProjects } from "src/api/v1/projects/projects";
+import { useAuth } from "src/auth/AuthProvider";
 import { queryClient } from "src/index";
 import { INewProject } from "src/types/entities/Project";
-import { useMutation } from "src/utils/tanstack";
 
 const newProject = (title: string) => {
   return {

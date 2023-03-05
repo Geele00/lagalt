@@ -1,6 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { useAuth } from "src/auth/AuthProvider";
 import "./style.scss";
-import { useAuth } from "src/auth";
-import { Link } from "src/utils/tanstack";
 
 export const ProfileButton = () => {
   const { signOut, authState } = useAuth();

@@ -1,8 +1,10 @@
 import "./style.scss";
-import { Logo } from "src/components";
-import { PopFilter } from "./PopFilter";
-import { SkillsFilter } from "./SkillsFilter";
-import { Menu, SearchBar, ProfileButton } from "src/features";
+import { PopFilter } from "src/features/FeedFilter/PopFilter";
+import { SkillsFilter } from "src/features/FeedFilter/SkillsFilter";
+import { ProfileButton } from "src/features/ProfileButton/ProfileButton";
+import { SearchBar } from "src/features/SearchBar/SearchBar";
+import { Menu } from "src/features/Menu/Menu";
+import { Logo } from "src/components/Logo/Logo";
 
 export const Header = () => {
   return (

@@ -1,10 +1,10 @@
 import "./style.scss";
 import { useEffect, useMemo, useRef } from "react";
-import { useAuth } from "src/auth";
-import { ProjectPreview } from "src/components";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchFeed } from "src/api/v1/feed";
 import { NyttProsjekt } from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
+import { useAuth } from "src/auth/AuthProvider";
+import { fetchFeed } from "src/api/v1/feed/feed";
+import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 
 export const Feed = () => {
   const { authState } = useAuth();

@@ -1,6 +1,6 @@
 import "./NavLink.scss";
-import { Link, ToPathOption } from "src/utils/tanstack";
 import { ReactNode } from "react";
+import { Link, ToPathOption } from "@tanstack/react-router";
 
 interface INavLink {
   to: ToPathOption;

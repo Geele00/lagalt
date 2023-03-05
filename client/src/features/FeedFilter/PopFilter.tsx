@@ -1,5 +1,5 @@
-import { LabelWithCheckbox } from "src/components/LabelWithCheckbox";
-import { FeedFilter } from "../FeedFilter";
+import { LabelWithCheckbox } from "src/components/LabelWithCheckbox/LabelWithCheckbox";
+import { FeedFilter } from "./FeedFilter";
 
 export const PopFilter = () => {
   return (

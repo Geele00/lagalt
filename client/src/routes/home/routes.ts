@@ -1,7 +1,6 @@
-import { Route } from "src/utils/tanstack";
+import { Route } from "@tanstack/react-router";
+import { Feed } from "src/features/Feed/Feed";
 import { rootRoute } from "src/routes/__root";
-import { Feed } from "src/features/Feed";
-import { getAuth } from "firebase/auth";
 
 export const homeRoute = new Route({
   getParentRoute: () => rootRoute,
