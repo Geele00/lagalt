@@ -1,12 +1,12 @@
-import { ReactRouter } from "src/utils/tanstack";
+import { ReactRouter } from "@tanstack/react-router";
 import { rootRoute } from "./__root";
-import { homeRoute } from "./home";
-import { profilePageRoute, userRoute } from "./$username";
-import { projectRoute } from "./$username/$projectName";
-import { forgotRoute } from "./glemt-passord";
-import { loginRoute } from "./logg-inn";
-import { signupRoute } from "./ny-bruker";
-import { newProjectRoute } from "./$username/nytt-prosjekt";
+import { homeRoute } from "./home/routes";
+import { profilePageRoute, userRoute } from "./$username/routes";
+import { projectRoute } from "./$username/$projectName/routes";
+import { forgotRoute } from "./glemt-passord/routes";
+import { loginRoute } from "./logg-inn/routes";
+import { signupRoute } from "./ny-bruker/routes";
+import { newProjectRoute } from "./$username/nytt-prosjekt/routes";
 
 export const routeTree = rootRoute.addChildren([
   homeRoute,

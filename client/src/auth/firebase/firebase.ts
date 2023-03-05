@@ -8,7 +8,7 @@ import {
   updateProfile,
   updateCurrentUser,
 } from "firebase/auth";
-import { createDbUser } from "src/api/v1";
+import { createDbUser } from "src/api/v1/users/users";
 import type { CreateUserCB, SignInCB } from "../types";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

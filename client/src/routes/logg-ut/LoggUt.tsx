@@ -1,6 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useAuth } from "src/auth";
-import { Link } from "src/utils/tanstack";
+import { useAuth } from "src/auth/AuthProvider";
 
 export const LoggUt = () => {
   const { signOut, authState } = useAuth();

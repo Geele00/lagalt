@@ -1,5 +1,5 @@
-import { useAuth } from "src/auth";
-import { NavLink } from "src/components";
+import { useAuth } from "src/auth/AuthProvider";
+import { NavLink } from "src/components/NavLink/NavLink";
 import "./style.scss";
 
 export const Menu = ({}) => {

@@ -1,10 +1,10 @@
 // import firebase from "firebase/compat/app";
 // import firebaseui from "firebaseui";
 // import "firebaseui/dist/firebaseui.css";
-import { Link, useNavigate } from "src/utils/tanstack";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useAuth } from "src/auth";
-import { LoginInput } from "src/components";
+import { useAuth } from "src/auth/AuthProvider";
+import { LoginInput } from "src/components/LoginInput/LoginInput";
 import "./style.scss";
 
 export const LoggInn = () => {

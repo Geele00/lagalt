@@ -1,7 +1,8 @@
+import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "src/auth/AuthProvider";
+import Button from "src/components/Button/Button";
+import { LoginInput } from "src/components/LoginInput/LoginInput";
 import "./style.scss";
-import { useNavigate } from "src/utils/tanstack";
-import { useAuth } from "src/auth";
-import { LoginInput, Button } from "src/components";
 import { AuthFormEvent } from "./types";
 
 export const NyBruker = () => {

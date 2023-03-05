@@ -1,6 +1,6 @@
-import { Route } from "src/utils/tanstack";
 import { NyttProsjekt } from "./NyttProsjekt";
-import { userRoute } from "..";
+import { userRoute } from "../routes";
+import { Route } from "@tanstack/react-router";
 
 export const newProjectRoute = new Route({
   getParentRoute: () => userRoute,

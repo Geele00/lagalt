@@ -1,7 +1,6 @@
-import { Route } from "src/utils/tanstack";
-import { fetchProjects } from "src/api/v1/projects";
+import { Route } from "@tanstack/react-router";
 import { queryClient } from "src/index";
-import { userRoute } from "..";
+import { userRoute } from "../routes";
 import { ProsjektSide } from "./ProsjektSide";
 
 // Project

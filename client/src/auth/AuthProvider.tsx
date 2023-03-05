@@ -6,17 +6,8 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  browserLocalPersistence,
-  createUserWithEmailAndPassword,
-  setPersistence,
-  signInWithEmailAndPassword,
-  updateCurrentUser,
-  updateProfile,
-  User,
-} from "firebase/auth";
 import { IAuthProvider, IAuthContext, IAuthState } from "./types";
-import { createUserCB, signInCB, auth } from "./firebase";
+import { auth, createUserCB, signInCB } from "./firebase/firebase";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
