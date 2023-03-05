@@ -6,10 +6,8 @@
   display: flex;
   height: 3em;
   width: 100%;
-  // Flex-row reversed to select filters when search bar is active
-  flex-direction: row-reverse;
 
-  &__burger-and-logo {
+  .menu {
     container: main-header__left / size;
     background-color: var(--c_menu_bg_1);
     color: var(--c_text_1);
@@ -19,37 +17,22 @@
     height: 100%;
     margin-right: auto;
 
-    &:focus-within {
+    &[aria-selected="true"] {
       left: 0;
       bottom: 0;
       width: 90vw;
-      z-index: 99999;
+      z-index: 900;
 
       position: fixed;
 
       .menu__dropdown {
-        z-index: 99999;
         position: fixed;
         display: block;
       }
     }
-  }
 
-  &__filters {
-    display: flex;
-  }
-
-  &__search-bar:focus-within + &__filters {
-    @container main-header (max-width: 570px) {
-      display: none;
-      border: 10px solid red;
+    &__search-bar {
+      flex-basis: 15em;
     }
   }
-
-  &__search-bar {
-    flex-basis: 15em;
-  }
-
-  // &__profile-button {
-  // }
 }

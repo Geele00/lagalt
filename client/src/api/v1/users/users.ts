@@ -1,12 +1,13 @@
 import { NewDbUser, User } from "src/types/entities/User";
 import { defaultOptions } from "src/api/v1/defaults";
 
-const apiUrl = import.meta.env.VITE_API_V1_URL + "/users";
+const apiUri = import.meta.env.VITE_API_V1_URL + "/users";
 
 export const fetchUsers = async (
-  fetchOptions: RequestInit
+  fetchOptions: RequestInit,
+  params: string = ""
 ): Promise<User[]> => {
-  const res = await fetch(apiUrl, {
+  const res = await fetch(`${apiUri}${params}`, {
     ...defaultOptions,
     ...fetchOptions,
   });

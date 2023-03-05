@@ -28,6 +28,12 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
     console.log(e.key);
   };
 
+  // const onBlur = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (!searchInputRef.current) return;
+  //
+  //   searchInputRef.current.value = "";
+  // };
+
   return (
     <form
       className={`${className} search-bar`}

@@ -1,0 +1,11 @@
+ Z-index index
+
+ ~ 1000 ~
+ Filter
+
+ ~ 900 ~
+ Main menu when open
+
+ ~ 10 ~
+ Label with checkbox
+ Searchbar icon

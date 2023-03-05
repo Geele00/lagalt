@@ -1,29 +1,29 @@
 import "./style.scss";
-import { PopFilter } from "src/features/FeedFilter/PopFilter";
-import { SkillsFilter } from "src/features/FeedFilter/SkillsFilter";
+import { useReducer } from "react";
 import { ProfileButton } from "src/features/ProfileButton/ProfileButton";
 import { SearchBar } from "src/features/SearchBar/SearchBar";
 import { Menu } from "src/features/Menu/Menu";
-import { Logo } from "src/components/Logo/Logo";
+import { Filter } from "src/features/Filter/Filter";
+import { OverlayOptions } from "./types";
+
+const reducer = (activeOverlay: OverlayOptions, toggled: OverlayOptions) => {
+  return toggled === activeOverlay ? null : toggled;
+};
 
 export const Header = () => {
+  const [activeOverlay, dispatch] = useReducer(reducer, null);
+
   return (
     <header className="main-header">
-      <ProfileButton />
+      <Menu activeOverlay={activeOverlay} overlayDispatch={dispatch} />
+
+      {window.location.pathname === "/" && (
+        <Filter activeOverlay={activeOverlay} overlayDispatch={dispatch} />
+      )}
 
       <SearchBar className="main-header__search-bar" />
 
-      {window.location.pathname === "/" && (
-        <section className="main-header__filters">
-          <PopFilter />
-          <SkillsFilter />
-        </section>
-      )}
-
-      <section className="main-header__burger-and-logo">
-        <Menu />
-        <Logo />
-      </section>
+      <ProfileButton />
     </header>
   );
 };

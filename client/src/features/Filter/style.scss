@@ -1,0 +1,105 @@
+.filter {
+  margin-block: auto;
+
+  &__header-toggle {
+    all: unset;
+    display: flex;
+    margin-left: 1ch;
+    cursor: pointer;
+    color: var(--c_text_1);
+    height: 100cqh;
+    display: flex;
+
+    & > span {
+      margin-block: auto;
+
+      &::selection {
+        pointer-events: none;
+      }
+    }
+
+    i {
+      height: 0.7ch;
+      width: 0.7ch;
+      border-right: 2px solid var(--c_text_1);
+      border-bottom: 2px solid var(--c_text_1);
+      margin-block: auto;
+      margin-inline: 1ch;
+      transform: rotate(45deg);
+    }
+  }
+
+  &__body {
+    display: none;
+
+    &[aria-selected="true"] {
+      display: block;
+    }
+
+    &-toggle {
+      all: unset;
+      position: absolute;
+      width: 100%;
+      inset: 0;
+      background-color: transparent;
+      z-index: 900;
+    }
+
+    .filter-main {
+      position: absolute;
+      inset: 0;
+      top: 100cqh;
+      width: 100svw;
+      height: 100svh;
+      z-index: 1000;
+      background-color: var(--c_menu_bg_1);
+      color: var(--c_text_1);
+
+      &__pop-menu {
+        display: flex;
+        gap: 0.5em;
+        height: 2em;
+        padding-inline: 0.5em;
+
+        & > label {
+          margin-inline: auto;
+          flex-grow: 1;
+          display: grid;
+          position: relative;
+          border-radius: 1rem;
+
+          & > * {
+            grid-row: 1;
+            grid-column: 1;
+            border-radius: 1rem;
+            margin: auto;
+          }
+
+          & > input {
+            cursor: pointer;
+            appearance: none;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            display: block;
+
+            &:checked {
+              background-color: var(--c_menu_bg_2);
+            }
+          }
+        }
+      }
+
+      & > * {
+        text-align: center;
+        text-transform: uppercase;
+        margin-inline: auto;
+        padding-block: 1em;
+        line-height: 1.5em;
+        font-size: 1.5em;
+        // text-indent: 2ch;
+        border-bottom: 1px solid var(--c_grey);
+      }
+    }
+  }
+}

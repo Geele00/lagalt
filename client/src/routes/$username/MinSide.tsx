@@ -1,25 +1,49 @@
+import { useQuery } from "@tanstack/react-query";
+import { fetchUsers } from "src/api/v1/users/users";
+import { useAuth } from "src/auth/AuthProvider";
 import "./style.scss";
 
+const user = {
+  firstName: "Wes",
+  lastName: "Keiser",
+  username: "weskeiser",
+  email: "post@weskeiser.no",
+  dob: "1994-11-03",
+  country: "Norway",
+  city: "Oslo",
+  bio: "Wes is a Wes from Wes.",
+  skills: ["programming", "sleeping"],
+  history: [
+    {
+      seenProjects: [],
+      clickedProjects: [],
+    },
+  ],
+  projects: [],
+  projectsContributingTo: [],
+};
+
 export const MinSide = () => {
-  const user = {
-    firstName: "Wes",
-    lastName: "Keiser",
-    username: "weskeiser",
-    email: "post@weskeiser.no",
-    dob: "1994-11-03",
-    country: "Norway",
-    city: "Oslo",
-    bio: "Wes is a Wes from Wes.",
-    skills: ["programming", "sleeping"],
-    history: [
-      {
-        seenProjects: [],
-        clickedProjects: [],
-      },
-    ],
-    projects: [],
-    projectsContributingTo: [],
-  };
+  const { authState } = useAuth();
+
+  const { data } = useQuery({
+    queryKey: [`/users`, "users", authState],
+    queryFn: () => {
+      const { token } = authState;
+
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return authState.username
+        ? fetchUsers(headers, `?username=${authState.username}`)
+        : null;
+    },
+  });
+  console.log(data);
 
   return (
     <div className="profile">

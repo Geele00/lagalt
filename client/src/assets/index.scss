@@ -17,12 +17,6 @@
   font-style: normal;
 }
 
-a,
-a:visited {
-  text-decoration: none;
-  color: inherit;
-}
-
 :root {
   /* ~~~ Colors ~~~ */
   --c_yellow: #ffc75f;
@@ -67,6 +61,12 @@ a:visited {
   /* min-height: 100svh; */
   /* min-height: 100vh; */
   background-color: var(--c_page_bg_1);
+}
+
+a,
+a:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 main {

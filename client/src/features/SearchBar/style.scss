@@ -1,12 +1,7 @@
 .search-bar {
   height: 100%;
-  // width: 3em;
   display: grid;
-  // margin-left: auto;
-  width: 100%;
   margin-right: 0.5em;
-  // background-color: red;
-  // border: 1px solid white;
 
   &__input {
     grid-row: 1;
@@ -16,8 +11,12 @@
     border: none;
     border-radius: 2em;
     margin: auto;
-    // padding-left: 0.5em;
     text-indent: 0.5em;
+
+    &:focus {
+      outline: none;
+      height: 60%;
+    }
   }
 
   img {
@@ -25,9 +24,7 @@
     grid-column: 1;
     width: 0.8em;
     height: 0.8em;
-    // width: 0.7em;
-    // height: 0.7em;
-    z-index: 1;
+    z-index: 10;
     margin-block: auto;
     margin-left: auto;
     opacity: 0.3;
