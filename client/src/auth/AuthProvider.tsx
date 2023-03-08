@@ -6,8 +6,9 @@ import {
   useMemo,
   useState,
 } from "react";
-import { IAuthProvider, IAuthContext, IAuthState } from "./types";
-import { auth, createUserCB, signInCB } from "./firebase/firebase";
+import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./types";
+import { auth } from "./firebase/firebase";
+import { signInAnonymously } from "firebase/auth";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
@@ -15,33 +16,46 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     username: null,
+    type: null,
   });
+
+  const signIn: SignIn = (token, username, type = "user") => {
+    setAuthState({ token, username, type });
+  };
+
+  const anonSignIn = () => {
+    signInAnonymously(auth).then(({ user }) => {
+      user.getIdToken().then((token) => {
+        setAuthState({ token, username: null, type: "anon" });
+      });
+    });
+  };
+
+  const signOut = useCallback(() => {
+    auth.signOut().then(() => {
+      anonSignIn();
+    });
+  }, [auth]);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
-      if (user)
+      if (user && !user.isAnonymous) {
+        console.log(user.uid);
         user.getIdToken().then((token) => {
-          setAuthState({ token, username: user.displayName });
+          setAuthState({ token, username: user.displayName, type: "user" });
         });
+      } else {
+        anonSignIn();
+      }
 
       return unsub;
     });
   }, []);
 
-  const signIn = useMemo(() => signInCB(auth, setAuthState), [auth]);
-
-  const createUser = useMemo(() => createUserCB(auth, setAuthState), [auth]);
-
-  const signOut = useCallback(() => {
-    auth.signOut();
-    setAuthState({ token: null, username: null });
-  }, [auth]);
-
   const contextValue = useMemo(
     () => ({
       signIn,
       signOut,
-      createUser,
       authState,
     }),
     [authState]

@@ -1,57 +1,73 @@
-// import firebase from "firebase/compat/app";
-// import firebaseui from "firebaseui";
-// import "firebaseui/dist/firebaseui.css";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect } from "react";
 import { useAuth } from "src/auth/AuthProvider";
-import { LoginInput } from "src/components/LoginInput/LoginInput";
+import { auth } from "src/auth/firebase/firebase";
+import { Input } from "src/components/Input/Input";
 import "./style.scss";
 
-export const LoggInn = () => {
+const LoggInn = () => {
   const { signIn, authState } = useAuth();
 
   const nav = useNavigate();
 
   useEffect(() => {
-    if (authState.token) nav({ to: "/" });
+    if (authState.type === "user") nav({ to: "/" });
   }, [authState]);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    // usn:   sdlkfj@gmail.com
-    //  pw:   ;lkj;lkj123
 
     const {
       email: { value: email },
       password: { value: password },
     } = e.target;
 
-    signIn({ email, password });
+    signInWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        user.getIdToken().then((token) => {
+          signIn(token, user.displayName);
+        });
+      })
+      .catch((err) => {
+        console.log(err.code);
+        console.log(err.message);
+        // handle errors
+      });
+  };
+
+  const devLogin = () => {
+    signInWithEmailAndPassword(auth, "lkjlkj@gmail.com", "lkjlkj123")
+      .then(({ user }) => {
+        user.getIdToken().then((token) => {
+          signIn(token, user.displayName);
+        });
+      })
+      .catch((err) => {
+        console.log(err.code);
+        console.log(err.message);
+      });
   };
 
   return (
     <div className="login">
-      <div className="login_title">
-        <h1>Logg inn</h1>
-      </div>
-
+      <button onPointerUp={devLogin}>Cheatcode: devLogin</button>
       <form className="login__form" onSubmit={onSubmit}>
-        <LoginInput
+        <Input
           maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
           className="login__username"
         />
-        <LoginInput
+        <Input
           maxLength={40}
           type="email"
           name="email"
           placeholder="E-post"
           className="login__email"
         />
-        <LoginInput
+        <Input
           maxLength={20}
           type="password"
           name="password"
@@ -71,3 +87,5 @@ export const LoggInn = () => {
     </div>
   );
 };
+
+export default LoggInn;

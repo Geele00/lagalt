@@ -14,6 +14,8 @@ import no.lagalt.server.Utils.Enum.ProfileStatus;
 @Data
 public class NewUserDto {
 
+  private String uid;
+
   private String userName;
 
   private String firstName;

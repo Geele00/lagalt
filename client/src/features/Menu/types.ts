@@ -1,3 +1,7 @@
+import { Dispatch } from "react";
+import { OverlayOptions } from "../Header/types";
+
 export interface IMenu {
-  menuToggleRef: React.RefObject<HTMLInputElement>;
+  activeOverlay: OverlayOptions;
+  toggleOverlay: Dispatch<OverlayOptions>;
 }

@@ -1,29 +1,39 @@
 import "./style.scss";
-import { PopFilter } from "src/features/FeedFilter/PopFilter";
-import { SkillsFilter } from "src/features/FeedFilter/SkillsFilter";
+import { useEffect, useReducer } from "react";
 import { ProfileButton } from "src/features/ProfileButton/ProfileButton";
 import { SearchBar } from "src/features/SearchBar/SearchBar";
 import { Menu } from "src/features/Menu/Menu";
-import { Logo } from "src/components/Logo/Logo";
+import { Filter } from "src/features/Filter/Filter";
+import { OverlayOptions } from "./types";
 
-export const Header = () => {
+const reducer = (activeOverlay: OverlayOptions, toggle: OverlayOptions) => {
+  if (toggle === "close") return null;
+  if (toggle === activeOverlay) return null;
+  return toggle;
+};
+
+interface IHeader {
+  routeChanged: {};
+}
+
+export const Header = ({ routeChanged }: IHeader) => {
+  const [activeOverlay, toggleOverlay] = useReducer(reducer, null);
+
+  useEffect(() => {
+    toggleOverlay("close");
+  }, [routeChanged]);
+
   return (
     <header className="main-header">
-      <ProfileButton />
+      <Menu activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
+
+      {window.location.pathname === "/" && (
+        <Filter activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
+      )}
 
       <SearchBar className="main-header__search-bar" />
 
-      {window.location.pathname === "/" && (
-        <section className="main-header__filters">
-          <PopFilter />
-          <SkillsFilter />
-        </section>
-      )}
-
-      <section className="main-header__burger-and-logo">
-        <Menu />
-        <Logo />
-      </section>
+      <ProfileButton />
     </header>
   );
 };

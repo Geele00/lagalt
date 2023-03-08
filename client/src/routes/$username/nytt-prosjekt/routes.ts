@@ -1,9 +1,8 @@
-import { NyttProsjekt } from "./NyttProsjekt";
 import { userRoute } from "../routes";
-import { Route } from "@tanstack/react-router";
+import { lazy, Route } from "@tanstack/react-router";
 
 export const newProjectRoute = new Route({
   getParentRoute: () => userRoute,
   path: "nytt-prosjekt",
-  component: NyttProsjekt,
+  component: lazy(() => import("./NyttProsjekt")),
 });

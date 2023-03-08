@@ -1,7 +1,5 @@
-import { Route } from "@tanstack/react-router";
+import { lazy, Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
-import { MinSide } from "./MinSide";
-
 export const userRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "$username",
@@ -10,5 +8,5 @@ export const userRoute = new Route({
 export const profilePageRoute = new Route({
   getParentRoute: () => userRoute,
   path: "/",
-  component: MinSide,
+  component: lazy(() => import("./ProfilSide")),
 });

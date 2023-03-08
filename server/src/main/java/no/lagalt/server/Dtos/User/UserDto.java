@@ -1,5 +1,6 @@
 package no.lagalt.server.Dtos.User;
 
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
@@ -12,4 +13,6 @@ public class UserDto {
   private String avatarUrl;
 
   private String profileStatus;
+
+  private LocalDate dob;
 }

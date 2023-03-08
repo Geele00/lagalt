@@ -1,0 +1,112 @@
+.filter {
+  margin-block: auto;
+
+  &__header-toggle {
+    all: unset;
+    display: flex;
+    margin-left: 1ch;
+    cursor: pointer;
+    color: var(--c_text_1);
+    height: 100cqh;
+    display: flex;
+    z-index: 800;
+
+    & > span {
+      margin-block: auto;
+
+      &::selection {
+        pointer-events: none;
+      }
+    }
+
+    i {
+      height: 0.7ch;
+      width: 0.7ch;
+      border-right: 2px solid var(--c_text_1);
+      border-bottom: 2px solid var(--c_text_1);
+      margin-block: auto;
+      margin-inline: 1ch;
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+  }
+
+  &__body {
+    display: none;
+
+    &[aria-selected="true"] {
+      display: block;
+    }
+
+    &-toggle {
+      all: unset;
+      position: absolute;
+      width: 100%;
+      inset: 0;
+      background-color: transparent;
+      z-index: 800;
+    }
+
+    .filter-main {
+      position: absolute;
+      inset: 0;
+      top: 100cqh;
+      width: 100svw;
+      height: 100svh;
+      z-index: 801;
+      background-color: var(--c_menu_bg_1);
+      color: var(--c_text_1);
+
+      &__pop-menu {
+        display: flex;
+        gap: 0.5em;
+        height: 2em;
+        padding-inline: 0.5em;
+
+        & > label {
+          margin-inline: auto;
+          flex-grow: 1;
+          display: grid;
+          position: relative;
+          border-radius: 0.5rem;
+
+          & > * {
+            border-radius: 0.5rem;
+            margin: auto;
+            grid-row: 1;
+            grid-column: 1;
+          }
+
+          & > input {
+            cursor: pointer;
+            appearance: none;
+            width: 100%;
+            margin: 0;
+            display: block;
+            border: 1px solid var(--c_white);
+
+            &:checked {
+              background-color: var(--c_white);
+
+              & ~ p {
+                color: var(--c_menu_bg_1);
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
+
+      & > * {
+        text-align: center;
+        text-transform: uppercase;
+        margin-inline: auto;
+        padding-block: 1em;
+        line-height: 1.5em;
+        // font-size: 1.5em;
+        // text-indent: 2ch;
+        border-bottom: 1px solid var(--c_grey);
+      }
+    }
+  }
+}

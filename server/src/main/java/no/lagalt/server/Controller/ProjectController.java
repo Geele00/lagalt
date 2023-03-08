@@ -2,6 +2,7 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Service.ProjectService;
@@ -20,8 +21,11 @@ public class ProjectController {
 
   @Operation(summary = "Get a list of projects")
   @GetMapping
-  List<ProjectDto> getProjects(@RequestParam(name = "title", required = false) String title)
+  List<ProjectDto> getProjects(
+      @RequestParam(name = "title", required = false) String title, Principal principal)
       throws NotFoundException {
+
+    System.out.println(principal);
 
     if (title != null) return List.of(projectService.getByTitle(title));
 

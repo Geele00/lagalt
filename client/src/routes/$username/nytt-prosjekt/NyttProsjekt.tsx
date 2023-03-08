@@ -13,7 +13,7 @@ const newProject = (title: string) => {
   };
 };
 
-export const NyttProsjekt = () => {
+const NyttProsjekt = () => {
   const { authState } = useAuth();
 
   const newProjectMutation = useMutation({
@@ -46,5 +46,7 @@ export const NyttProsjekt = () => {
     }
   };
 
-  return <button onClick={makeDummies}>Spawn projects</button>;
+  return <button onPointerUp={makeDummies}>Spawn projects</button>;
 };
+
+export default NyttProsjekt;

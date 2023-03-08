@@ -28,6 +28,12 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
     console.log(e.key);
   };
 
+  // const onBlur = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (!searchInputRef.current) return;
+  //
+  //   searchInputRef.current.value = "";
+  // };
+
   return (
     <form
       className={`${className} search-bar`}
@@ -35,7 +41,13 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
       onInput={onInput}
       onSubmit={onSubmit}
     >
-      <img src="/images/magnifying-glass.png" />
+      <img
+        src="/images/magnifying-glass.png"
+        onPointerDown={(e) => {
+          e.preventDefault();
+          searchInputRef.current?.focus();
+        }}
+      />
       <input
         onKeyDown={onKeyDown}
         className="search-bar__input .input"

@@ -1,11 +1,10 @@
-import { Route } from "@tanstack/react-router";
-import { Feed } from "src/features/Feed/Feed";
+import { lazy, Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
 
 export const homeRoute = new Route({
   getParentRoute: () => rootRoute,
-  component: Feed,
   path: "/",
+  component: lazy(() => import("src/features/Feed/Feed")),
   onLoad: async ({ context }) => {
     // console.log(context);
     // const t = context.queryClient.getQueryData(["blabla"]);

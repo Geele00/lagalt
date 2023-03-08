@@ -19,6 +19,8 @@ public class LagaltUser {
   @Column(nullable = false)
   private Integer userId;
 
+  private String uid;
+
   private String avatarUrl;
 
   @Column(nullable = false)
@@ -30,7 +32,7 @@ public class LagaltUser {
   @Column(nullable = false)
   private String lastName;
 
-  // @Column(nullable = false)
+  @Column(nullable = false)
   private LocalDate dob;
 
   @Column(nullable = false)

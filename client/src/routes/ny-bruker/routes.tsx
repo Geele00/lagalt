@@ -1,7 +1,6 @@
-import { Route } from "@tanstack/react-router";
+import { lazy, Route } from "@tanstack/react-router";
 import { queryClient } from "src/index";
 import { rootRoute } from "src/routes/__root";
-import { NyBruker } from "./NyBruker";
 
 export const signupRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -14,5 +13,5 @@ export const signupRoute = new Route({
       //   .then((res) => res.json())
       //   .then((data) => data),
     }),
-  component: NyBruker,
+  component: lazy(() => import("./NyBruker")),
 });

@@ -3,7 +3,7 @@ import "./style.scss";
 
 export const Logo = () => {
   return (
-    <Link className="header__logo" to="/">
+    <Link className="main-logo" to="/">
       <span>LAG</span>
       <span>ALT</span>
     </Link>

@@ -17,9 +17,9 @@ public class Project {
   private Integer projectId;
 
   @ManyToOne(
-  // fetch = FetchType.LAZY,
-  // cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
-  )
+      fetch = FetchType.LAZY
+      // cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
+      )
   @JoinColumn(name = "owner", nullable = false)
   private LagaltUser owner;
 
@@ -39,9 +39,14 @@ public class Project {
       inverseJoinColumns = {@JoinColumn(name = "industry_id")})
   private List<Industry> industries;
 
-  @OneToMany private List<Skill> wantedSkills;
+  @OneToMany(fetch = FetchType.LAZY)
+  private List<Skill> wantedSkills;
 
-  @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(
+      mappedBy = "project",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private MessageBoard messageBoard;
 
   @Column(nullable = false)
