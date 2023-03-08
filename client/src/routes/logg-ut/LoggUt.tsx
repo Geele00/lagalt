@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "src/auth/AuthProvider";
 
-export const LoggUt = () => {
+const LoggUt = () => {
   const { signOut, authState } = useAuth();
 
   useEffect(() => {
@@ -16,3 +16,4 @@ export const LoggUt = () => {
     </div>
   );
 };
+export default LoggUt;

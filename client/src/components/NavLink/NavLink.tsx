@@ -9,12 +9,9 @@ interface INavLink {
 }
 
 export const NavLink = ({ to, children, linkProps }: INavLink) => {
-  const onClick = (e: any) => {
-    e.target.blur();
-  };
   return (
     <li className="nav-link" role="menuitem">
-      <Link to={to} {...linkProps} onClick={onClick}>
+      <Link to={to} {...linkProps}>
         {children}
       </Link>
     </li>

@@ -1,13 +1,12 @@
 .feed {
   // container: feed / size;
+  // height: 100svh;
 
-  padding-top: 0.5em;
+  // padding-top: 0.5em;
   max-width: 570px;
   margin-inline: auto;
 
   &__project-preview {
-    font-size: 2.5vh;
     margin-bottom: 0.5em;
-    height: 20vh;
   }
 }

@@ -3,5 +3,5 @@ import { OverlayOptions } from "../Header/types";
 
 export interface IMenu {
   activeOverlay: OverlayOptions;
-  overlayDispatch: Dispatch<OverlayOptions>;
+  toggleOverlay: Dispatch<OverlayOptions>;
 }

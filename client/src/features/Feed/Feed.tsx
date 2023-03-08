@@ -1,12 +1,12 @@
 import "./style.scss";
 import { useEffect, useMemo, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { NyttProsjekt } from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
 import { useAuth } from "src/auth/AuthProvider";
 import { fetchFeed } from "src/api/v1/feed/feed";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
+import NyttProsjekt from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
 
-export const Feed = () => {
+const Feed = () => {
   const { authState } = useAuth();
 
   const {
@@ -21,7 +21,7 @@ export const Feed = () => {
     queryFn: ({ pageParam = 0 }) => {
       const { token } = authState;
 
-      const params = `?size=22&sort=projectId&page=${pageParam}`;
+      const params = `?size=22&sort=createdAt&page=${pageParam}`;
       const headers = {
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const Feed = () => {
             className="feed__project-preview"
             title={project.title}
             description={project.description}
-            key={project.id + project.title}
+            key={project.projectId + project.title}
           />
         ))
       ),
@@ -51,23 +51,26 @@ export const Feed = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const reachedFinalPage = useMemo(() => {
+    console.log(data);
+    return !!data?.pages.at(-1)?.last;
+  }, [data]);
+
   const onScroll = (e: Event) => {
-    const lastItem = containerRef?.current?.lastChild as HTMLButtonElement;
+    if (isFetching) return;
+    if (reachedFinalPage) return;
 
-    if (!lastItem) return;
+    const { lastChild } = containerRef?.current as HTMLDivElement;
+    if (!lastChild) return;
 
-    const { top } = lastItem.getClientRects()[0];
+    const { top } = (lastChild as HTMLLIElement).getClientRects()[0];
 
     const hasPassedBoundary = top < window.innerHeight * 2;
 
-    if (hasPassedBoundary && !isFetching) {
-      fetchNextPage();
-    }
-  };
+    if (!hasPassedBoundary) return;
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+    fetchNextPage();
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -77,14 +80,20 @@ export const Feed = () => {
     };
   }, [onScroll]);
 
-  return isInitialLoading ? (
-    <div>Loading gif</div>
-  ) : error ? (
-    <div>Error</div>
-  ) : (
-    <div className="feed" role="feed" ref={containerRef}>
+  return (
+    <>
       <NyttProsjekt />
-      {feedItems}
-    </div>
+      {isInitialLoading ? (
+        <div>Loading gif</div>
+      ) : error ? (
+        <div>Error</div>
+      ) : (
+        <div className="feed" role="feed" ref={containerRef}>
+          {feedItems}
+        </div>
+      )}
+    </>
   );
 };
+
+export default Feed;

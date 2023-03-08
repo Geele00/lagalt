@@ -1,12 +1,10 @@
 .project-preview {
   // container: project-preview / inline;
   --padding: 1ch;
-
   background-color: var(--c_white);
   color: var(--c_black_2);
   padding-left: var(--padding);
   display: flex;
-  // grid-template-columns: 2fr 1fr;
   height: fit-content;
 
   &__main {
@@ -49,6 +47,7 @@
 
       p {
         margin-block: auto;
+        // display: hidden;
       }
     }
   }
@@ -57,6 +56,7 @@
     // flex-basis: 50%;
     color: var(--c_white);
     width: 8em;
+    max-width: 10vw;
     margin-left: auto;
     // background-color: var(--c_purple);
 

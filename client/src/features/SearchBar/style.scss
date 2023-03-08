@@ -1,7 +1,5 @@
 .search-bar {
-  height: 100%;
   display: grid;
-  margin-right: 0.5em;
 
   &__input {
     grid-row: 1;
@@ -20,6 +18,7 @@
   }
 
   img {
+    cursor: text;
     grid-row: 1;
     grid-column: 1;
     width: 0.8em;
@@ -28,5 +27,6 @@
     margin-block: auto;
     margin-left: auto;
     opacity: 0.3;
+    margin-right: 0.5em;
   }
 }

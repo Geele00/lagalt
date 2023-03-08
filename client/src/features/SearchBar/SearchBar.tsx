@@ -41,7 +41,13 @@ export const SearchBar = ({ className, ...props }: ISearchBar) => {
       onInput={onInput}
       onSubmit={onSubmit}
     >
-      <img src="/images/magnifying-glass.png" />
+      <img
+        src="/images/magnifying-glass.png"
+        onPointerDown={(e) => {
+          e.preventDefault();
+          searchInputRef.current?.focus();
+        }}
+      />
       <input
         onKeyDown={onKeyDown}
         className="search-bar__input .input"

@@ -1,50 +1,59 @@
 .login {
-  height: 100%;
-  background-color: lightyellow;
-  // margin: 1em;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 2fr 4fr 1fr 2fr 1fr;
-
-  &_title {
-    background-color: lightsalmon;
-    display: flex;
-
-    h1 {
-      margin: auto;
-      font-size: var(--s_title_1);
-      text-transform: uppercase;
-    }
-  }
-
-  &__form {
-    background-color: lightyellow;
-    display: grid;
-    grid-template-rows: 2fr 2fr 1fr;
-
-    // input {
-    //   border-radius: 1em;
-    //   border-style: none;
-    //   background-color: lightgreen;
-    //   margin: auto;
-    //   width: 90%;
-    //   height: 60%;
-    //   font-size: 1em;
-    //   padding-inline: 0.5em;
-    // }
-
-    button {
-      margin: auto;
-      width: 90%;
-      height: 60%;
-    }
-  }
-
-  &_options {
-    background-color: lightgreen;
-  }
-
-  &_google {
-    background-color: lightsalmon;
-  }
+  padding-top: 1em;
+  display: flex;
+  flex-flow: column;
+  margin-inline: auto;
+  padding-inline: 3ch;
+  max-width: 500px;
+  gap: 1.5em;
+  margin-top: 1em;
 }
+
+// .login {
+//   background-color: lightyellow;
+//   width: 100%;
+//   display: grid;
+//   grid-template-rows: 2fr 4fr 1fr 2fr 1fr;
+//
+//   &_title {
+//     background-color: lightsalmon;
+//     display: flex;
+//
+//     h1 {
+//       margin: auto;
+//       font-size: var(--s_title_1);
+//       text-transform: uppercase;
+//     }
+//   }
+//
+//   &__form {
+//     background-color: lightyellow;
+//     display: grid;
+//     grid-template-rows: 2fr 2fr 1fr;
+//
+//     // input {
+//     //   border-radius: 1em;
+//     //   border-style: none;
+//     //   background-color: lightgreen;
+//     //   margin: auto;
+//     //   width: 90%;
+//     //   height: 60%;
+//     //   font-size: 1em;
+//     //   padding-inline: 0.5em;
+//     // }
+//
+//     button {
+//       margin: auto;
+//       width: 90%;
+//       height: 60%;
+//     }
+//   }
+//
+//   &_options {
+//     background-color: lightgreen;
+//   }
+//
+//   &_google {
+//     background-color: lightsalmon;
+//   }
+// }

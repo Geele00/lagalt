@@ -1,1 +1,1 @@
-export type OverlayOptions = "filter" | "menu" | null;
+export type OverlayOptions = "filter" | "menu" | "close" | null;

@@ -2,7 +2,6 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
@@ -12,6 +11,7 @@ import no.lagalt.server.Service.*;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
@@ -25,19 +25,17 @@ public class UserController {
   @Operation(summary = "Get a list of users")
   @GetMapping
   List<UserDto> getUsers(
-      Principal p,
+      Authentication auth,
       @RequestParam(name = "username", required = false) String username,
       @RequestParam(name = "id", required = false) List<String> id)
       throws NotFoundException {
 
-    System.out.println(p.getName());
+    System.out.println(auth.getName());
 
     if (username != null) return List.of(userService.getByUserName(username));
 
     if (id != null) {
       List<Integer> idList = id.stream().map(Integer::parseInt).collect(Collectors.toList());
-
-      System.out.println(idList);
 
       return userService.getAllById(idList);
     }
@@ -61,7 +59,11 @@ public class UserController {
   @Operation(summary = "Create new user")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  UserDto createUser(@RequestBody NewUserDto newUserDto) throws AlreadyExistsException {
+  UserDto createUser(@RequestBody NewUserDto newUserDto, Authentication auth)
+      throws AlreadyExistsException {
+
+    System.out.println(auth);
+
     if (userService.validateExists(newUserDto.getUserName()))
       throw new AlreadyExistsException(
           "User with username " + newUserDto.getUserName() + " already exists in the database.");

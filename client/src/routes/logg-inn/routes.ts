@@ -1,6 +1,5 @@
-import { Route } from "@tanstack/react-router";
+import { lazy, Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
-import { LoggInn } from "./LoggInn";
 
 export const loginRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -14,5 +13,5 @@ export const loginRoute = new Route({
       //   .then((data) => data),
     });
   },
-  component: LoggInn,
+  component: lazy(() => import("./LoggInn")),
 });

@@ -1,12 +1,16 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface IButton {
-  children?: ReactNode;
-  className: string;
+  children?: any;
+  className?: string;
 }
-export const Button = ({ children, className, ...props }: IButton) => {
+export const Button = ({
+  children,
+  className,
+  ...props
+}: ButtonHTMLAttributes<IButton>) => {
   return (
-    <button {...props} className={`${className}-button primary-button`}>
+    <button {...props} className={`${className} primary-button`}>
       {children}
     </button>
   );

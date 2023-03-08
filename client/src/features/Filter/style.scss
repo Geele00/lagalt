@@ -9,6 +9,7 @@
     color: var(--c_text_1);
     height: 100cqh;
     display: flex;
+    z-index: 800;
 
     & > span {
       margin-block: auto;
@@ -26,6 +27,7 @@
       margin-block: auto;
       margin-inline: 1ch;
       transform: rotate(45deg);
+      z-index: -1;
     }
   }
 
@@ -42,7 +44,7 @@
       width: 100%;
       inset: 0;
       background-color: transparent;
-      z-index: 900;
+      z-index: 800;
     }
 
     .filter-main {
@@ -51,7 +53,7 @@
       top: 100cqh;
       width: 100svw;
       height: 100svh;
-      z-index: 1000;
+      z-index: 801;
       background-color: var(--c_menu_bg_1);
       color: var(--c_text_1);
 
@@ -66,25 +68,30 @@
           flex-grow: 1;
           display: grid;
           position: relative;
-          border-radius: 1rem;
+          border-radius: 0.5rem;
 
           & > * {
+            border-radius: 0.5rem;
+            margin: auto;
             grid-row: 1;
             grid-column: 1;
-            border-radius: 1rem;
-            margin: auto;
           }
 
           & > input {
             cursor: pointer;
             appearance: none;
             width: 100%;
-            height: 100%;
             margin: 0;
             display: block;
+            border: 1px solid var(--c_white);
 
             &:checked {
-              background-color: var(--c_menu_bg_2);
+              background-color: var(--c_white);
+
+              & ~ p {
+                color: var(--c_menu_bg_1);
+                font-weight: 600;
+              }
             }
           }
         }
@@ -96,7 +103,7 @@
         margin-inline: auto;
         padding-block: 1em;
         line-height: 1.5em;
-        font-size: 1.5em;
+        // font-size: 1.5em;
         // text-indent: 2ch;
         border-bottom: 1px solid var(--c_grey);
       }

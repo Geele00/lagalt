@@ -1,0 +1,25 @@
+.nav-arrow {
+  all: unset;
+  border: 1px solid black;
+  background-color: var(--c_menu_bg_1);
+  border-radius: 0.5em;
+  display: flex;
+
+  img {
+    margin: auto;
+    height: 80%;
+    filter: invert(1);
+  }
+
+  &[data-direction="next"] {
+    rotate: 180deg;
+  }
+
+  &[data-direction="up"] {
+    rotate: 90deg;
+  }
+
+  &[data-direction="down"] {
+    rotate: 270deg;
+  }
+}

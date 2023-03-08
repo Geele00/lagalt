@@ -4,20 +4,15 @@ import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
 import { IMenu } from "./types";
 
-export const Menu = ({ activeOverlay, overlayDispatch }: IMenu) => {
+export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
 
-  // Fix button
   return (
-    <nav
-      className="menu"
-      aria-haspopup="menu"
-      aria-selected={activeOverlay === "menu"}
-    >
+    <nav className="main-header__menu" aria-haspopup="menu">
       <button
-        className="menu__hamburger-icon"
-        onClick={() => overlayDispatch("menu")}
+        className="main-header__menu__hamburger"
         aria-hidden
+        onPointerUp={() => toggleOverlay("menu")}
       >
         <div></div>
         <div></div>
@@ -26,7 +21,11 @@ export const Menu = ({ activeOverlay, overlayDispatch }: IMenu) => {
 
       <Logo />
 
-      <ul className="menu__dropdown" role="menubar">
+      <ul
+        className="main-header__menu__dropdown"
+        role="menubar"
+        aria-selected={activeOverlay === "menu"}
+      >
         <NavLink to="/">Forsiden</NavLink>
 
         <NavLink
@@ -43,7 +42,7 @@ export const Menu = ({ activeOverlay, overlayDispatch }: IMenu) => {
           Min side
         </NavLink>
 
-        {!authState.token ? (
+        {authState.type !== "user" ? (
           <>
             <NavLink to="/logg-inn">Logg inn</NavLink>
             <NavLink to="/ny-bruker">Ny bruker</NavLink>

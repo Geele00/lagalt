@@ -1,72 +1,128 @@
+import "./style.scss";
+import { PointerEvent, useRef, useState, useTransition } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/AuthProvider";
-import Button from "src/components/Button/Button";
-import { LoginInput } from "src/components/LoginInput/LoginInput";
-import "./style.scss";
-import { AuthFormEvent } from "./types";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  updateProfile,
+} from "firebase/auth";
+import { createDbUser } from "src/api/v1/users/users";
+import NavArrowBtn from "src/components/Button/NavArrowBtn";
+import { AuthForm } from "./Forms/AuthForm";
+import { UserForm } from "./Forms/UserForm";
+import { auth } from "src/auth/firebase/firebase";
 
-export const NyBruker = () => {
-  const { createUser } = useAuth();
+// const provider = new GoogleAuthProvider();
+
+const NyBruker = () => {
+  const { authState, signIn } = useAuth();
   const nav = useNavigate();
+  const userFormRef = useRef<HTMLFormElement>(null);
 
-  const onSubmit = async (e: AuthFormEvent) => {
-    e.preventDefault();
+  const [isPending, startTransition] = useTransition();
 
-    const {
-      username: { value: username },
-      email: { value: email },
-      password: { value: password },
-      passwordConfirmation: { value: passwordConfirmation },
-    } = e.target;
+  const [stage, setStage] = useState(1);
 
-    if (password !== passwordConfirmation) {
-      // passwords don't match exception
+  const navigateForm = (e: PointerEvent<HTMLButtonElement>) => {
+    const { direction } = e.currentTarget.dataset;
+
+    console.log(e.currentTarget);
+
+    switch (direction) {
+      case "next":
+        // validate
+        startTransition(() => {
+          setStage((prev) => prev + 1);
+        });
+        break;
+      case "prev":
+        startTransition(() => {
+          setStage((prev) => prev - 1);
+        });
+        break;
     }
+  };
 
-    try {
-      createUser({ email, password, username });
-      nav({ to: "/" });
-    } catch (err) {
-      // error logic
-    }
+  const dob = new Date(1994, 4, 4).toISOString();
+  const password = "mockPassword";
+  const mockUser = {
+    userName: "mockUser17",
+    email: "mockemail17@gmail.com",
+    firstName: "Mock",
+    lastName: "User",
+    gender: 1,
+    bio: "Mock bio",
+    dob,
+    profileStatus: 1,
+    skills: [],
+  };
+
+  const dbNewUser = () => {
+    createDbUser(
+      {
+        ...mockUser,
+        uid: "lskjf",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authState.token}`,
+        },
+      }
+    );
+  };
+
+  const devNewUser = () => {
+    createUserWithEmailAndPassword(auth, mockUser.email, password)
+      .then(async ({ user }) => {
+        if (!user) throw new Error();
+
+        updateProfile(user, { displayName: mockUser.userName, photoURL: "" });
+
+        const token = await user.getIdToken();
+
+        return { token, uid: user.uid };
+      })
+      .then(({ token, uid }) => {
+        createDbUser(
+          {
+            ...mockUser,
+            uid,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        signIn(token, mockUser.userName);
+
+        nav({ to: "/" });
+      })
+      .catch((err) => {
+        auth.signOut();
+        // delete newly created user from db
+        console.log(err.code);
+        console.log(err.message);
+      });
   };
 
   return (
     <div className="signup">
-      <div className="signup__title">
-        <h1>Ny Bruker</h1>
-      </div>
-      <form className="signup__form" onSubmit={onSubmit}>
-        <LoginInput
-          maxLength={15}
-          type="text"
-          name="username"
-          placeholder="Brukernavn"
-          className="username"
-        />
-        <LoginInput
-          maxLength={40}
-          type="email"
-          name="email"
-          placeholder="E-post"
-          className="mail"
-        />
-        <LoginInput
-          maxLength={20}
-          type="password"
-          name="password"
-          placeholder="Passord"
-          className="password"
-        />
-        <LoginInput
-          maxLength={20}
-          type="password"
-          name="passwordConfirmation"
-          placeholder="Confirm Password"
-          className="password confirmation"
-        />
-        <Button className="signup_submit-btn">Registrer</Button>
-      </form>
+      <button onPointerUp={devNewUser}>Dev cheatcode: Make user</button>
+      <button onPointerUp={dbNewUser}>Dev cheatcode: Make DB user</button>
+      <nav className="signup__nav">
+        <NavArrowBtn onPointerUp={navigateForm} data-direction="prev" />
+        <NavArrowBtn onPointerUp={navigateForm} data-direction="next" />
+      </nav>
+      {isPending && <p>Loading state logic</p>}
+      {stage === 1 && <UserForm ref={userFormRef} />}
+      {stage === 2 && <AuthForm />}
     </div>
   );
 };
+
+export default NyBruker;

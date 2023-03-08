@@ -1,31 +1,29 @@
 .signup {
-  height: 100%;
-  background-color: lightyellow;
-  // margin: 1em;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 2fr 4fr 1fr 2fr 1fr;
+  padding-top: 1em;
+  display: flex;
+  flex-flow: column;
+  margin-inline: auto;
+  padding-inline: 3ch;
+  max-width: 500px;
+  gap: 1.5em;
+  margin-top: 1em;
+  flex-grow: 1;
 
-  &__title {
-    background-color: lightsalmon;
+  &__nav {
+    height: 4em;
+    width: 100%;
     display: flex;
+    gap: 1ch;
 
-    h1 {
-      margin: auto;
-      font-size: var(--s_title_1);
-      text-transform: uppercase;
+    & > button {
+      width: 100%;
     }
   }
 
-  &__form {
-    background-color: lightyellow;
-    display: grid;
-
-    button {
-      margin: auto;
-      width: 90%;
-      height: 60%;
-    }
+  & > form {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column;
+    gap: 3ch;
   }
 }
-// :in-range

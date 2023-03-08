@@ -8,6 +8,8 @@ import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Feed")
@@ -20,7 +22,14 @@ public class FeedController {
 
   @Operation(summary = "Get a list of projects for the feed")
   @GetMapping
-  Page<ProjectDto> getProjects(Pageable pageable) throws NotFoundException {
+  Page<ProjectDto> getProjects(Pageable pageable, Authentication auth) throws NotFoundException {
+
+    System.out.println(auth.getName());
+    System.out.println(auth.getDetails());
+    System.out.println(auth.getCredentials().toString());
+    System.out.println(auth.getPrincipal().toString());
+    System.out.println(auth instanceof AnonymousAuthenticationToken);
+
     return projectService.getPage(pageable);
   }
 }

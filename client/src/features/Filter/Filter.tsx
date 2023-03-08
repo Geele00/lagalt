@@ -1,12 +1,12 @@
 import "./style.scss";
 import { IFilter } from "./types";
 
-export const Filter = ({ activeOverlay, overlayDispatch }: IFilter) => {
+export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
   return (
     <section className="filter">
       <button
         className="filter__header-toggle"
-        onClick={() => overlayDispatch("filter")}
+        onPointerUp={() => toggleOverlay("filter")}
       >
         <span>Filter</span>
         <i></i>
@@ -16,8 +16,8 @@ export const Filter = ({ activeOverlay, overlayDispatch }: IFilter) => {
         <button
           className="filter__body-toggle"
           role="Exit filter menu"
-          onClick={() => overlayDispatch("filter")}
-        ></button>
+          onPointerUp={() => toggleOverlay("filter")}
+        />
         <div className="filter-main">
           <section className="filter-main__pop-menu">
             <label>
