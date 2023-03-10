@@ -31,11 +31,11 @@ public class MessageService {
     return messageMapper.toDto(messages);
   }
 
-  // public Page<MessageDto> getPage(Pageable pageable, String uid, String recipientUserName) {
+  // public Page<MessageDto> getPage(Pageable pageable, String uid, String recipientUsername) {
   //
   //  Optional<LagaltUser> user = userRepository.findByUid(uid);
   //
-  //  Optional<LagaltUser> recipient = userRepository.findByUserName(recipientUserName);
+  //  Optional<LagaltUser> recipient = userRepository.findByUsername(recipientUsername);
   //
   //  Page<Message> messagePage = messageRepo.findAll(pageable);
   //

@@ -1,23 +1,28 @@
 .user-chat {
   display: flex;
-  flex-grow: 1;
   flex-flow: column;
-  padding-inline: 1ch;
+  min-height: 100%;
+  max-height: 100%;
 
   &__history {
-    flex-grow: 1;
+    margin-top: auto;
+    padding: 1ch 1ch 2ch 1ch;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
-    padding-block: 1ch;
 
     & > article {
-      border: 1px solid var(--c_menu_bg_1);
+      border: 1px solid var(--clr_primary_1);
       min-height: 3em;
       display: flex;
       width: 49%;
       border-radius: 1em;
       margin-block: 0.5ch;
+      overflow-anchor: none;
+
+      &:last-child {
+        overflow-anchor: auto;
+      }
 
       & > p {
         margin-block: auto;
@@ -33,17 +38,16 @@
   }
 
   &__compose {
-    position: fixed;
-    inset: auto 0 0 0;
-    height: 10em;
+    border-radius: 0.2em 0.2em 0 0;
+    background-color: var(--clr_primary_2);
+    // margin-top: auto;
+    position: sticky;
+    bottom: 0;
     display: grid;
     grid-template-rows: auto 3em;
-    height: fit-content;
-    border-radius: 0.2em 0.2em 0 0;
-    background-color: var(--c_menu_bg_2);
 
     &:focus-within {
-      height: 30%;
+      height: 15em;
     }
 
     &__controls {
@@ -56,14 +60,14 @@
     }
 
     & > textarea {
-      margin-top: 1ch;
+      margin: 1ch 0.5ch 0.5ch 0.5ch;
       font-family: Montserrat;
       padding-top: 0.5ch;
       padding-bottom: 1ch;
       padding-inline: 0.5ch;
       border: 0;
       outline: none;
-      border-radius: 0.2em 0.2em 0 0;
+      border-radius: 0.2em;
     }
   }
 }

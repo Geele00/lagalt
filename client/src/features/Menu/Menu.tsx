@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./Menu.style.scss";
 import { useAuth } from "src/auth/AuthProvider";
 import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
@@ -7,12 +7,14 @@ import { IMenu } from "./types";
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
 
+  console.log(activeOverlay);
+
   return (
     <nav className="main-header__menu" aria-haspopup="menu">
       <button
         className="main-header__menu__hamburger"
         aria-hidden
-        onPointerUp={() => toggleOverlay("menu")}
+        onPointerUp={() => toggleOverlay({ overlay: "menu", action: "toggle" })}
       >
         <div></div>
         <div></div>
@@ -24,7 +26,7 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
       <ul
         className="main-header__menu__dropdown"
         role="menubar"
-        aria-selected={activeOverlay === "menu"}
+        aria-expanded={activeOverlay === "menu"}
       >
         <NavLink to="/">Forsiden</NavLink>
 

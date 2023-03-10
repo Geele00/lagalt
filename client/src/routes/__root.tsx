@@ -14,7 +14,8 @@ export const rootRoute = new RootRoute({
       <main>
         <Outlet />
       </main>
-      <TanStackRouterDevtools position="bottom-left" />
     </>
   ),
 });
+
+// <TanStackRouterDevtools position="bottom-left" />

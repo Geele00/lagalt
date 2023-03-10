@@ -8,7 +8,7 @@ public class UserDto {
 
   private Integer userId;
 
-  private String userName;
+  private String username;
 
   private String avatarUrl;
 

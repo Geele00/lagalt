@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./Filter.style.scss";
 import { IFilter } from "./types";
 
 export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
@@ -6,17 +6,21 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
     <section className="filter">
       <button
         className="filter__header-toggle"
-        onPointerUp={() => toggleOverlay("filter")}
+        onPointerUp={() =>
+          toggleOverlay({ overlay: "filter", action: "toggle" })
+        }
       >
         <span>Filter</span>
         <i></i>
       </button>
 
-      <div className="filter__body" aria-selected={activeOverlay === "filter"}>
+      <div className="filter__body" aria-expanded={activeOverlay === "filter"}>
         <button
           className="filter__body-toggle"
           role="Exit filter menu"
-          onPointerUp={() => toggleOverlay("filter")}
+          onPointerUp={() =>
+            toggleOverlay({ overlay: "filter", action: "close" })
+          }
         />
         <div className="filter-main">
           <section className="filter-main__pop-menu">

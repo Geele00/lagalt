@@ -16,7 +16,7 @@ public class NewUserDto {
 
   private String uid;
 
-  private String userName;
+  private String username;
 
   private String firstName;
 

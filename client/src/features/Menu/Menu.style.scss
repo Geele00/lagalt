@@ -1,6 +1,6 @@
 .main-header__menu {
-  background-color: var(--c_menu_bg_1);
-  color: var(--c_text_1);
+  background-color: var(--clr_primary_1);
+  color: var(--clr_text_1);
   border-top-right-radius: 3em;
   min-width: 10em;
   width: fit-content;
@@ -11,13 +11,13 @@
     aspect-ratio: 1;
     display: flex;
     flex-direction: column;
-    background-color: var(--c_menu_bg_1);
+    background-color: var(--clr_primary_1);
     border: 0;
     cursor: pointer;
 
     div {
       margin: auto;
-      background-color: var(--c_text_1);
+      background-color: var(--clr_text_1);
       background-color: white;
       height: 0.1em;
       width: 80%;
@@ -32,9 +32,9 @@
   &__dropdown {
     display: none;
 
-    &[aria-selected="true"] {
-      background-color: var(--c_menu_bg_1);
-      color: var(--c_text_1);
+    &[aria-expanded="true"] {
+      background-color: var(--clr_primary_1);
+      color: var(--clr_text_1);
       border-radius: 0 3em 0 0;
       animation-duration: 0.2s;
       animation-name: menu-dropdown;
@@ -62,7 +62,7 @@
     li {
       line-height: 1.5em;
       padding-block: 1em;
-      border-bottom: 1px solid var(--c_grey);
+      border-bottom: 1px solid var(--clr_grey);
       font-size: 1.5em;
 
       a {

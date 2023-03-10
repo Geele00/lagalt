@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./ProjectPreview.style.scss";
 import { IProjectPreview } from "./types";
 import { Link } from "@tanstack/react-router";
 

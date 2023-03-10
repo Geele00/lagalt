@@ -2,12 +2,13 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-import no.lagalt.server.Dtos.Message.MessageDto;
+import no.lagalt.server.Dtos.Chat.ChatMessageDto;
 import no.lagalt.server.Dtos.Message.NewMessageDto;
 import no.lagalt.server.Service.ChatService;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +22,15 @@ public class ChatController {
 
   @Operation(summary = "Get a list of projects for the feed")
   @GetMapping
-  List<MessageDto> getChat(
-      Authentication auth, @RequestParam(name = "target", required = false) String targetUsername)
+  Page<ChatMessageDto> getChat(
+      Pageable pageable,
+      Authentication auth,
+      @RequestParam(name = "target", required = false) String targetUsername)
       throws NotFoundException {
 
     String uid = auth.getName();
 
-    List<MessageDto> chat = chatService.getMessages(uid, targetUsername);
+    Page<ChatMessageDto> chat = chatService.getMessages(uid, targetUsername, pageable);
 
     return chat;
   }

@@ -24,7 +24,7 @@ public class LagaltUser {
   private String avatarUrl;
 
   @Column(nullable = false)
-  private String userName;
+  private String username;
 
   @Column(nullable = false)
   private String firstName;

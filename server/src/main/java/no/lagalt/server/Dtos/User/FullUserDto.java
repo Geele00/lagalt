@@ -15,7 +15,7 @@ public class FullUserDto {
 
   private Integer userId;
 
-  private String userName;
+  private String username;
 
   private String firstName;
 

@@ -14,7 +14,7 @@
       position: relative;
       border-radius: 0.5rem;
       width: 100%;
-      background-color: var(--c_white);
+      background-color: var(--clr_white);
 
       & > * {
         border-radius: 0.5rem;
@@ -32,10 +32,10 @@
         // border: 2px solid green;
 
         &:checked {
-          // background-color: var(--c_white);
+          // background-color: var(--clr_white);
 
           & ~ p {
-            color: var(--c_menu_bg_1);
+            color: var(--clr_primary_1);
             font-size: 1.2em;
             // font-weight: 600;
           }
@@ -61,7 +61,7 @@
   }
 
   &__privacy {
-    background-color: var(--c_white);
+    background-color: var(--clr_white);
     display: flex;
     height: 3ch;
 

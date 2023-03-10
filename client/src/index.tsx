@@ -32,10 +32,11 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
           <RouterProvider router={router} context={{ queryClient }} />
         </QueryClientProvider>
       </AuthProvider>
     </StrictMode>
   );
 }
+
+/* <ReactQueryDevtools position="bottom-right" initialIsOpen={false} /> */

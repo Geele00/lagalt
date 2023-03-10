@@ -3,7 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { fetchUsers } from "src/api/v1/users/users";
 import { useAuth } from "src/auth/AuthProvider";
-import "./style.scss";
+import "./Profilside.style.scss";
 
 const user = {
   firstName: "Wes",
@@ -56,38 +56,36 @@ const ProfilSide = () => {
   return (
     <div className="profile">
       <header className="profile__header">
-        <h1>{user.username}</h1>
+        <figure>
+          <img src="/images/wes-portrait.jpg" alt="profile photo" />
+          <figcaption>{`${user.firstName} ${user.lastName}`}</figcaption>
+        </figure>
+
         <Link to="melding" className="profile__header__message-btn">
           Send melding
         </Link>
       </header>
 
-      <section className="profile__info">
-        <table>
-          <tbody>
-            <tr>
-              <th>Navn</th>
-              <td>
-                {user.firstName} {user.lastName}
-              </td>
-            </tr>
-            <tr>
-              <th>Alder</th>
-              <td>28</td>
-            </tr>
-            <tr>
-              <th>Land</th>
-              <td>Norge</td>
-            </tr>
-            <tr>
-              <th>By</th>
-              <td>Oslo</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="profile__info_photo">photo</div>
-      </section>
+      {/*
+        <section className="profile__info">
+          <table>
+            <tbody>
+              <tr>
+                <th>Alder</th>
+                <td>28</td>
+              </tr>
+              <tr>
+                <th>Land</th>
+                <td>Norge</td>
+              </tr>
+              <tr>
+                <th>By</th>
+                <td>Oslo</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        */}
 
       <section className="profile__projects">
         <h2>{user.username} sine prosjekter</h2>

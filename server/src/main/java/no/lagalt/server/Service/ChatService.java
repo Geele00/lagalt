@@ -1,9 +1,10 @@
 package no.lagalt.server.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import no.lagalt.server.Dtos.Chat.ChatDto;
-import no.lagalt.server.Dtos.Message.MessageDto;
+import no.lagalt.server.Dtos.Chat.ChatMessageDto;
 import no.lagalt.server.Dtos.Message.NewMessageDto;
 import no.lagalt.server.Entity.Chat;
 import no.lagalt.server.Entity.LagaltUser;
@@ -14,6 +15,9 @@ import no.lagalt.server.Repository.ChatRepository;
 import no.lagalt.server.Repository.UserRepository;
 import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,7 +50,7 @@ public class ChatService {
 
   public void postMessage(String uid, NewMessageDto newMessageDto) {
 
-    String recipientUserName = newMessageDto.getRecipientUsername();
+    String recipientUsername = newMessageDto.getRecipientUsername();
 
     LagaltUser author =
         userRepo
@@ -55,8 +59,8 @@ public class ChatService {
 
     LagaltUser recipient =
         userRepo
-            .findByUserName(recipientUserName)
-            .orElseThrow(() -> new NotFoundException(recipientUserName));
+            .findByUsername(recipientUsername)
+            .orElseThrow(() -> new NotFoundException(recipientUsername));
 
     List<LagaltUser> users = List.of(author, recipient);
 
@@ -78,20 +82,44 @@ public class ChatService {
     }
   }
 
-  public List<MessageDto> getMessages(String uid, String recipientUserName) {
+  public Page<ChatMessageDto> getMessages(String uid, String recipientUsername, Pageable pageable) {
 
     LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new NotFoundException());
 
     LagaltUser recipient =
-        userRepo.findByUserName(recipientUserName).orElseThrow(() -> new NotFoundException());
+        userRepo.findByUsername(recipientUsername).orElseThrow(() -> new NotFoundException());
 
     Chat chat = findByUsers(List.of(user, recipient));
 
     List<Message> messages = chat.getMessages();
+    Collections.reverse(messages);
+    int messagesSize = messages.size();
 
-    // restrict amount of messages
+    int pageSize = pageable.getPageSize();
+    int offsetIdx = (int) pageable.getOffset();
 
-    return messageMapper.toDto(messages);
+    int lastItemRequestedIdx = offsetIdx + pageSize;
+
+    int lastItemIdx = messagesSize < lastItemRequestedIdx ? messagesSize : lastItemRequestedIdx;
+
+    if (messagesSize < offsetIdx) {
+      return null;
+      // Collections.reverse(messages);
+      // return chatMapper.toChatMessageDto(messages);
+    }
+
+    List<Message> sub = messages.subList(offsetIdx, lastItemIdx);
+    Collections.reverse(sub);
+
+    Page<Message> messagePage = new PageImpl<Message>(sub, pageable, messagesSize);
+
+    return messagePage.map(
+        message -> {
+          ChatMessageDto dto = chatMapper.toChatMessageDto(message);
+          return dto;
+        });
+
+    // return chatMapper.toChatMessageDto(sub);
   }
 
   public ChatDto save(Chat chat) {

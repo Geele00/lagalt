@@ -3,7 +3,7 @@ import { useParams } from "@tanstack/react-router";
 import { fetchProjects } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/AuthProvider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
-import "./style.scss";
+import "./ProsjektSide.style.scss";
 
 const sampleProject = {
   id: 55,

@@ -1,7 +1,7 @@
 export interface User {
   avatarUrl: string;
 
-  userName: string;
+  username: string;
 
   email: string;
 
@@ -21,7 +21,7 @@ export interface User {
 }
 
 export interface NewDbUser {
-  userName: string;
+  username: string;
   email: string;
   uid: string;
 }

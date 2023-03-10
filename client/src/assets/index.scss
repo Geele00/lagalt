@@ -18,52 +18,68 @@
 }
 
 :root {
+  font-family: Roboto;
+
+  --clr_primary_1: #066f7f;
+  --clr_primary_2: #0ab3cd;
+
+  --clr_primary_7: #b79492;
+  --clr_primary_6: #028090;
+  --clr_primary_5: #562c2c;
+  --clr_primary_4: #f2542d;
+  --clr_primary_3: #f5dfbb;
+  --clr_primary_2: #0e9594;
+  --clr_primary_1: #127475;
+
   /* ~~~ Colors ~~~ */
-  --c_yellow: #ffc75f;
-  --c_yellow-dark: #e7b355;
+  --clr_yellow: #ffc75f;
+  --clr_yellow-dark: #e7b355;
 
-  --c_purple: #845ec2;
+  --clr_purple: #845ec2;
 
-  --c_grey_1: #969696;
-  --c_grey: #969696;
+  --clr_grey: #969696;
+  --clr_grey_light: #efefef;
 
-  --c_light-grey: #efefef;
+  --clr_white: #f2f2f2;
 
-  --c_white: #f2f2f2;
+  --clr_black: #222222;
+  --clr_black_2: #555555;
 
-  --c_black: #222222;
-  --c_black_2: #555555;
+  --clr_root: #d2dde5;
 
-  --c_page_bg_1: #d2dde5;
+  --clr_text_1: #f2f2f2;
+  --clr_text_2: #a6accd;
+  --clr_text_3: #f5dfbb;
+  --clr_text_grey: #c6c6c6;
 
-  --c_text_1: #f2f2f2;
-  --c_text_2: #a6accd;
-
-  --c_menu_bg_1: #066f7f;
-  --c_menu_bg_2: #0ab3cd;
-
-  --c_profile_icon: #b1f1fb;
+  --clr_profile_icon: #b1f1fb;
 
   /* ~~~ Sizes ~~~ */
   --s_title_1: 2em;
 
-  font-family: Roboto;
-
   /* color-scheme: light dark; */
-  /* font-synthesis: none; */
-  /* text-rendering: optimizeLegibility; */
-  /* -webkit-font-smoothing: antialiased; */
-  /* -moz-osx-font-smoothing: grayscale; */
-  /* -webkit-text-size-adjust: 100%; */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #d7d7d7;
 }
 
 #root {
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
-  background-color: var(--c_page_bg_1);
-  display: flex;
-  flex-flow: column;
+  max-width: 960px;
+  background-color: var(--clr_page_bg_1);
+  // display: flex;
+  // flex-flow: column;
+  margin-inline: auto;
+  display: grid;
+  grid-template-rows: 3em auto;
 }
 
 a,
@@ -77,11 +93,12 @@ button {
 }
 
 main {
-  display: flex;
-  flex-flow: column;
-  flex-grow: 1;
+  // display: flex;
+  // flex-flow: column;
+  // flex-grow: 1;
   // height: 100svh;
-  background-color: var(--c_page_bg_1);
+  // width: 100%;
+  background-color: var(--clr_root);
 }
 
 .capitalize {

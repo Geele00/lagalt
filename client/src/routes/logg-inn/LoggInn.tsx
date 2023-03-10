@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useAuth } from "src/auth/AuthProvider";
 import { auth } from "src/auth/firebase/firebase";
 import { Input } from "src/components/Input/Input";
-import "./style.scss";
+import "./LoggInn.style.scss";
 
 const LoggInn = () => {
   const { signIn, authState } = useAuth();

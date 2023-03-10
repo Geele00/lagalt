@@ -1,10 +1,22 @@
-import "./style.scss";
+import "./Feed.style.scss";
 import { useEffect, useMemo, useRef } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "src/auth/AuthProvider";
 import { fetchFeed } from "src/api/v1/feed/feed";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import NyttProsjekt from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
+import { INewProject } from "src/types/entities/Project";
+import { fetchProjects } from "src/api/v1/projects/projects";
+import { queryClient } from "src/index";
+
+const newProject = (title: string) => {
+  return {
+    ownerId: 1,
+    title,
+    description:
+      "Dette er en middels lang prosjektbeskrivelse med tilfeldig innhold. En middels lang prosjektbeskrivelse med tilfeldig innhold er det dette.",
+  };
+};
 
 const Feed = () => {
   const { authState } = useAuth();
@@ -80,18 +92,42 @@ const Feed = () => {
     };
   }, [onScroll]);
 
+  const newProjectMutation = useMutation({
+    mutationFn: (newProject: INewProject) => {
+      const { token } = authState;
+
+      if (!token) throw new Error("No token error blabla");
+
+      return fetchProjects({
+        method: "POST",
+        body: JSON.stringify(newProject),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          // filterOpts
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["/feed"]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const makeDummies = () => {
+    for (let i = 0; i < 100; i++) {
+      newProjectMutation.mutate(newProject("New project title " + i));
+    }
+  };
+
   return (
     <>
-      <NyttProsjekt />
-      {isInitialLoading ? (
-        <div>Loading gif</div>
-      ) : error ? (
-        <div>Error</div>
-      ) : (
-        <div className="feed" role="feed" ref={containerRef}>
-          {feedItems}
-        </div>
-      )}
+      <button onPointerUp={makeDummies}>Dev: Spawn projects</button>
+      <div className="feed" role="feed" ref={containerRef}>
+        {isInitialLoading ? "Loading gif" : error ? "Error" : <>{feedItems}</>}
+      </div>
     </>
   );
 };

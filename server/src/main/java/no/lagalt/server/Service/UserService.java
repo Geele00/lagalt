@@ -24,8 +24,8 @@ public class UserService {
   @Autowired private ProjectMapper projectMapper;
   @Autowired private MessageMapper messageMapper;
 
-  public boolean validateExists(String userName) {
-    return userRepo.existsByUserName(userName);
+  public boolean validateExists(String username) {
+    return userRepo.existsByUsername(username);
   }
 
   public boolean validateExists(Integer id) {
@@ -48,15 +48,15 @@ public class UserService {
         .orElseThrow(() -> new NotFoundException("User not found in database"));
   }
 
-  private LagaltUser findByUserName(String userName) throws NotFoundException {
+  private LagaltUser findByUsername(String username) throws NotFoundException {
     return userRepo
-        .findByUserName(userName)
+        .findByUsername(username)
         .orElseThrow(
-            () -> new NotFoundException("User not found in database with username: " + userName));
+            () -> new NotFoundException("User not found in database with username: " + username));
   }
 
-  public UserDto getByUserName(String userName) throws NotFoundException {
-    LagaltUser user = findByUserName(userName);
+  public UserDto getByUsername(String username) throws NotFoundException {
+    LagaltUser user = findByUsername(username);
 
     return userMapper.toDto(user);
   }
@@ -112,9 +112,9 @@ public class UserService {
     return skillMapper.toDto(user.getSkills());
   }
 
-  public void setSkills(List<Integer> idList, String userName) throws NotFoundException {
+  public void setSkills(List<Integer> idList, String username) throws NotFoundException {
 
-    LagaltUser user = findByUserName(userName);
+    LagaltUser user = findByUsername(username);
 
     List<Skill> newSkills = skillRepo.findAllById(idList);
 
