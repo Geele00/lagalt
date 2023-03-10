@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   container: main-header / size;
-  background-color: var(--c_menu_bg_2);
+  background-color: var(--clr_primary_2);
   display: flex;
   height: 3em;
   width: 100%;
@@ -15,5 +15,14 @@
   &__search-bar {
     flex-basis: 15em;
     margin-right: 0.5em;
+  }
+
+  &[data-overlay="search"] {
+    &:focus-within {
+      .filter,
+      .profile-button {
+        display: none;
+      }
+    }
   }
 }

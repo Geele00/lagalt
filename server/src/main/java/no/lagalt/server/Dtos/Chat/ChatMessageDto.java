@@ -1,29 +1,24 @@
-package no.lagalt.server.Dtos.Message;
+package no.lagalt.server.Dtos.Chat;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import no.lagalt.server.Dtos.User.UserDto;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MessageDto {
+public class ChatMessageDto {
 
   private Integer messageId;
 
   private String content;
 
-  private Integer parentId;
+  private String authorUsername;
 
-  private UserDto author;
-
-  private UserDto recipient;
+  private String recipientUsername;
 
   private LocalDateTime createdAt;
-
-  private Integer channelId;
 }

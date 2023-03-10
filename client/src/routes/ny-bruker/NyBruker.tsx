@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./NyBruker.style.scss";
 import { PointerEvent, useRef, useState, useTransition } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/AuthProvider";
@@ -47,7 +47,7 @@ const NyBruker = () => {
   const dob = new Date(1994, 4, 4).toISOString();
   const password = "mockPassword";
   const mockUser = {
-    userName: "mockUser17",
+    username: "mockUser17",
     email: "mockemail17@gmail.com",
     firstName: "Mock",
     lastName: "User",
@@ -78,7 +78,7 @@ const NyBruker = () => {
       .then(async ({ user }) => {
         if (!user) throw new Error();
 
-        updateProfile(user, { displayName: mockUser.userName, photoURL: "" });
+        updateProfile(user, { displayName: mockUser.username, photoURL: "" });
 
         const token = await user.getIdToken();
 
@@ -98,7 +98,7 @@ const NyBruker = () => {
           }
         );
 
-        signIn(token, mockUser.userName);
+        signIn(token, mockUser.username);
 
         nav({ to: "/" });
       })

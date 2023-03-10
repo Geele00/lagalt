@@ -32,7 +32,7 @@ public class UserController {
 
     System.out.println(auth.getName());
 
-    if (username != null) return List.of(userService.getByUserName(username));
+    if (username != null) return List.of(userService.getByUsername(username));
 
     if (id != null) {
       List<Integer> idList = id.stream().map(Integer::parseInt).collect(Collectors.toList());
@@ -64,9 +64,9 @@ public class UserController {
 
     System.out.println(auth);
 
-    if (userService.validateExists(newUserDto.getUserName()))
+    if (userService.validateExists(newUserDto.getUsername()))
       throw new AlreadyExistsException(
-          "User with username " + newUserDto.getUserName() + " already exists in the database.");
+          "User with username " + newUserDto.getUsername() + " already exists in the database.");
 
     return userService.save(newUserDto);
   }
@@ -92,11 +92,11 @@ public class UserController {
 
   @Operation(summary = "Set skills for user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PostMapping("{userName}/skills")
-  public void setSkills(@RequestBody List<Integer> idList, @PathVariable String userName)
+  @PostMapping("{username}/skills")
+  public void setSkills(@RequestBody List<Integer> idList, @PathVariable String username)
       throws NotFoundException {
 
-    userService.setSkills(idList, userName);
+    userService.setSkills(idList, username);
   }
 
   // ~~~ Projects

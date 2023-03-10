@@ -1,0 +1,74 @@
+.profile {
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+  height: 100%;
+
+  background-color: var(--clr_white);
+
+  &__header {
+    display: flex;
+    background: linear-gradient(
+      var(--clr_primary_1) 0% 7em,
+      var(--clr_white) 3em
+    );
+    padding-bottom: 1ch;
+
+    figure {
+      margin-top: 3em;
+
+      img {
+        margin-left: 2em;
+        height: 7em;
+        width: 7em;
+        border-radius: 50%;
+        // outline: 3px solid var(--clr_white);
+        // border: 1px solid black;
+        box-shadow: 0 0 1em var(--clr_black);
+      }
+
+      figcaption {
+        font-size: 2em;
+        margin-left: 1ch;
+        margin-top: 0.5ch;
+        color: var(--clr_text_grey);
+      }
+    }
+
+    &__message-btn {
+      height: fit-content;
+      margin: 1ch;
+      margin-left: auto;
+      border: 1px solid var(--clr_white);
+      color: var(--clr_white);
+      padding: 1ch;
+      border-radius: 0.5em;
+
+      &:visited {
+        color: var(--clr_white);
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+
+    table {
+      background-color: lightgreen;
+      text-align: left;
+
+      th {
+        width: 5em;
+      }
+    }
+  }
+
+  &__projects,
+  &__projects-contributing {
+    display: none;
+
+    &:has(li) {
+      display: block;
+    }
+  }
+}

@@ -22,10 +22,6 @@ public class Message {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  // private int score;
-
-  @OneToOne private LagaltUser author;
-
   @OneToMany(mappedBy = "parentMessage", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Message> replies = new ArrayList<>();
 
@@ -33,7 +29,11 @@ public class Message {
   @JoinColumn(name = "replies")
   private Message parentMessage;
 
-  @ManyToOne(optional = false)
+  @OneToOne private LagaltUser author;
+
+  @OneToOne private LagaltUser recipient;
+
+  @ManyToOne(optional = true)
   @JoinColumn(name = "messages")
   private Channel channel;
 }

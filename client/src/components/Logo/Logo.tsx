@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import "./style.scss";
+import "./Logo.style.scss";
 
 export const Logo = () => {
   return (

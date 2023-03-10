@@ -1,11 +1,13 @@
 .project-preview {
-  // container: project-preview / inline;
   --padding: 1ch;
-  background-color: var(--c_white);
-  color: var(--c_black_2);
+  background-color: var(--clr_white);
+  color: var(--clr_black_2);
   padding-left: var(--padding);
   display: flex;
   height: fit-content;
+  // box-shadow: 0 0 0.2em var(--clr_grey);
+  // margin-inline: 0.25em;
+  // border-radius: 0.5em;
 
   &__main {
     padding-block: var(--padding);
@@ -23,7 +25,7 @@
 
     footer {
       font-size: 0.6em;
-      color: var(--c_grey_1);
+      color: var(--clr_grey);
       display: flex;
       margin-top: auto;
       gap: 1.5em;
@@ -54,12 +56,15 @@
 
   &__right {
     // flex-basis: 50%;
-    color: var(--c_white);
+    // border-radius: 0 0.5em 0.5em 0;
+    color: var(--clr_white);
     width: 8em;
     max-width: 10vw;
     margin-left: auto;
-    // background-color: var(--c_purple);
 
-    background: linear-gradient(var(--c_purple) 0% 33%, var(--c_menu_bg_2) 33%);
+    background: linear-gradient(
+      var(--clr_purple) 0% 33%,
+      var(--clr_primary_2) 33%
+    );
   }
 }

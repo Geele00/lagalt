@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import "./style.scss";
+import "./Input.style.scss";
 
 interface InputProps {
   className?: string;

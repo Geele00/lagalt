@@ -1,1 +1,4 @@
-export type OverlayOptions = "filter" | "menu" | "close" | null;
+export interface OverlayOptions {
+  overlay: "filter" | "menu" | "search" | null;
+  action: "close" | "open" | "toggle";
+}

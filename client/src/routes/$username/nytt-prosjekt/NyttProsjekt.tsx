@@ -1,17 +1,9 @@
+import "./NyttProsjekt.scss";
 import { useMutation } from "@tanstack/react-query";
 import { fetchProjects } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/AuthProvider";
 import { queryClient } from "src/index";
 import { INewProject } from "src/types/entities/Project";
-
-const newProject = (title: string) => {
-  return {
-    ownerId: 1,
-    title,
-    description:
-      "Dette er en middels lang prosjektbeskrivelse med tilfeldig innhold. En middels lang prosjektbeskrivelse med tilfeldig innhold er det dette.",
-  };
-};
 
 const NyttProsjekt = () => {
   const { authState } = useAuth();
@@ -40,13 +32,60 @@ const NyttProsjekt = () => {
     },
   });
 
-  const makeDummies = () => {
-    for (let i = 0; i < 100; i++) {
-      newProjectMutation.mutate(newProject("New project title " + i));
-    }
-  };
+  return (
+    <form className="new-project">
+      <fieldset className="new-project__create" spellCheck={false}>
+        <legend>Lag et nytt prosjekt</legend>
 
-  return <button onPointerUp={makeDummies}>Spawn projects</button>;
+        <hr />
+
+        <div className="new-project__create__name">
+          <label>Prosjektnavn</label>
+          <input />
+        </div>
+
+        <div className="new-project__create__industry">
+          <label>Industri</label>
+          <select>
+            <option>Velg</option>
+            <option>Design</option>
+            <option>Programmering</option>
+          </select>
+        </div>
+
+        <div className="new-project__create__description">
+          <label>Beskrivelse</label>
+          <textarea />
+        </div>
+
+        <hr />
+
+        <div className="new-project__create__add-users">
+          <label>Legg til brukere</label>
+          <input />
+        </div>
+
+        <hr />
+
+        <div className="new-project__create__skills">
+          <label>Ønskede kvalifikasjoner</label>
+          <input />
+        </div>
+
+        <hr />
+
+        <div className="new-project__create__location">
+          <label>Fysisk tilstedeværelse kreves</label>
+
+          <select>
+            <option>Nei</option>
+            <option>Oslo</option>
+            <option>Bergen</option>
+          </select>
+        </div>
+      </fieldset>
+    </form>
+  );
 };
 
 export default NyttProsjekt;

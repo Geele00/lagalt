@@ -1,5 +1,5 @@
 .profile-button {
-  background-color: var(--c_menu_bg_2);
+  background-color: var(--clr_primary_2);
   border: 0;
   cursor: pointer;
   grid-template-columns: 4fr 2fr;
@@ -8,7 +8,7 @@
   display: flex;
 
   &__logo {
-    border: 2px solid var(--c_white);
+    border: 2px solid var(--clr_white);
     border-radius: 50%;
     margin: auto;
     height: 50cqh;
@@ -26,7 +26,7 @@
       width: 40%;
       height: 40%;
       border-radius: 50%;
-      background-color: var(--c_profile_icon);
+      background-color: var(--clr_profile_icon);
       margin: auto;
       margin-top: 25%;
     }
@@ -34,7 +34,7 @@
     &_bottom {
       grid-row: 1;
       grid-column: 1;
-      background-color: var(--c_profile_icon);
+      background-color: var(--clr_profile_icon);
       margin: 65% auto 0 auto;
       width: 70%;
       height: 70%;
@@ -44,7 +44,7 @@
 
     &_top:has(.signed-in),
     &_bottom:has(.signed-in) {
-      background-color: var(--c_profile_icon);
+      background-color: var(--clr_profile_icon);
     }
   }
 }
