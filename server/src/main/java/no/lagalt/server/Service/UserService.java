@@ -22,6 +22,7 @@ public class UserService {
   @Autowired private SkillMapper skillMapper;
 
   @Autowired private ProjectMapper projectMapper;
+  @Autowired private MessageMapper messageMapper;
 
   public boolean validateExists(String userName) {
     return userRepo.existsByUserName(userName);
@@ -39,6 +40,12 @@ public class UserService {
     LagaltUser user = findById(id);
 
     return userMapper.toDto(user);
+  }
+
+  private LagaltUser findByUid(String uid) throws NotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new NotFoundException("User not found in database"));
   }
 
   private LagaltUser findByUserName(String userName) throws NotFoundException {
@@ -139,4 +146,47 @@ public class UserService {
 
     return userMapper.toDto(owner);
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 }

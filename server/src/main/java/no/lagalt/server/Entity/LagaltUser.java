@@ -35,6 +35,13 @@ public class LagaltUser {
   @Column(nullable = false)
   private LocalDate dob;
 
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "users_chats",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "chat_id")})
+  private List<Chat> chats;
+
   @Column(nullable = false)
   private String email;
 

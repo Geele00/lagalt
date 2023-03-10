@@ -24,6 +24,7 @@ public class FeedController {
   @GetMapping
   Page<ProjectDto> getProjects(Pageable pageable, Authentication auth) throws NotFoundException {
 
+
     System.out.println(auth.getName());
     System.out.println(auth.getDetails());
     System.out.println(auth.getCredentials().toString());

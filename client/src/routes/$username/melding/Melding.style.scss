@@ -37,10 +37,14 @@
     inset: auto 0 0 0;
     height: 10em;
     display: grid;
-    grid-template-rows: 3em auto;
+    grid-template-rows: auto 3em;
     height: fit-content;
-    border-radius: 0.5em 0.5em 0 0;
+    border-radius: 0.2em 0.2em 0 0;
     background-color: var(--c_menu_bg_2);
+
+    &:focus-within {
+      height: 30%;
+    }
 
     &__controls {
       display: flex;
@@ -52,27 +56,14 @@
     }
 
     & > textarea {
-      // height: fit-content;
-      padding-top: 1ch;
+      margin-top: 1ch;
       font-family: Montserrat;
       padding-top: 0.5ch;
       padding-bottom: 1ch;
       padding-inline: 0.5ch;
-      font-size: 1.2em;
       border: 0;
-      outline: 1px solid var(--c_menu_bg_1);
+      outline: none;
       border-radius: 0.2em 0.2em 0 0;
-      // letter-spacing: 1px;
-
-      &:focus {
-        height: 10em;
-      }
     }
-  }
-
-  &__something {
-    height: 0.5em;
-    width: 100%;
-    background-color: var(--c_menu_bg_1);
   }
 }
