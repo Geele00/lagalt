@@ -29,9 +29,11 @@ public class Message {
   @JoinColumn(name = "replies")
   private Message parentMessage;
 
-  @OneToOne private LagaltUser author;
+  @OneToOne(fetch = FetchType.LAZY)
+  private LagaltUser author;
 
-  @OneToOne private LagaltUser recipient;
+  @OneToOne(fetch = FetchType.LAZY)
+  private LagaltUser recipient;
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "messages")

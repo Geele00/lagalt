@@ -10,50 +10,12 @@ import {
 import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./types";
 import { auth } from "./firebase/firebase";
 import { signInAnonymously } from "firebase/auth";
-import { useMutation } from "@tanstack/react-query";
-import { defaultOptions } from "src/api/v1/defaults";
+import { RouterProvider } from "@tanstack/react-router";
+import { router } from "src/routes/router";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
-const initialAuthState: IAuthState = {
-  token: null,
-  username: null,
-  type: null,
-};
-
-export interface AuthStateOpts {
-  username: string | null;
-  type: "signin" | "signout" | "reset";
-}
-
-export const authReducer = (authState: IAuthState, action: AuthStateOpts) => {
-  const { username, type } = action;
-
-  switch (type) {
-    case "signin":
-      signInAnonymously(auth).then(async ({ user }) => {
-        return await user.getIdToken().then((token) => {
-          return { token, username, type };
-        });
-      });
-
-    case "signout":
-      const t = auth.signOut().then(async () => {
-        return await signInAnonymously(auth).then(async ({ user }) => {
-          return await user.getIdToken().then((token) => {
-            return { token, username: null, type: "anon" };
-          });
-        });
-      });
-
-    default:
-      return initialAuthState;
-  }
-};
-
-export const AuthProvider = ({ children, queryClient }: IAuthProvider) => {
-  const [authState2, changeAuth] = useReducer(authReducer, initialAuthState);
-
+export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     username: null,
@@ -130,7 +92,11 @@ export const AuthProvider = ({ children, queryClient }: IAuthProvider) => {
     [authState]
   );
 
-  return <AuthContext.Provider value={contextValue} children={children} />;
+  return (
+    <AuthContext.Provider value={contextValue}>
+      <RouterProvider router={router} context={authState} />
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {

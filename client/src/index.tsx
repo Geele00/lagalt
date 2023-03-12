@@ -18,7 +18,7 @@ export const queryClient = new QueryClient({
       refetchOnMount: true,
       refetchOnReconnect: true,
 
-      queryFn: async ({ queryKey, pageParam }) => {
+      queryFn: async ({ queryKey, pageParam, meta }) => {
         //     const authState = queryClient.getQueryData(["auth"]) || null;
         const [qKey, queryAuthState] = queryKey;
         const { token } = queryAuthState as IAuthState;
@@ -35,14 +35,14 @@ export const queryClient = new QueryClient({
         });
 
         if (!res.ok) {
-          throw Error(`${res.status}: ${res.statusText}`);
+          return Promise.reject(
+            new Error(`${res.status}`, { cause: res.statusText })
+          );
         }
 
-        return await res.json();
+        return res.json();
       },
       getNextPageParam: (lastPage: any, pages) => {
-        console.log(pages);
-
         if (!lastPage) return 0;
 
         return parseInt(lastPage.number) + 1;
@@ -67,9 +67,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider queryClient={queryClient}>
-          <RouterProvider router={router} context={{ queryClient }} />
-        </AuthProvider>
+        <AuthProvider queryClient={queryClient} />
       </QueryClientProvider>
     </StrictMode>
   );

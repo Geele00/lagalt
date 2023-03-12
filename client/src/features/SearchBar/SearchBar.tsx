@@ -1,13 +1,7 @@
 import "./Searchbar.style.scss";
 import { Dispatch, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { OverlayOptions } from "src/App/App.types";
-
-interface ISearchBar {
-  className: string;
-  activeOverlay: OverlayOptions["overlay"];
-  toggleOverlay: Dispatch<OverlayOptions>;
-}
+import { ISearchBar } from "./SearchBar.types";
 
 export const SearchBar = ({
   className,

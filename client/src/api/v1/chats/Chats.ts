@@ -14,16 +14,16 @@ export const fetchChats = async (
   });
 
   if (!res.ok) {
-    throw new Error(res.statusText);
+    throw Error(res.statusText);
   }
 
   return res.json();
 };
 
-export const sendChatMessage = async (
+export const sendChatMessageReq = async (
   body: SendMessage,
   token: string
-): Promise<Response> => {
+): Promise<IChatMessagePage[]> => {
   const res = await fetch(`${endpoint}`, {
     ...defaultOptions,
     method: "POST",
@@ -35,10 +35,10 @@ export const sendChatMessage = async (
   });
 
   if (!res.ok) {
-    throw new Error(res.statusText);
+    return Promise.reject(new Error(res.statusText));
   }
 
-  console.log(res);
+  // console.log(res);
 
-  return res;
+  return res.json();
 };

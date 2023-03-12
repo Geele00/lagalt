@@ -8,7 +8,6 @@ export interface IAuthState {
 }
 
 export interface IAuthProvider {
-  children: ReactNode;
   queryClient: QueryClient;
 }
 

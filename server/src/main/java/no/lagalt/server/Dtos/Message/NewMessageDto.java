@@ -1,5 +1,6 @@
 package no.lagalt.server.Dtos.Message;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class NewMessageDto {
   private String recipientUsername;
 
   private Integer parentId;
+
+  private LocalDateTime createdAt;
 }

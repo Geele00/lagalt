@@ -16,7 +16,6 @@ public interface MessageMapper {
   @Mapping(target = "parentId", source = "parentMessage.messageId")
   MessageDto toDto(Message message);
 
-  @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "recipient", ignore = true)
   @Mapping(target = "author", ignore = true)
   @Mapping(target = "channel", ignore = true)

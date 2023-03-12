@@ -1,13 +1,12 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "src/auth/AuthProvider";
-import { fetchFeed } from "src/api/v1/feed/feed";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
-import NyttProsjekt from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
 import { INewProject } from "src/types/entities/Project";
 import { fetchProjects } from "src/api/v1/projects/projects";
 import { queryClient } from "src/index";
+import { IProjectsPage } from "src/types/entities/Project";
 
 const pageSize = 20;
 
@@ -23,39 +22,17 @@ const newProject = (title: string) => {
 const Feed = () => {
   const { authState } = useAuth();
 
-  //const { data: authState } = useQuery(["auth"]);
-  ////console.log(data2);
-  //console.log(authState);
-
-  //const { isFetching, data, error, fetchNextPage, isInitialLoading } =
-  //  useInfiniteQuery({
-  //    queryKey: ["/feed", "/projects", authState],
-  //    queryFn: ({ pageParam = 0 }) => {
-  //      const { token } = authState;
-  //
-  //      const params = `?size=${pageSize}&sort=createdAt&page=${pageParam}`;
-  //      const headers = {
-  //        headers: {
-  //          "Content-Type": "application/json",
-  //          Authorization: `Bearer ${token}`,
-  //        },
-  //      };
-  //
-  //      return token ? fetchFeed(headers, params) : null;
-  //    },
-  //    getNextPageParam: (lastPage) => {
-  //      if (lastPage === null) return;
-  //
-  //      return parseInt(lastPage.number) + 1;
-  //    },
-  //  });
-
   const { isFetching, data, error, fetchNextPage, isInitialLoading } =
-    useInfiniteQuery([
-      `/feed?size=${pageSize}&sort=createdAt`,
-      authState,
-      "/projects",
-    ]);
+    useInfiniteQuery<IProjectsPage>({
+      queryKey: [
+        `/feed?size=${pageSize}&sort=createdAt`,
+        authState,
+        "/projects",
+      ],
+      onError: (err) => {
+        console.log(err);
+      },
+    });
 
   const feedItems = useMemo(
     () =>
