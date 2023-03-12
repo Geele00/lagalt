@@ -70,16 +70,16 @@ body {
 }
 
 #root {
-  min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
   max-width: 960px;
   background-color: var(--clr_page_bg_1);
   // display: flex;
   // flex-flow: column;
   margin-inline: auto;
   display: grid;
-  grid-template-rows: 3em auto;
+  grid-template-rows: 3em 1fr;
 }
 
 a,
@@ -96,8 +96,8 @@ main {
   // display: flex;
   // flex-flow: column;
   // flex-grow: 1;
-  // height: 100svh;
-  // width: 100%;
+  // flex-grow: 1;
+  height: 100%;
   background-color: var(--clr_root);
 }
 

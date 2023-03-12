@@ -1,7 +1,7 @@
 import "./Searchbar.style.scss";
-import { Dispatch, useRef } from "react";
+import { Dispatch, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { OverlayOptions } from "../Header/types";
+import { OverlayOptions } from "src/App/App.types";
 
 interface ISearchBar {
   className: string;
@@ -15,6 +15,16 @@ export const SearchBar = ({
   toggleOverlay,
 }: ISearchBar) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const overlayRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    if (overlayRef.current === null) {
+      const overlayEl = document.querySelector("#overlay");
+
+      overlayRef.current = overlayEl;
+    }
+  }, []);
 
   const onInput = (e: any) => {
     // const input = e.target as HTMLInputElement;
@@ -49,6 +59,7 @@ export const SearchBar = ({
         role="search"
         onInput={onInput}
         onSubmit={onSubmit}
+        aria-haspopup="listbox"
       >
         <img
           src="/images/magnifying-glass.png"
@@ -62,21 +73,25 @@ export const SearchBar = ({
           className="search-bar__input"
           type="text"
           ref={searchInputRef}
-          onFocus={() => toggleOverlay({ overlay: "search", action: "open" })}
+          onFocus={() => toggleOverlay({ overlay: "search", type: "open" })}
         />
       </form>
-      <div
-        aria-expanded={activeOverlay === "search"}
-        className="search-results"
-      >
-        <button
-          onPointerUp={() =>
-            toggleOverlay({ overlay: "search", action: "close" })
-          }
-        >
-          Steng
-        </button>
-      </div>
+      {overlayRef.current &&
+        createPortal(
+          <div
+            aria-expanded={activeOverlay === "search"}
+            className="search-results"
+          >
+            <button
+              onPointerUp={() =>
+                toggleOverlay({ overlay: "search", type: "close" })
+              }
+            >
+              Steng
+            </button>
+          </div>,
+          overlayRef.current
+        )}
     </>
   );
 };

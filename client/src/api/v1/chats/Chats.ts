@@ -20,8 +20,12 @@ export const fetchChats = async (
   return res.json();
 };
 
-export const sendChatMessage = (body: SendMessage, token: string) =>
-  fetchChats({
+export const sendChatMessage = async (
+  body: SendMessage,
+  token: string
+): Promise<Response> => {
+  const res = await fetch(`${endpoint}`, {
+    ...defaultOptions,
     method: "POST",
     body: JSON.stringify(body),
     headers: {
@@ -29,3 +33,12 @@ export const sendChatMessage = (body: SendMessage, token: string) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
+
+  console.log(res);
+
+  return res;
+};

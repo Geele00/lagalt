@@ -5,7 +5,10 @@ import { router } from "./routes/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./auth/AuthProvider";
 import { RouterProvider } from "@tanstack/react-router";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { defaultOptions } from "./api/v1/defaults";
+import { IAuthState } from "./auth/types";
+
+const apiUri = import.meta.env.VITE_API_V1_URL;
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,6 +17,39 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: true,
       refetchOnMount: true,
       refetchOnReconnect: true,
+
+      queryFn: async ({ queryKey, pageParam }) => {
+        //     const authState = queryClient.getQueryData(["auth"]) || null;
+        const [qKey, queryAuthState] = queryKey;
+        const { token } = queryAuthState as IAuthState;
+        if (!token) return;
+
+        const pageQuery = pageParam ? `&page=${pageParam}` : "";
+
+        const res = await fetch(`${apiUri}${qKey}${pageQuery}`, {
+          ...defaultOptions,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw Error(`${res.status}: ${res.statusText}`);
+        }
+
+        return await res.json();
+      },
+      getNextPageParam: (lastPage: any, pages) => {
+        console.log(pages);
+
+        if (!lastPage) return 0;
+
+        return parseInt(lastPage.number) + 1;
+      },
+      // getNextPageParam: (lastPage: any) => {
+      //   return parseInt(lastPage.number) + 1;
+      // },
       // queryFn: async ({ queryKey }) => {
       //   const res = await fetch(`${apiUrl}${queryKey[0]}`);
       //   if (!res.ok) {
@@ -30,11 +66,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider queryClient={queryClient}>
           <RouterProvider router={router} context={{ queryClient }} />
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </StrictMode>
   );
 }

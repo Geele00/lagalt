@@ -1,6 +1,13 @@
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { FormEvent, KeyboardEvent, useMemo } from "react";
+import {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { fetchChats, sendChatMessage } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/AuthProvider";
 import { queryClient } from "src/index";
@@ -9,29 +16,6 @@ import "./Melding.style.scss";
 const Melding = () => {
   const { authState } = useAuth();
   const { username: recipientUsername } = useParams();
-
-  const { data, error, fetchNextPage, isInitialLoading } = useInfiniteQuery({
-    queryKey: ["/chats", recipientUsername, authState.username],
-    queryFn: ({ pageParam = 0 }) => {
-      const { token } = authState;
-
-      const params = `?target=${recipientUsername}&size=20&sort=createdAt&page=${pageParam}`;
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      return token ? fetchChats(headers, params) : null;
-    },
-    getNextPageParam: (lastPage, pages) => pages.length,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    // replace with websocket
-    refetchInterval: 5000,
-  });
 
   const sendMessageMutation = useMutation({
     mutationFn: (content: string) => {
@@ -48,28 +32,79 @@ const Melding = () => {
       return sendChatMessage(body, token);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([
-        "/chats",
-        recipientUsername,
-        authState.username,
-      ]);
+      queryClient.invalidateQueries(["/chats", recipientUsername, authState]);
     },
-    onError: () => {},
+    onError: (err) => {
+      console.log(err + "1235");
+    },
   });
 
+  const { data, error, fetchNextPage, isInitialLoading, isFetching } =
+    useInfiniteQuery({
+      queryKey: ["/chats", recipientUsername, authState],
+      queryFn: ({ pageParam = 0 }) => {
+        const { token } = authState;
+        if (!token) return;
+
+        const params = `?target=${recipientUsername}&size=20&sort=createdAt&page=${pageParam}`;
+
+        const headers = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        return token ? fetchChats(headers, params) : null;
+      },
+      getNextPageParam: (lastPage, pages) => pages.length,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      // replace with websocket
+      // refetchInterval: 5000,
+    });
+
+  const containerRef = useRef<HTMLElement>(null);
+
+  // Scroll into view for first page
+  useEffect(() => {
+    if (!containerRef.current?.lastChild) return;
+    if (!data) return;
+    if (data.pages.length > 1) return;
+
+    (containerRef.current.lastChild as HTMLElement).scrollIntoView();
+  }, [data]);
+
   const reachedFinalPage = useMemo(() => {
-    console.log(data);
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
-  const fetchNextPageOnClick = (e: any) => {
-    e.preventDefault();
-    if (!reachedFinalPage) fetchNextPage();
-  };
+  const onScroll = useCallback(() => {
+    if (isFetching) return;
+    if (reachedFinalPage) return;
+    if (!containerRef.current) return;
+
+    const { offsetTop, getClientRects } = containerRef.current;
+    const { top } = getClientRects()[0];
+
+    const hasReachedTop = top === offsetTop;
+
+    if (!hasReachedTop) return;
+
+    fetchNextPage();
+  }, [isFetching, reachedFinalPage, containerRef, fetchNextPage]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [onScroll]);
 
   const submitLogic = (textEl: HTMLTextAreaElement) => {
     sendMessageMutation.mutate(textEl.value);
-    console.log(textEl.value);
     textEl.value = "";
   };
 
@@ -91,13 +126,6 @@ const Melding = () => {
     }
   };
 
-  console.log(data?.pages.at(-1)?.last);
-
-  // set scrolltop on history container to last item position when implementing scroll
-  // div.scrollTop = div.scrollHeight?
-  console.log(data);
-  console.log(error);
-
   const messages = useMemo(() => {
     return data?.pages
       .map((page) =>
@@ -117,10 +145,9 @@ const Melding = () => {
 
   return (
     <div className="user-chat">
-      <section className="user-chat__history">
+      <section className="user-chat__history" ref={containerRef}>
         {isInitialLoading ? "Loading gif" : error ? "Error" : <>{messages}</>}
       </section>
-      <button onPointerUp={fetchNextPageOnClick}>Next Page</button>
       <form
         className="user-chat__compose"
         spellCheck={false}

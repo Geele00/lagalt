@@ -1,6 +1,5 @@
-import { Outlet, RootRoute } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Header } from "src/features/Header/Header";
+import { RootRoute } from "@tanstack/react-router";
+import App from "src/App/App";
 
 export const rootRoute = new RootRoute({
   // onLoad: ({ context }) => {
@@ -8,14 +7,7 @@ export const rootRoute = new RootRoute({
   //   console.log(context);
   //   console.log(22);
   // },
-  component: () => (
-    <>
-      <Header routeChanged={{}} />
-      <main>
-        <Outlet />
-      </main>
-    </>
-  ),
+  component: () => <App routeChanged={{}} />,
 });
 
 // <TanStackRouterDevtools position="bottom-left" />

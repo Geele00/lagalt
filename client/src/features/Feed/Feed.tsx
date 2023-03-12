@@ -1,6 +1,6 @@
 import "./Feed.style.scss";
-import { useEffect, useMemo, useRef } from "react";
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/AuthProvider";
 import { fetchFeed } from "src/api/v1/feed/feed";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
@@ -8,6 +8,8 @@ import NyttProsjekt from "src/routes/$username/nytt-prosjekt/NyttProsjekt";
 import { INewProject } from "src/types/entities/Project";
 import { fetchProjects } from "src/api/v1/projects/projects";
 import { queryClient } from "src/index";
+
+const pageSize = 20;
 
 const newProject = (title: string) => {
   return {
@@ -21,30 +23,39 @@ const newProject = (title: string) => {
 const Feed = () => {
   const { authState } = useAuth();
 
-  const {
-    isFetching,
-    data,
-    error,
-    fetchNextPage,
-    fetchPreviousPage,
-    isInitialLoading,
-  } = useInfiniteQuery({
-    queryKey: ["/feed", "/projects", authState],
-    queryFn: ({ pageParam = 0 }) => {
-      const { token } = authState;
+  //const { data: authState } = useQuery(["auth"]);
+  ////console.log(data2);
+  //console.log(authState);
 
-      const params = `?size=22&sort=createdAt&page=${pageParam}`;
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  //const { isFetching, data, error, fetchNextPage, isInitialLoading } =
+  //  useInfiniteQuery({
+  //    queryKey: ["/feed", "/projects", authState],
+  //    queryFn: ({ pageParam = 0 }) => {
+  //      const { token } = authState;
+  //
+  //      const params = `?size=${pageSize}&sort=createdAt&page=${pageParam}`;
+  //      const headers = {
+  //        headers: {
+  //          "Content-Type": "application/json",
+  //          Authorization: `Bearer ${token}`,
+  //        },
+  //      };
+  //
+  //      return token ? fetchFeed(headers, params) : null;
+  //    },
+  //    getNextPageParam: (lastPage) => {
+  //      if (lastPage === null) return;
+  //
+  //      return parseInt(lastPage.number) + 1;
+  //    },
+  //  });
 
-      return token ? fetchFeed(headers, params) : null;
-    },
-    getNextPageParam: (lastPage, pages) => pages.length,
-  });
+  const { isFetching, data, error, fetchNextPage, isInitialLoading } =
+    useInfiniteQuery([
+      `/feed?size=${pageSize}&sort=createdAt`,
+      authState,
+      "/projects",
+    ]);
 
   const feedItems = useMemo(
     () =>
@@ -64,25 +75,23 @@ const Feed = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const reachedFinalPage = useMemo(() => {
-    console.log(data);
+    //console.log(data);
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
-  const onScroll = (e: Event) => {
+  const onScroll = useCallback(() => {
     if (isFetching) return;
     if (reachedFinalPage) return;
+    if (!containerRef.current?.lastChild) return;
 
-    const { lastChild } = containerRef?.current as HTMLDivElement;
-    if (!lastChild) return;
-
-    const { top } = (lastChild as HTMLLIElement).getClientRects()[0];
+    const lastChild = containerRef.current.lastChild as HTMLLIElement;
+    const { top } = lastChild.getBoundingClientRect();
 
     const hasPassedBoundary = top < window.innerHeight * 2;
-
     if (!hasPassedBoundary) return;
 
     fetchNextPage();
-  };
+  }, [isFetching, reachedFinalPage, containerRef, fetchNextPage]);
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -109,7 +118,12 @@ const Feed = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["/feed"]);
+      //queryClient.invalidateQueries(["/feed"]);
+      queryClient.invalidateQueries([
+        `?size=${pageSize}&sort=createdAt`,
+        authState,
+        "/projects",
+      ]);
     },
     onError: (err) => {
       console.log(err);

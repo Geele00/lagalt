@@ -3,12 +3,13 @@ package no.lagalt.server.Controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.lagalt.server.Dtos.Project.*;
+import no.lagalt.server.Service.HistoryService;
 import no.lagalt.server.Service.ProjectService;
+import no.lagalt.server.Service.UserService;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +20,23 @@ import org.springframework.web.bind.annotation.*;
 public class FeedController {
 
   @Autowired private ProjectService projectService;
+  @Autowired private UserService userService;
+  @Autowired private HistoryService historyService;
 
   @Operation(summary = "Get a list of projects for the feed")
   @GetMapping
-  Page<ProjectDto> getProjects(Pageable pageable, Authentication auth) throws NotFoundException {
+  Page<ProjectPreviewDto> getProjects(Pageable pageable, Authentication auth)
+      throws NotFoundException {
 
+    String uid = auth.getName();
 
-    System.out.println(auth.getName());
-    System.out.println(auth.getDetails());
-    System.out.println(auth.getCredentials().toString());
-    System.out.println(auth.getPrincipal().toString());
-    System.out.println(auth instanceof AnonymousAuthenticationToken);
+    Page<ProjectPreviewDto> dtoPage = projectService.getPage(pageable, uid);
 
-    return projectService.getPage(pageable);
+    // List<Integer> projectIds =
+    //    dtoPage.stream().map(page -> page.getProjectId()).collect(Collectors.toList());
+    //
+    // historyService.save(projectIds, uid);
+
+    return dtoPage;
   }
 }

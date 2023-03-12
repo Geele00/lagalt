@@ -7,14 +7,12 @@ import { IMenu } from "./types";
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
 
-  console.log(activeOverlay);
-
   return (
     <nav className="main-header__menu" aria-haspopup="menu">
       <button
         className="main-header__menu__hamburger"
         aria-hidden
-        onPointerUp={() => toggleOverlay({ overlay: "menu", action: "toggle" })}
+        onPointerUp={() => toggleOverlay({ overlay: "menu", type: "toggle" })}
       >
         <div></div>
         <div></div>

@@ -3,21 +3,23 @@
 
   &__header-toggle {
     all: unset;
-    display: flex;
-    margin-left: 1ch;
+    padding-left: 2ch;
     cursor: pointer;
     color: var(--clr_text_1);
     height: 100cqh;
     display: flex;
+    width: 3ch;
     z-index: 800;
+    // padding-inline: 1ch;
+    // margin-left: auto;
 
-    & > span {
-      margin-block: auto;
-
-      &::selection {
-        pointer-events: none;
-      }
-    }
+    // & > span {
+    //   margin-block: auto;
+    //
+    //   &::selection {
+    //     pointer-events: none;
+    //   }
+    // }
 
     i {
       height: 0.7ch;
@@ -25,9 +27,7 @@
       border-right: 2px solid var(--clr_text_1);
       border-bottom: 2px solid var(--clr_text_1);
       margin-block: auto;
-      margin-inline: 1ch;
       transform: rotate(45deg);
-      z-index: -1;
     }
   }
 

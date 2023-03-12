@@ -31,20 +31,25 @@ public class ProjectService {
     return projectMapper.toDto(project);
   }
 
+  public List<ProjectDto> getAllById(List<Integer> ids) throws NotFoundException {
+    List<Project> project = projectRepo.findAllById(ids);
+
+    return projectMapper.toDto(project);
+  }
+
   public ProjectDto getById(Integer id) throws NotFoundException {
     Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
 
     return projectMapper.toDto(project);
   }
 
-  public Page<ProjectDto> getPage(Pageable pageable) {
+  public Page<ProjectPreviewDto> getPage(Pageable pageable, String uid) {
 
     Page<Project> projectsPage = projectRepo.findAll(pageable);
 
     return projectsPage.map(
         project -> {
-          ProjectDto dto = projectMapper.toDto(project);
-          return dto;
+          return projectMapper.toPreviewDto(project);
         });
   }
 

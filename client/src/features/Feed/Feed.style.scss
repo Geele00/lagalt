@@ -2,7 +2,10 @@
   // container: feed / size;
   // height: 100svh;
 
-  // padding-top: 0.5em;
+  scroll-behavior: smooth;
+  overflow: scroll;
+  // overscroll-behavior-y: contain;
+
   max-width: 570px;
   margin-inline: auto;
 

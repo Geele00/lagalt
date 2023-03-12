@@ -3,6 +3,7 @@ package no.lagalt.server.Mapper;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.NewProjectDto;
 import no.lagalt.server.Dtos.Project.ProjectDto;
+import no.lagalt.server.Dtos.Project.ProjectPreviewDto;
 import no.lagalt.server.Dtos.Project.UpdateProjectDto;
 import no.lagalt.server.Entity.Project;
 import org.mapstruct.Mapper;
@@ -17,6 +18,7 @@ public interface ProjectMapper {
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "projectId", ignore = true)
   @Mapping(target = "messageBoard", ignore = true)
+  // @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   Project toProject(NewProjectDto newProjectDto);
 
   Project toProject(UpdateProjectDto updateProjectDto);
@@ -25,7 +27,5 @@ public interface ProjectMapper {
 
   List<ProjectDto> toDto(List<Project> project);
 
-  // List<ProjectDto> pageToListDto(Page<Project> projectPage);
-
-  // Page<ProjectDto> pageToListDto(Page<Project> projectPage);
+  ProjectPreviewDto toPreviewDto(Project project);
 }

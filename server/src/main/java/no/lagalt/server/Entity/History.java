@@ -19,5 +19,10 @@ public class History {
 
   @OneToMany private List<Project> clickedProjects;
 
-  @OneToOne private LagaltUser lagaltUser;
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "users_histories",
+      joinColumns = {@JoinColumn(name = "history_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private LagaltUser lagaltUser;
 }

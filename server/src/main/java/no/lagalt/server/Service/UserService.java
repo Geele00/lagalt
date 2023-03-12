@@ -36,6 +36,12 @@ public class UserService {
     return userRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
   }
 
+  public UserDto getByUid(String uid) throws NotFoundException {
+    LagaltUser user = findByUid(uid);
+
+    return userMapper.toDto(user);
+  }
+
   public UserDto getById(Integer id) throws NotFoundException {
     LagaltUser user = findById(id);
 
