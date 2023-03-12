@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import no.lagalt.server.Dtos.Chat.ChatDto;
 import no.lagalt.server.Dtos.Chat.ChatMessageDto;
+import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Dtos.Message.NewMessageDto;
 import no.lagalt.server.Entity.Chat;
 import no.lagalt.server.Entity.LagaltUser;
@@ -13,6 +14,7 @@ import no.lagalt.server.Mapper.ChatMapper;
 import no.lagalt.server.Mapper.MessageMapper;
 import no.lagalt.server.Repository.ChatRepository;
 import no.lagalt.server.Repository.UserRepository;
+import no.lagalt.server.Utils.Exception.ChatNotFoundException;
 import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,11 +46,13 @@ public class ChatService {
     return chatMapper.toDto(chat);
   }
 
-  private Chat findByUsers(List<LagaltUser> users) throws NotFoundException {
-    return chatRepo.findByUsersIn(users).orElseThrow(() -> new NotFoundException());
+  private Chat findByUsers(List<LagaltUser> users) throws ChatNotFoundException {
+    return chatRepo.findByUsersIn(users).orElseThrow(() -> new ChatNotFoundException());
   }
 
-  public void postMessage(String uid, NewMessageDto newMessageDto) {
+  public MessageDto postMessage(String uid, NewMessageDto newMessageDto) {
+
+    newMessageDto.setCreatedAt(LocalDateTime.now());
 
     String recipientUsername = newMessageDto.getRecipientUsername();
 
@@ -65,7 +69,6 @@ public class ChatService {
     List<LagaltUser> users = List.of(author, recipient);
 
     Message newMessage = messageMapper.toMessage(newMessageDto);
-    newMessage.setCreatedAt(LocalDateTime.now());
     newMessage.setRecipient(recipient);
     newMessage.setAuthor(author);
 
@@ -73,12 +76,19 @@ public class ChatService {
       Chat newChat = new Chat();
       newChat.setUsers(users);
       newChat.setMessages(List.of(newMessage));
-      save(newChat);
+      Chat savedChat = chatRepo.saveAndFlush(newChat);
+      List<Message> updatedMessages = savedChat.getMessages();
+      Message lastMessage = updatedMessages.get(updatedMessages.size() - 1);
+      return messageMapper.toDto(lastMessage);
     } else {
       Chat chat = findByUsers(users);
       List<Message> messages = chat.getMessages();
       messages.add(newMessage);
-      save(chat);
+      Chat savedChat = chatRepo.saveAndFlush(chat);
+
+      List<Message> updatedMessages = savedChat.getMessages();
+      Message lastMessage = updatedMessages.get(updatedMessages.size() - 1);
+      return messageMapper.toDto(lastMessage);
     }
   }
 

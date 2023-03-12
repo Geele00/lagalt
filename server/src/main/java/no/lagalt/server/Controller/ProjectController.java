@@ -2,13 +2,13 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.security.Principal;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Service.ProjectService;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Projects")
@@ -22,10 +22,8 @@ public class ProjectController {
   @Operation(summary = "Get a list of projects")
   @GetMapping
   List<ProjectDto> getProjects(
-      @RequestParam(name = "title", required = false) String title, Principal principal)
+      @RequestParam(name = "title", required = false) String title, Authentication auth)
       throws NotFoundException {
-
-    System.out.println(principal);
 
     if (title != null) return List.of(projectService.getByTitle(title));
 

@@ -1,15 +1,17 @@
 .user-chat {
   display: flex;
   flex-flow: column;
-  min-height: 100%;
-  max-height: 100%;
+  // flex-grow: 1;
+  height: 100%;
+  // contain: size;
 
   &__history {
-    margin-top: auto;
-    padding: 1ch 1ch 2ch 1ch;
+    margin: 1ch 1ch 2ch 1ch;
+    flex-grow: 1;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
+    margin-bottom: auto;
 
     & > article {
       border: 1px solid var(--clr_primary_1);
@@ -40,15 +42,18 @@
   &__compose {
     border-radius: 0.2em 0.2em 0 0;
     background-color: var(--clr_primary_2);
-    // margin-top: auto;
+    margin-top: auto;
     position: sticky;
     bottom: 0;
     display: grid;
     grid-template-rows: auto 3em;
+    // flex-grow: 1;
 
-    &:focus-within {
-      height: 15em;
-    }
+    // &:focus-within {
+    //   // flex-basis: 15em;
+    //   height: 15em;
+    //   margin-top: 5em;
+    // }
 
     &__controls {
       display: flex;

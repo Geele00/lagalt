@@ -1,4 +1,8 @@
 export interface OverlayOptions {
   overlay: "filter" | "menu" | "search" | null;
-  action: "close" | "open" | "toggle";
+  type: "close" | "open" | "toggle";
+}
+
+export interface IHeader {
+  routeChanged: {};
 }

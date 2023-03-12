@@ -4,7 +4,8 @@
   container: main-header / size;
   background-color: var(--clr_primary_2);
   display: flex;
-  height: 3em;
+  // height: 3em;
+  min-height: 3em;
   width: 100%;
   z-index: 1000;
 

@@ -3,6 +3,7 @@ package no.lagalt.server.Controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.lagalt.server.Dtos.Chat.ChatMessageDto;
+import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Dtos.Message.NewMessageDto;
 import no.lagalt.server.Service.ChatService;
 import no.lagalt.server.Utils.Exception.*;
@@ -37,11 +38,11 @@ public class ChatController {
 
   @Operation(summary = "Get a list of projects for the feed")
   @PostMapping
-  void postMessage(@RequestBody NewMessageDto newMessageDto, Authentication auth)
+  MessageDto postMessage(@RequestBody NewMessageDto newMessageDto, Authentication auth)
       throws NotFoundException {
 
     String uid = auth.getName();
 
-    chatService.postMessage(uid, newMessageDto);
+    return chatService.postMessage(uid, newMessageDto);
   }
 }

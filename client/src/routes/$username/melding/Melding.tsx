@@ -1,36 +1,49 @@
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+} from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { FormEvent, KeyboardEvent, useMemo } from "react";
-import { fetchChats, sendChatMessage } from "src/api/v1/chats/Chats";
+import {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { sendChatMessageReq } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/AuthProvider";
 import { queryClient } from "src/index";
+import { IChatMessagePage } from "src/types/entities/Chat";
 import "./Melding.style.scss";
+
+const pageSize = 20;
 
 const Melding = () => {
   const { authState } = useAuth();
   const { username: recipientUsername } = useParams();
 
-  const { data, error, fetchNextPage, isInitialLoading } = useInfiniteQuery({
-    queryKey: ["/chats", recipientUsername, authState.username],
-    queryFn: ({ pageParam = 0 }) => {
-      const { token } = authState;
+  // ~~~ Query logic
 
-      const params = `?target=${recipientUsername}&size=20&sort=createdAt&page=${pageParam}`;
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  const queryKey = useMemo(
+    () => [
+      `/chats?target=${recipientUsername}&size=${pageSize}&sort=createdAt`,
+      authState,
+      "/chats",
+    ],
+    [authState, recipientUsername]
+  );
 
-      return token ? fetchChats(headers, params) : null;
-    },
-    getNextPageParam: (lastPage, pages) => pages.length,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-    // replace with websocket
-    refetchInterval: 5000,
+  const {
+    data,
+    error,
+    fetchNextPage,
+    isInitialLoading,
+    isFetching,
+    dataUpdatedAt,
+  } = useInfiniteQuery<IChatMessagePage, Error>({
+    queryKey,
   });
 
   const sendMessageMutation = useMutation({
@@ -40,36 +53,100 @@ const Melding = () => {
       if (!token) throw new Error("No token error blabla");
       if (!recipientUsername) throw new Error("No recipient found");
 
-      const body = {
-        content,
-        recipientUsername,
-      };
+      return sendChatMessageReq({ content, recipientUsername }, token);
+    },
+    onMutate: async (newMessageText) => {
+      await queryClient.cancelQueries({
+        queryKey,
+      });
 
-      return sendChatMessage(body, token);
+      const previousData: InfiniteData<IChatMessagePage> | undefined =
+        queryClient.getQueryData(queryKey);
+
+      queryClient.setQueryData(
+        queryKey,
+        (prev: InfiniteData<IChatMessagePage> | undefined) => {
+          if (prev === undefined) return;
+
+          const prevCopy = { ...prev };
+
+          const messageId = ((prev as any).pages.at(-1).content[0].messageId +
+            1) as number;
+
+          const authorUsername = authState.username as string;
+
+          const optimisticMsg = {
+            messageId,
+            authorUsername,
+            recipientUsername: recipientUsername as string,
+            content: newMessageText,
+            createdAt: new Date().toISOString(),
+          };
+
+          prevCopy.pages[prevCopy.pages.length - 1].content.unshift(
+            optimisticMsg
+          );
+
+          return prevCopy;
+        }
+      );
+
+      return { previousData };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries([
-        "/chats",
-        recipientUsername,
-        authState.username,
-      ]);
+    onSettled: () => {
+      queryClient.invalidateQueries(queryKey);
     },
-    onError: () => {},
+    onError: (err, text, context) => {
+      const previousData = context?.previousData;
+
+      queryClient.setQueryData(queryKey, previousData);
+    },
   });
 
+  // ~~~ Scrolling
+
+  const containerRef = useRef<HTMLElement>(null);
+
+  // Scroll into view for first page
+  useEffect(() => {
+    if (!containerRef.current?.lastChild) return;
+    if (!data) return;
+    if (data.pages.length > 1) return;
+
+    (containerRef.current.lastChild as HTMLElement).scrollIntoView();
+  }, [data]);
+
   const reachedFinalPage = useMemo(() => {
-    console.log(data);
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
-  const fetchNextPageOnClick = (e: any) => {
-    e.preventDefault();
-    if (!reachedFinalPage) fetchNextPage();
-  };
+  const onScroll = useCallback(() => {
+    if (isFetching) return;
+    if (reachedFinalPage) return;
+    if (!containerRef.current) return;
+
+    const { offsetTop, getClientRects } = containerRef.current;
+    const { top } = getClientRects()[0];
+
+    const hasReachedTop = top === offsetTop;
+
+    if (!hasReachedTop) return;
+
+    fetchNextPage();
+  }, [isFetching, reachedFinalPage, containerRef, fetchNextPage]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [onScroll]);
+
+  // ~~~ Form logic
 
   const submitLogic = (textEl: HTMLTextAreaElement) => {
     sendMessageMutation.mutate(textEl.value);
-    console.log(textEl.value);
     textEl.value = "";
   };
 
@@ -91,16 +168,13 @@ const Melding = () => {
     }
   };
 
-  console.log(data?.pages.at(-1)?.last);
+  // ~~~ Painting
 
-  // set scrolltop on history container to last item position when implementing scroll
-  // div.scrollTop = div.scrollHeight?
-  console.log(data);
-  console.log(error);
+  console.log(data && data.pages);
 
-  const messages = useMemo(() => {
-    return data?.pages
-      .map((page) =>
+  const messages = useMemo(
+    () =>
+      data?.pages.map((page) =>
         page?.content?.map((message) => (
           <article
             key={message.createdAt}
@@ -111,16 +185,27 @@ const Melding = () => {
             <p>{message.content}</p>
           </article>
         ))
-      )
-      .reverse();
-  }, [data]);
+      ),
+    [data, dataUpdatedAt]
+  );
+
+  const spinner = useMemo(() => {
+    if (!isInitialLoading) return null;
+    return <p>Loading...</p>;
+  }, [isInitialLoading]);
+
+  const errorMessage = useMemo(() => {
+    if (!error) return null;
+    if (parseInt(error.message) === 404)
+      return <p>Send din første melding til {recipientUsername}</p>;
+    return "Her har det skjedd en feil";
+  }, [error]);
 
   return (
     <div className="user-chat">
-      <section className="user-chat__history">
-        {isInitialLoading ? "Loading gif" : error ? "Error" : <>{messages}</>}
+      <section className="user-chat__history" ref={containerRef}>
+        {spinner ?? errorMessage ?? messages}
       </section>
-      <button onPointerUp={fetchNextPageOnClick}>Next Page</button>
       <form
         className="user-chat__compose"
         spellCheck={false}

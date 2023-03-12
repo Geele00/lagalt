@@ -14,14 +14,18 @@ export const fetchChats = async (
   });
 
   if (!res.ok) {
-    throw new Error(res.statusText);
+    throw Error(res.statusText);
   }
 
   return res.json();
 };
 
-export const sendChatMessage = (body: SendMessage, token: string) =>
-  fetchChats({
+export const sendChatMessageReq = async (
+  body: SendMessage,
+  token: string
+): Promise<IChatMessagePage[]> => {
+  const res = await fetch(`${endpoint}`, {
+    ...defaultOptions,
     method: "POST",
     body: JSON.stringify(body),
     headers: {
@@ -29,3 +33,12 @@ export const sendChatMessage = (body: SendMessage, token: string) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!res.ok) {
+    return Promise.reject(new Error(res.statusText));
+  }
+
+  // console.log(res);
+
+  return res.json();
+};

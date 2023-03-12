@@ -17,7 +17,6 @@ public class Chat {
   private Integer chatId;
 
   @ManyToMany(cascade = CascadeType.ALL)
-  // @JoinColumn(name = "user", nullable = false)
   @JoinTable(
       name = "users_chats",
       joinColumns = {@JoinColumn(name = "chat_id")},

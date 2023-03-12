@@ -6,11 +6,10 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
     <section className="filter">
       <button
         className="filter__header-toggle"
-        onPointerUp={() =>
-          toggleOverlay({ overlay: "filter", action: "toggle" })
-        }
+        onPointerUp={() => toggleOverlay({ overlay: "filter", type: "toggle" })}
+        title="Filter"
       >
-        <span>Filter</span>
+        {/* <span>Filter</span> */}
         <i></i>
       </button>
 
@@ -19,7 +18,7 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
           className="filter__body-toggle"
           role="Exit filter menu"
           onPointerUp={() =>
-            toggleOverlay({ overlay: "filter", action: "close" })
+            toggleOverlay({ overlay: "filter", type: "close" })
           }
         />
         <div className="filter-main">
