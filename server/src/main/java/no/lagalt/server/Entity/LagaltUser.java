@@ -50,16 +50,10 @@ public class LagaltUser {
 
   @OneToOne private Country country;
 
-  // private Enum roles;
-
   @Column(length = 510)
   private String bio;
 
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  @JoinTable(
-      name = "users_histories",
-      joinColumns = {@JoinColumn(name = "user_id")},
-      inverseJoinColumns = {@JoinColumn(name = "history_id")})
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lagaltUser")
   private History history;
 
   @ManyToMany(fetch = FetchType.LAZY)

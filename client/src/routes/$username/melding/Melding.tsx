@@ -44,6 +44,7 @@ const Melding = () => {
     dataUpdatedAt,
   } = useInfiniteQuery<IChatMessagePage, Error>({
     queryKey,
+    refetchInterval: 3000,
   });
 
   const sendMessageMutation = useMutation({
@@ -83,9 +84,7 @@ const Melding = () => {
             createdAt: new Date().toISOString(),
           };
 
-          prevCopy.pages[prevCopy.pages.length - 1].content.unshift(
-            optimisticMsg
-          );
+          prevCopy.pages[prevCopy.pages.length - 1].content.push(optimisticMsg);
 
           return prevCopy;
         }
@@ -169,8 +168,6 @@ const Melding = () => {
   };
 
   // ~~~ Painting
-
-  console.log(data && data.pages);
 
   const messages = useMemo(
     () =>
