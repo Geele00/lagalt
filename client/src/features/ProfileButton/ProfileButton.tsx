@@ -5,7 +5,8 @@ import "./ProfileButton.style.scss";
 export const ProfileButton = () => {
   const { signOut, authState } = useAuth();
 
-  const isSignedIn = authState.type === "user" && "signed-in";
+  const isSignedIn =
+    !!authState.username && authState.username !== "anon" && "signed-in";
 
   return (
     <Link

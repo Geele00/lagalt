@@ -5,12 +5,6 @@ values ('test', 'test@test.com', 'Abbas', 'Shihab', 0,'user1', '06-27-1994', '06
        ('test', 'test@test.com', 'Geele', 'Egal', 0,'user4', '01-01-2000', '01-01-2000', 1, 'tempUID4'),
        ('Anonymous user', 'anon@lagalt.no', 'Anon', 'NotLoggedIn', 0, 'anon', '01-01-2000', '01-01-2000', 1, 'rEQcRBFc4NNsKwvhOJVyENoMio72'),
        ('test', 'test@test.com', 'Testuser', '2', 1,'testuser2', '01-01-2000', '01-01-2000', 1, 'tempUID5');
-
-SELECT u.user_id from lagalt_user u where user_name like weskeiser,
-INSERT INTO users_histories(history_id, user_id)
-values ('1', u.user_id);
-
-
 INSERT INTO skill(added_by, name)
 VALUES (0, 'Frontend'),
        (0, 'Html'),

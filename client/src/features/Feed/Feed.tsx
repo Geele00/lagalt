@@ -22,13 +22,15 @@ const newProject = (title: string) => {
 const Feed = () => {
   const { authState } = useAuth();
 
+  const queryKey = [
+    `/feed?size=${pageSize}&sort=createdAt,desc`,
+    authState,
+    "/projects",
+  ];
+
   const { isFetching, data, error, fetchNextPage, isInitialLoading } =
     useInfiniteQuery<IProjectsPage>({
-      queryKey: [
-        `/feed?size=${pageSize}&sort=createdAt`,
-        authState,
-        "/projects",
-      ],
+      queryKey,
       onError: (err) => {
         console.log(err);
       },
@@ -52,7 +54,6 @@ const Feed = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const reachedFinalPage = useMemo(() => {
-    //console.log(data);
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
@@ -96,11 +97,7 @@ const Feed = () => {
     },
     onSuccess: () => {
       //queryClient.invalidateQueries(["/feed"]);
-      queryClient.invalidateQueries([
-        `?size=${pageSize}&sort=createdAt`,
-        authState,
-        "/projects",
-      ]);
+      queryClient.invalidateQueries(queryKey);
     },
     onError: (err) => {
       console.log(err);

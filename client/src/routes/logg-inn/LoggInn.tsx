@@ -12,7 +12,7 @@ const LoggInn = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    if (authState.type === "user") nav({ to: "/" });
+    if (authState.username && authState.username !== "anon") nav({ to: "/" });
   }, [authState]);
 
   const onSubmit = (e: any) => {

@@ -5,6 +5,7 @@ import { Menu } from "src/features/Menu/Menu";
 import { Filter } from "src/features/Filter/Filter";
 import { useEffect, useReducer } from "react";
 import { overlayReducer } from "./Header.helpers";
+import { RouterProvider, useRouter } from "@tanstack/react-router";
 
 export const Header = () => {
   const [activeOverlay, toggleOverlay] = useReducer(overlayReducer, null);

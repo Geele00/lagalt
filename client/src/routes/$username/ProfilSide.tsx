@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { syncBuiltinESMExports } from "module";
 import { useEffect } from "react";
 import { fetchUsers } from "src/api/v1/users/users";
 import { useAuth } from "src/auth/AuthProvider";
 import "./Profilside.style.scss";
+import { profilePageRoute } from "./routes";
 
 const user = {
   firstName: "Wes",
@@ -29,10 +31,6 @@ const ProfilSide = () => {
   const { authState } = useAuth();
 
   const nav = useNavigate();
-
-  useEffect(() => {
-    if (authState.type === "anon") nav({ to: "/logg-inn" });
-  }, [authState]);
 
   const { data } = useQuery({
     queryKey: [`/users`, "users", authState],
@@ -61,7 +59,13 @@ const ProfilSide = () => {
           <figcaption>{`${user.firstName} ${user.lastName}`}</figcaption>
         </figure>
 
-        <Link to="melding" className="profile__header__message-btn">
+        <Link
+          to="/$username/melding"
+          params={{
+            username: "testuser2",
+          }}
+          className="profile__header__message-btn"
+        >
           Send melding
         </Link>
       </header>
