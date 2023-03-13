@@ -1,24 +1,25 @@
 package no.lagalt.server.Service;
 
-import java.util.List;
+import java.util.Set;
 import no.lagalt.server.Dtos.History.UpdateHistoryDto;
 import no.lagalt.server.Dtos.Project.ProjectDto;
+import no.lagalt.server.Dtos.Project.ProjectPreviewDto;
 import no.lagalt.server.Entity.*;
-import no.lagalt.server.Mapper.HistoryMapper;
+import no.lagalt.server.Mapper.ProjectMapper;
+import no.lagalt.server.Mapper.UserMapper;
 import no.lagalt.server.Repository.*;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HistoryService {
 
-  @Autowired private UserService userService;
   @Autowired private UserRepository userRepo;
   @Autowired private HistoryRepo historyRepo;
-  @Autowired private ProjectRepository projectRepo;
-  @Autowired private ProjectService projectService;
-  @Autowired private HistoryMapper historyMapper;
+  @Autowired private ProjectMapper projectMapper;
+  @Autowired private UserMapper userMapper;
 
   private LagaltUser findUserByUid(String uid) throws NotFoundException {
     return userRepo
@@ -34,30 +35,83 @@ public class HistoryService {
     return historyRepo.existsByLagaltUser(user);
   }
 
-  public void save(List<Integer> projectIds, String uid) {
+  private History createHistory(LagaltUser user) {
+    History history = new History();
+    history.setLagaltUser(user);
+    user.setHistory(history);
+    userRepo.saveAndFlush(user);
+
+    return history;
+  }
+
+  public void addToSeen(Page<ProjectPreviewDto> previewPageDto, String uid) {
 
     LagaltUser user = findUserByUid(uid);
-
     History history = user.getHistory();
 
-    // if (history == null) {
-    //  List<Project> newlySeenProjects = projectRepo.findAllById(projectIds);
-    //
-    //  History his = new History();
-    //  his.setLagaltUser(user);
-    //  his.setSeenProjects(newlySeenProjects);
-    //  historyRepo.save(his);
-    //
-    //  return;
-    // }
+    Set<ProjectPreviewDto> previewSetDto = previewPageDto.toSet();
+
+    Set<ProjectDto> newlySeenProjectsDto = projectMapper.previewToDto(previewSetDto);
 
     UpdateHistoryDto updateDto = new UpdateHistoryDto();
 
-    List<ProjectDto> newlySeenProjects = projectService.getAllById(projectIds);
-    updateDto.setSeenProjects(newlySeenProjects);
+    if (history == null) {
+      history = createHistory(user);
+      updateDto.setSeenProjects(newlySeenProjectsDto);
+    } else {
+      var oldHistoryDto = projectMapper.toDto(history.getSeenProjects());
+      newlySeenProjectsDto.addAll(oldHistoryDto);
+    }
 
-    historyMapper.updateHistoryFromDto(updateDto, history);
+    updateDto.setLagaltUser(user);
+    updateDto.setSeenProjects(newlySeenProjectsDto);
 
-    historyRepo.save(history);
+    userMapper.updateHistoryFromDtoByLagaltUser(updateDto, user, history);
+
+    userRepo.saveAndFlush(user);
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 }

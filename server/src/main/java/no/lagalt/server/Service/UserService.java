@@ -22,7 +22,6 @@ public class UserService {
   @Autowired private SkillMapper skillMapper;
 
   @Autowired private ProjectMapper projectMapper;
-  @Autowired private MessageMapper messageMapper;
 
   public boolean validateExists(String username) {
     return userRepo.existsByUsername(username);

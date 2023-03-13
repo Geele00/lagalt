@@ -1,7 +1,7 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +15,14 @@ public class History {
   @Column(nullable = false)
   private int historyId;
 
-  @OneToMany private List<Project> seenProjects;
+  @OneToMany(fetch = FetchType.LAZY)
+  private Set<Project> seenProjects;
 
-  @OneToMany private List<Project> clickedProjects;
+  @OneToMany(fetch = FetchType.LAZY)
+  private Set<Project> clickedProjects;
 
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinTable(
-      name = "users_histories",
-      joinColumns = {@JoinColumn(name = "history_id")},
-      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  @OneToOne(
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
   private LagaltUser lagaltUser;
 }

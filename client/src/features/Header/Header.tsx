@@ -3,7 +3,6 @@ import { ProfileButton } from "src/features/ProfileButton/ProfileButton";
 import { SearchBar } from "src/features/SearchBar/SearchBar";
 import { Menu } from "src/features/Menu/Menu";
 import { Filter } from "src/features/Filter/Filter";
-import { IHeader } from "./types";
 import { useEffect, useReducer } from "react";
 import { overlayReducer } from "./Header.helpers";
 
