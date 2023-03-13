@@ -8,11 +8,4 @@ export const projectRoute = new Route({
   getParentRoute: () => userRoute,
   path: "$projectName",
   component: ProsjektSide,
-
-  onLoad: async () =>
-    queryClient.ensureQueryData({
-      queryKey: ["project"],
-      // queryFn: fetchProjects,
-      queryFn: () => 5,
-    }),
 });

@@ -28,7 +28,7 @@ const Melding = () => {
 
   const queryKey = useMemo(
     () => [
-      `/chats?target=${recipientUsername}&size=${pageSize}&sort=createdAt`,
+      `/chats?target=${recipientUsername}&size=${pageSize}`,
       authState,
       "/chats",
     ],

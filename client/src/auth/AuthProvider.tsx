@@ -19,7 +19,6 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     username: null,
-    type: null,
   });
 
   // useEffect(() => {
@@ -35,9 +34,9 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   // });
   // }, [authState]);
 
-  const signIn: SignIn = (token, username, type = "user") => {
-    setAuthState({ token, username, type });
-    // queryClient.setQueryData(["auth"], { token, username, type });
+  const signIn: SignIn = (token, username) => {
+    setAuthState({ token, username });
+    // queryClient.setQueryData(["auth"], { token, username  });
     // queryClient.invalidateQueries(["auth"]);
   };
 
@@ -46,12 +45,11 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
       user.getIdToken().then((token) => {
         // queryClient.setQueryData(["auth"], {
         //   token,
-        //   username: null,
-        //   type: "anon",
+        //   username: "anon",
         // });
         // queryClient.invalidateQueries(["auth"]);
 
-        setAuthState({ token, username: null, type: "anon" });
+        setAuthState({ token, username: "anon" });
       });
     });
   };
@@ -65,13 +63,11 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
       if (user && !user.isAnonymous) {
-        console.log(user.uid);
         user.getIdToken().then((token) => {
-          setAuthState({ token, username: user.displayName, type: "user" });
+          setAuthState({ token, username: user.displayName });
           // queryClient.setQueryData(["auth"], {
           //   token,
           //   username: user.displayName,
-          //   type: "user",
           // });
           // queryClient.invalidateQueries(["auth"]);
         });

@@ -1,5 +1,6 @@
 import { lazy, Route } from "@tanstack/react-router";
 import { rootRoute } from "src/routes/__root";
+
 export const userRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "$username",

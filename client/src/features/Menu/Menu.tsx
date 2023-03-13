@@ -3,9 +3,19 @@ import { useAuth } from "src/auth/AuthProvider";
 import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
 import { IMenu } from "./types";
+import { useRouter, useRouterContext, useStore } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
+
+  const { state } = useRouterContext();
+
+  useEffect(() => {
+    if (state.status === "pending") {
+      toggleOverlay({ type: "close" });
+    }
+  }, [state]);
 
   return (
     <nav className="main-header__menu" aria-haspopup="menu">
@@ -42,7 +52,9 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
           Min side
         </NavLink>
 
-        {authState.type !== "user" ? (
+        <NavLink to="/">Hjelp</NavLink>
+
+        {!authState.username || authState.username === "auth" ? (
           <>
             <NavLink to="/logg-inn">Logg inn</NavLink>
             <NavLink to="/ny-bruker">Ny bruker</NavLink>
@@ -50,8 +62,6 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         ) : (
           <NavLink to="/logg-ut">Logg ut</NavLink>
         )}
-
-        <NavLink to="/">Hjelp</NavLink>
       </ul>
     </nav>
   );

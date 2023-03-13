@@ -1,5 +1,5 @@
-import { userRoute } from "../routes";
 import { lazy, Route } from "@tanstack/react-router";
+import { userRoute } from "../routes";
 
 export const messageRoute = new Route({
   getParentRoute: () => userRoute,
