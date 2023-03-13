@@ -1,7 +1,7 @@
 import "./NyttProsjekt.scss";
 import { useMutation } from "@tanstack/react-query";
 import { fetchProjects } from "src/api/v1/projects/projects";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth/Auth.Provider";
 import { queryClient } from "src/index";
 import { INewProject } from "src/types/entities/Project";
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 @Service
 public class ProjectService {
@@ -38,14 +39,21 @@ public class ProjectService {
   }
 
   public ProjectDto getById(Integer id) throws NotFoundException {
-    Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
+    Project project =
+        projectRepo
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new NotFoundException("Project with ID of " + id + " not found in database."));
 
     return projectMapper.toDto(project);
   }
 
-  public Page<ProjectPreviewDto> getPage(Pageable pageable, String uid) {
+  public Page<ProjectPreviewDto> getPage(Pageable pageable, String uid) throws NotFoundException {
 
     Page<Project> projectsPage = projectRepo.findAll(pageable);
+
+    if (projectsPage.isEmpty()) throw new NotFoundException("No projects found in database");
 
     return projectsPage.map(
         project -> {

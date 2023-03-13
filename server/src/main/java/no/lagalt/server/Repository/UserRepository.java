@@ -14,5 +14,7 @@ public interface UserRepository extends JpaRepository<LagaltUser, Integer> {
 
   boolean existsByUsername(String userName);
 
+  boolean existsByUid(String uid);
+
   History findHistoryByUid(String uid);
 }

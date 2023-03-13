@@ -1,17 +1,13 @@
 import "./NyBruker.style.scss";
 import { PointerEvent, useRef, useState, useTransition } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "src/auth/AuthProvider";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  updateProfile,
-} from "firebase/auth";
+import { useAuth } from "src/auth/Auth.Provider";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { createDbUser } from "src/api/v1/users/users";
 import NavArrowBtn from "src/components/Button/NavArrowBtn";
 import { AuthForm } from "./Forms/AuthForm";
 import { UserForm } from "./Forms/UserForm";
-import { auth } from "src/auth/firebase/firebase";
+import { auth } from "src/auth/firebase";
 
 // const provider = new GoogleAuthProvider();
 

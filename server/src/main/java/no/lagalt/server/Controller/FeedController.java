@@ -30,18 +30,18 @@ public class FeedController {
 
     Page<ProjectPreviewDto> dtoPage = projectService.getPage(pageable, uid);
 
-    if (dtoPage.getSize() > 0) {
-      historyService.addToSeen(dtoPage, uid);
-    }
+    // if (dtoPage.getSize() > 0) {
+    //  historyService.addToSeen(dtoPage, uid);
+    // }
 
     return dtoPage;
   }
 
-  // void addToSeen(Page<ProjectPreviewDto> previewPageDto, Authentication auth) throws
-  // NotFoundException {
+  // void addToSeen(Page<ProjectPreviewDto> previewPageDto, Authentication auth)
+  //    throws NotFoundException {
   //  String uid = auth.getName();
   //
-  // historyService.addToSeen(dtoPage, uid);
+  //  historyService.addToSeen(previewPageDto, uid);
   // }
 
   void addToClicked(Integer projectId, Authentication auth) throws NotFoundException {

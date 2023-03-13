@@ -1,11 +1,10 @@
 import "./Header.style.scss";
-import { ProfileButton } from "src/features/ProfileButton/ProfileButton";
 import { SearchBar } from "src/features/SearchBar/SearchBar";
-import { Menu } from "src/features/Menu/Menu";
 import { Filter } from "src/features/Filter/Filter";
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { overlayReducer } from "./Header.helpers";
-import { RouterProvider, useRouter } from "@tanstack/react-router";
+import { ProfileButton } from "./ProfileButton/ProfileButton";
+import { Menu } from "./Menu/Menu";
 
 export const Header = () => {
   const [activeOverlay, toggleOverlay] = useReducer(overlayReducer, null);

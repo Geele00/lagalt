@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth/Auth.Provider";
 import "./ProfileButton.style.scss";
 
 export const ProfileButton = () => {

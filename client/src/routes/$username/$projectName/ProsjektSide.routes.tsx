@@ -1,6 +1,5 @@
 import { Route } from "@tanstack/react-router";
-import { queryClient } from "src/index";
-import { userRoute } from "../routes";
+import { userRoute } from "../ProfilSide.routes";
 import { ProsjektSide } from "./ProsjektSide";
 
 // Project

@@ -1,16 +1,16 @@
 package no.lagalt.server.Dtos.History;
 
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
-import no.lagalt.server.Dtos.Project.ProjectDto;
 import no.lagalt.server.Entity.LagaltUser;
+import no.lagalt.server.Entity.Project;
 
 @Data
 public class UpdateHistoryDto {
 
   private LagaltUser lagaltUser;
 
-  private Set<ProjectDto> seenProjects;
+  private List<Project> seenProjects;
 
-  private Set<ProjectDto> clickedProjects;
+  private List<Project> clickedProjects;
 }

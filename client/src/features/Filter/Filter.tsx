@@ -1,5 +1,5 @@
 import "./Filter.style.scss";
-import { IFilter } from "./types";
+import { IFilter } from "./Filter.types";
 
 export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
   return (

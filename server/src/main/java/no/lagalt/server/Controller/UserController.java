@@ -2,6 +2,7 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
   @Autowired private UserService userService;
+  @Autowired private HistoryService historyService;
 
   @Operation(summary = "Get a list of users")
   @GetMapping
@@ -43,12 +45,6 @@ public class UserController {
     return userService.getAll();
   }
 
-  @Operation(summary = "Get one user by ID")
-  @GetMapping("{id}")
-  public UserDto getOneById(@PathVariable Integer id) throws NotFoundException {
-    return userService.getById(id);
-  }
-
   @Operation(summary = "Delete one user by ID")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
@@ -59,10 +55,7 @@ public class UserController {
   @Operation(summary = "Create new user")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  UserDto createUser(@RequestBody NewUserDto newUserDto, Authentication auth)
-      throws AlreadyExistsException {
-
-    System.out.println(auth);
+  UserDto createUser(@RequestBody NewUserDto newUserDto) throws AlreadyExistsException {
 
     if (userService.validateExists(newUserDto.getUsername()))
       throw new AlreadyExistsException(
@@ -72,10 +65,13 @@ public class UserController {
   }
 
   @Operation(summary = "Update a user")
-  @PutMapping("{id}")
-  UserDto updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable Integer id)
+  @PutMapping
+  UserDto updateUser(@RequestBody UpdateUserDto updateUserDto, Authentication auth)
       throws NotFoundException {
-    if (!userService.validateExists(id)) throw new NotFoundException(id);
+
+    String uid = auth.getName();
+
+    if (!userService.validateExistsByUid(uid)) throw new NotFoundException(uid);
 
     UserDto savedUser = userService.save(updateUserDto);
 
@@ -85,25 +81,41 @@ public class UserController {
   // ~~~ Skills
 
   @Operation(summary = "Get list of skills from user")
-  @GetMapping("{userId}/skills")
-  List<SkillDto> getSkills(@PathVariable Integer userId) {
-    return userService.getSkills(userId);
+  @GetMapping("skills")
+  List<SkillDto> getSkills(Authentication auth) {
+    String uid = auth.getName();
+    return userService.getSkillsByUid(uid);
   }
 
   @Operation(summary = "Set skills for user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PostMapping("{username}/skills")
-  public void setSkills(@RequestBody List<Integer> idList, @PathVariable String username)
+  @PostMapping("skills")
+  public void setSkills(@RequestBody List<Integer> idList, Authentication auth)
       throws NotFoundException {
-
-    userService.setSkills(idList, username);
+    String uid = auth.getName();
+    userService.setSkillsByUid(idList, uid);
   }
 
   // ~~~ Projects
 
   @Operation(summary = "Get projects from user")
-  @GetMapping("{userId}/projects")
-  List<ProjectDto> getProjects(@PathVariable Integer userId) {
-    return userService.getProjects(userId);
+  @GetMapping("projects")
+  List<ProjectDto> getProjects(Authentication auth) {
+    String uid = auth.getName();
+
+    return userService.getProjectsByUid(uid);
+  }
+
+  // ~~~ History
+
+  @Operation(summary = "Get projects from user")
+  @PostMapping("history")
+  public void addToHistory(ArrayList<Integer> projectIds, Authentication auth) {
+    System.out.println(567);
+    String uid = auth.getName();
+
+    System.out.println(projectIds);
+
+    historyService.addToSeen(projectIds, uid);
   }
 }

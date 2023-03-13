@@ -23,15 +23,21 @@ public class UserService {
 
   @Autowired private ProjectMapper projectMapper;
 
+  @Autowired private HistoryService historyService;
+
   public boolean validateExists(String username) {
     return userRepo.existsByUsername(username);
+  }
+
+  public boolean validateExistsByUid(String uid) {
+    return userRepo.existsByUid(uid);
   }
 
   public boolean validateExists(Integer id) {
     return userRepo.existsById(id);
   }
 
-  public LagaltUser findById(Integer id) throws NotFoundException {
+  private LagaltUser findById(Integer id) throws NotFoundException {
     return userRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
   }
 
@@ -112,14 +118,14 @@ public class UserService {
 
   // ~~~ Skills
 
-  public List<SkillDto> getSkills(Integer userId) throws NotFoundException {
-    LagaltUser user = userRepo.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+  public List<SkillDto> getSkillsByUid(String uid) throws NotFoundException {
+    LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new NotFoundException(uid));
     return skillMapper.toDto(user.getSkills());
   }
 
-  public void setSkills(List<Integer> idList, String username) throws NotFoundException {
+  public void setSkillsByUid(List<Integer> idList, String uid) throws NotFoundException {
 
-    LagaltUser user = findByUsername(username);
+    LagaltUser user = findByUid(uid);
 
     List<Skill> newSkills = skillRepo.findAllById(idList);
 
@@ -130,26 +136,10 @@ public class UserService {
 
   // ~~~ Projects
 
-  public List<ProjectDto> getProjects(Integer userId) {
-    List<Project> projects = findById(userId).getProjects();
+  public List<ProjectDto> getProjectsByUid(String uid) {
+    List<Project> projects = findByUid(uid).getProjects();
 
     return projectMapper.toDto(projects);
-  }
-
-  public UserDto returnOwnerIfNewProject(Integer ownerId, String projectTitle)
-      throws AlreadyExistsException {
-    LagaltUser owner = findById(ownerId);
-
-    List<Project> existingProjects = owner.getProjects();
-
-    boolean alreadyExists =
-        existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
-
-    if (alreadyExists)
-      throw new AlreadyExistsException(
-          "Project with title \"" + projectTitle + "\" already exists on your account.");
-
-    return userMapper.toDto(owner);
   }
 
   //

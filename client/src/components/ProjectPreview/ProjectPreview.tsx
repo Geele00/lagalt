@@ -1,6 +1,6 @@
 import "./ProjectPreview.style.scss";
-import { IProjectPreview } from "./types";
 import { Link } from "@tanstack/react-router";
+import { IProjectPreview } from "./ProjectPreview.types";
 
 export const ProjectPreview = ({
   title,
