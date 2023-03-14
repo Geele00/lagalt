@@ -1,14 +1,12 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { INewProject } from "src/types/entities/Project";
-import { fetchProjects } from "src/api/v1/projects/projects";
+import { createProject } from "src/api/v1/projects/projects";
 import { queryClient } from "src/index";
 import { IProjectsPage } from "src/types/entities/Project";
-
-const pageSize = 20;
 
 const newProject = (title: string) => {
   return {
@@ -19,18 +17,46 @@ const newProject = (title: string) => {
   };
 };
 
+const pageSize = 20;
+
+const apiUri = import.meta.env.VITE_API_V1_URL;
+
 const Feed = () => {
   const { authState } = useAuth();
 
-  const queryKey = [
-    `/feed?size=${pageSize}&sort=createdAt,desc`,
-    authState,
-    "/projects",
-  ];
+  const queryKey = [`/feed`, authState, "/projects"];
+
+  // ~~~ Query logic
 
   const { isFetching, data, error, fetchNextPage, isInitialLoading } =
     useInfiniteQuery<IProjectsPage>({
       queryKey,
+
+      meta: { params: `?size=${pageSize}&sort=createdAt,desc` },
+
+      onSuccess: async (res) => {
+        const lastPage = res.pages.at(-1);
+
+        if (!lastPage) return;
+
+        const projectIds = lastPage?.content.map(
+          (project) => project.projectId
+        );
+
+        console.log(projectIds);
+
+        fetch(`${apiUri}/users/history`, {
+          method: "POST",
+          body: JSON.stringify(projectIds),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authState.token}`,
+          },
+        });
+      },
+
+      //meta: { type: "infinite" },
+
       onError: (err) => {
         console.log(err);
       },
@@ -57,9 +83,31 @@ const Feed = () => {
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
+  const newProjectMutation = useMutation({
+    mutationFn: (newProject: INewProject) => {
+      const { token } = authState;
+      if (!token) throw new Error("No token error blabla");
+      return createProject(newProject, token);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const makeDummies = () => {
+    for (let i = 0; i < 100; i++) {
+      newProjectMutation.mutate(newProject("New project title " + i));
+    }
+  };
+
+  // ~~~ Scrolling
+
   const onScroll = useCallback(() => {
-    if (isFetching) return;
-    if (reachedFinalPage) return;
+    if (!!isFetching) return;
+    if (!!reachedFinalPage) return;
     if (!containerRef.current?.lastChild) return;
 
     const lastChild = containerRef.current.lastChild as HTMLLIElement;
@@ -78,37 +126,6 @@ const Feed = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, [onScroll]);
-
-  const newProjectMutation = useMutation({
-    mutationFn: (newProject: INewProject) => {
-      const { token } = authState;
-
-      if (!token) throw new Error("No token error blabla");
-
-      return fetchProjects({
-        method: "POST",
-        body: JSON.stringify(newProject),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          // filterOpts
-        },
-      });
-    },
-    onSuccess: () => {
-      //queryClient.invalidateQueries(["/feed"]);
-      queryClient.invalidateQueries(queryKey);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const makeDummies = () => {
-    for (let i = 0; i < 100; i++) {
-      newProjectMutation.mutate(newProject("New project title " + i));
-    }
-  };
 
   return (
     <>

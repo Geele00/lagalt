@@ -19,8 +19,20 @@ export const fetchProjects = async (
   return res.json();
 };
 
-export const createProject = (project: INewProject) =>
-  fetchProjects({
+export const createProject = async (newProject: INewProject, token: string) => {
+  const res = await fetch(`${projectsUri}`, {
+    ...defaultOptions,
     method: "POST",
-    body: JSON.stringify(project),
+    body: JSON.stringify(newProject),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
+
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
+
+  return res.json();
+};

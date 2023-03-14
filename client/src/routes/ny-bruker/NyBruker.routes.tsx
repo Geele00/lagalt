@@ -1,5 +1,4 @@
 import { lazy, Route } from "@tanstack/react-router";
-import { queryClient } from "src/index";
 import { rootRoute } from "src/routes/__root";
 
 export const signupRoute = new Route({

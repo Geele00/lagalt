@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { fetchProjects } from "src/api/v1/projects/projects";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import "./ProsjektSide.style.scss";
 

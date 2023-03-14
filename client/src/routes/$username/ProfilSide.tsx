@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { syncBuiltinESMExports } from "module";
-import { useEffect } from "react";
 import { fetchUsers } from "src/api/v1/users/users";
-import { useAuth } from "src/auth/AuthProvider";
+import { useAuth } from "src/auth/Auth.Provider";
 import "./Profilside.style.scss";
-import { profilePageRoute } from "./routes";
 
 const user = {
   firstName: "Wes",

@@ -1,5 +1,5 @@
-import { userRoute } from "../routes";
 import { lazy, Route } from "@tanstack/react-router";
+import { userRoute } from "../ProfilSide.routes";
 
 export const newProjectRoute = new Route({
   getParentRoute: () => userRoute,

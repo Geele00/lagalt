@@ -7,8 +7,8 @@ import {
   useReducer,
   useState,
 } from "react";
-import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./types";
-import { auth } from "./firebase/firebase";
+import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./Auth.types";
+import { auth } from "./firebase";
 import { signInAnonymously } from "firebase/auth";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "src/routes/router";
@@ -62,7 +62,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
-      if (user && !user.isAnonymous) {
+      if (!!user) {
         user.getIdToken().then((token) => {
           setAuthState({ token, username: user.displayName });
           // queryClient.setQueryData(["auth"], {

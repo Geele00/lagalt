@@ -4,23 +4,7 @@ import { SendMessage } from "src/types/entities/Message";
 
 const endpoint = import.meta.env.VITE_API_V1_URL + "/chats";
 
-export const fetchChats = async (
-  fetchOptions?: RequestInit,
-  params: string = ""
-): Promise<IChatMessagePage> => {
-  const res = await fetch(`${endpoint}${params}`, {
-    ...defaultOptions,
-    ...fetchOptions,
-  });
-
-  if (!res.ok) {
-    throw Error(res.statusText);
-  }
-
-  return res.json();
-};
-
-export const sendChatMessageReq = async (
+export const sendChatMessageFetch = async (
   body: SendMessage,
   token: string
 ): Promise<IChatMessagePage[]> => {
@@ -37,8 +21,6 @@ export const sendChatMessageReq = async (
   if (!res.ok) {
     return Promise.reject(new Error(res.statusText));
   }
-
-  // console.log(res);
 
   return res.json();
 };

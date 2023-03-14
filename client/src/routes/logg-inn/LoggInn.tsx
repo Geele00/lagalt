@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect } from "react";
-import { useAuth } from "src/auth/AuthProvider";
-import { auth } from "src/auth/firebase/firebase";
+import { useAuth } from "src/auth/Auth.Provider";
+import { auth } from "src/auth/firebase";
 import { Input } from "src/components/Input/Input";
 import "./LoggInn.style.scss";
 
@@ -12,7 +12,8 @@ const LoggInn = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    if (authState.username && authState.username !== "anon") nav({ to: "/" });
+    const { username } = authState;
+    if (!!username && username !== "anon") nav({ to: "/" });
   }, [authState]);
 
   const onSubmit = (e: any) => {

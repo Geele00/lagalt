@@ -1,10 +1,10 @@
 import "./Menu.style.scss";
-import { useAuth } from "src/auth/AuthProvider";
 import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
-import { IMenu } from "./types";
-import { useRouter, useRouterContext, useStore } from "@tanstack/react-router";
+import { useRouterContext } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { IMenu } from "./Menu.types";
+import { useAuth } from "src/auth/Auth.Provider";
 
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
@@ -13,7 +13,7 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
 
   useEffect(() => {
     if (state.status === "pending") {
-      toggleOverlay({ type: "close" });
+      toggleOverlay({ type: "close", overlay: null });
     }
   }, [state]);
 
@@ -54,7 +54,7 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
 
         <NavLink to="/">Hjelp</NavLink>
 
-        {!authState.username || authState.username === "auth" ? (
+        {!authState.username || authState.username === "anon" ? (
           <>
             <NavLink to="/logg-inn">Logg inn</NavLink>
             <NavLink to="/ny-bruker">Ny bruker</NavLink>

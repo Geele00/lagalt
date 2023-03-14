@@ -1,17 +1,13 @@
 import "./NyBruker.style.scss";
 import { PointerEvent, useRef, useState, useTransition } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "src/auth/AuthProvider";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  updateProfile,
-} from "firebase/auth";
+import { useAuth } from "src/auth/Auth.Provider";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { createDbUser } from "src/api/v1/users/users";
 import NavArrowBtn from "src/components/Button/NavArrowBtn";
 import { AuthForm } from "./Forms/AuthForm";
 import { UserForm } from "./Forms/UserForm";
-import { auth } from "src/auth/firebase/firebase";
+import { auth } from "src/auth/firebase";
 
 // const provider = new GoogleAuthProvider();
 
@@ -19,8 +15,6 @@ const NyBruker = () => {
   const { authState, signIn } = useAuth();
   const nav = useNavigate();
   const userFormRef = useRef<HTMLFormElement>(null);
-
-  const [isPending, startTransition] = useTransition();
 
   const [stage, setStage] = useState(1);
 
@@ -32,14 +26,10 @@ const NyBruker = () => {
     switch (direction) {
       case "next":
         // validate
-        startTransition(() => {
-          setStage((prev) => prev + 1);
-        });
+        setStage((prev) => prev + 1);
         break;
       case "prev":
-        startTransition(() => {
-          setStage((prev) => prev - 1);
-        });
+        setStage((prev) => prev - 1);
         break;
     }
   };
@@ -118,7 +108,6 @@ const NyBruker = () => {
         <NavArrowBtn onPointerUp={navigateForm} data-direction="prev" />
         <NavArrowBtn onPointerUp={navigateForm} data-direction="next" />
       </nav>
-      {isPending && <p>Loading state logic</p>}
       {stage === 1 && <UserForm ref={userFormRef} />}
       {stage === 2 && <AuthForm />}
     </div>

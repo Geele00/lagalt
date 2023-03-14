@@ -1,12 +1,10 @@
 import "./assets/index.scss";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { router } from "./routes/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "./auth/AuthProvider";
-import { RouterProvider } from "@tanstack/react-router";
 import { defaultOptions } from "./api/v1/defaults";
-import { IAuthState } from "./auth/types";
+import { IAuthState } from "./auth/Auth.types";
+import { AuthProvider } from "./auth/Auth.Provider";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
@@ -19,14 +17,15 @@ export const queryClient = new QueryClient({
       refetchOnReconnect: true,
 
       queryFn: async ({ queryKey, pageParam, meta }) => {
-        //     const authState = queryClient.getQueryData(["auth"]) || null;
         const [qKey, queryAuthState] = queryKey;
+
         const { token } = queryAuthState as IAuthState;
         if (!token) return;
 
+        const metaParams = meta?.params ?? "";
         const pageQuery = pageParam ? `&page=${pageParam}` : "";
 
-        const res = await fetch(`${apiUri}${qKey}${pageQuery}`, {
+        const res = await fetch(`${apiUri}${qKey}${metaParams}${pageQuery}`, {
           ...defaultOptions,
           headers: {
             "Content-Type": "application/json",
@@ -47,16 +46,6 @@ export const queryClient = new QueryClient({
 
         return parseInt(lastPage.number) + 1;
       },
-      // getNextPageParam: (lastPage: any) => {
-      //   return parseInt(lastPage.number) + 1;
-      // },
-      // queryFn: async ({ queryKey }) => {
-      //   const res = await fetch(`${apiUrl}${queryKey[0]}`);
-      //   if (!res.ok) {
-      //     throw new Error("Network error.");
-      //   }
-      //   return res.json();
-      // },
     },
   },
 });
@@ -72,5 +61,3 @@ if (!rootElement.innerHTML) {
     </StrictMode>
   );
 }
-
-/* <ReactQueryDevtools position="bottom-right" initialIsOpen={false} /> */

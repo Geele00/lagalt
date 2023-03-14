@@ -1,3 +1,4 @@
+import "./Melding.style.scss";
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -12,11 +13,10 @@ import {
   useMemo,
   useRef,
 } from "react";
-import { sendChatMessageReq } from "src/api/v1/chats/Chats";
-import { useAuth } from "src/auth/AuthProvider";
+import { sendChatMessageFetch } from "src/api/v1/chats/Chats";
+import { useAuth } from "src/auth/Auth.Provider";
 import { queryClient } from "src/index";
 import { IChatMessagePage } from "src/types/entities/Chat";
-import "./Melding.style.scss";
 
 const pageSize = 20;
 
@@ -27,11 +27,7 @@ const Melding = () => {
   // ~~~ Query logic
 
   const queryKey = useMemo(
-    () => [
-      `/chats?target=${recipientUsername}&size=${pageSize}`,
-      authState,
-      "/chats",
-    ],
+    () => [`/chats`, authState, recipientUsername],
     [authState, recipientUsername]
   );
 
@@ -44,6 +40,7 @@ const Melding = () => {
     dataUpdatedAt,
   } = useInfiniteQuery<IChatMessagePage, Error>({
     queryKey,
+    meta: { params: `?target=${recipientUsername}&size=${pageSize}` },
     refetchInterval: 3000,
   });
 
@@ -54,7 +51,7 @@ const Melding = () => {
       if (!token) throw new Error("No token error blabla");
       if (!recipientUsername) throw new Error("No recipient found");
 
-      return sendChatMessageReq({ content, recipientUsername }, token);
+      return sendChatMessageFetch({ content, recipientUsername }, token);
     },
     onMutate: async (newMessageText) => {
       await queryClient.cancelQueries({
@@ -109,8 +106,7 @@ const Melding = () => {
   // Scroll into view for first page
   useEffect(() => {
     if (!containerRef.current?.lastChild) return;
-    if (!data) return;
-    if (data.pages.length > 1) return;
+    if (!data || data.pages.length > 1) return;
 
     (containerRef.current.lastChild as HTMLElement).scrollIntoView();
   }, [data]);
@@ -120,18 +116,20 @@ const Melding = () => {
   }, [data]);
 
   const onScroll = useCallback(() => {
-    if (isFetching) return;
-    if (reachedFinalPage) return;
-    if (!containerRef.current) return;
+    switch (false) {
+      case isFetching:
+      case reachedFinalPage:
+      case !containerRef.current:
+        const { offsetTop, getClientRects } =
+          containerRef.current as HTMLElement;
+        const { top } = getClientRects()[0];
 
-    const { offsetTop, getClientRects } = containerRef.current;
-    const { top } = getClientRects()[0];
+        const hasReachedTop = top === offsetTop;
 
-    const hasReachedTop = top === offsetTop;
+        if (!hasReachedTop) return;
 
-    if (!hasReachedTop) return;
-
-    fetchNextPage();
+        fetchNextPage();
+    }
   }, [isFetching, reachedFinalPage, containerRef, fetchNextPage]);
 
   useEffect(() => {

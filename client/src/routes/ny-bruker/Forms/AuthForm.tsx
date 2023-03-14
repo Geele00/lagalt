@@ -1,7 +1,7 @@
 import "./Authform.style.scss";
 import Button from "src/components/Button/Button";
 import { Input } from "src/components/Input/Input";
-import { AuthFormEvent } from "./types";
+import { AuthFormEvent } from "./AuthForms.types";
 
 export const AuthForm = () => {
   const onSubmit = async (e: AuthFormEvent) => {
