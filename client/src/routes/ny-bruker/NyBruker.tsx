@@ -16,8 +16,6 @@ const NyBruker = () => {
   const nav = useNavigate();
   const userFormRef = useRef<HTMLFormElement>(null);
 
-  const [isPending, startTransition] = useTransition();
-
   const [stage, setStage] = useState(1);
 
   const navigateForm = (e: PointerEvent<HTMLButtonElement>) => {
@@ -28,14 +26,10 @@ const NyBruker = () => {
     switch (direction) {
       case "next":
         // validate
-        startTransition(() => {
-          setStage((prev) => prev + 1);
-        });
+        setStage((prev) => prev + 1);
         break;
       case "prev":
-        startTransition(() => {
-          setStage((prev) => prev - 1);
-        });
+        setStage((prev) => prev - 1);
         break;
     }
   };
@@ -114,7 +108,6 @@ const NyBruker = () => {
         <NavArrowBtn onPointerUp={navigateForm} data-direction="prev" />
         <NavArrowBtn onPointerUp={navigateForm} data-direction="next" />
       </nav>
-      {isPending && <p>Loading state logic</p>}
       {stage === 1 && <UserForm ref={userFormRef} />}
       {stage === 2 && <AuthForm />}
     </div>
