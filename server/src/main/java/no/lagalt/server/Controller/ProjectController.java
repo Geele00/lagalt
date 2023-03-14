@@ -50,9 +50,12 @@ public class ProjectController {
   @Operation(summary = "Create new project")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ProjectDto createProject(@RequestBody NewProjectDto newProjectDto) throws AlreadyExistsException {
+  ProjectDto createProject(@RequestBody NewProjectDto newProjectDto, Authentication auth)
+      throws AlreadyExistsException {
 
-    return projectService.createProject(newProjectDto);
+    String uid = auth.getName();
+
+    return projectService.createProject(newProjectDto, uid);
   }
 
   @Operation(summary = "Delete a project")
