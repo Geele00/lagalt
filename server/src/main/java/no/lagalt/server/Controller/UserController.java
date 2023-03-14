@@ -45,6 +45,12 @@ public class UserController {
     return userService.getAll();
   }
 
+  @Operation(summary = "Check if a username exists in the database")
+  @GetMapping("validate/{username}")
+  boolean validateExistingUsername(@PathVariable String username) {
+    return userService.validateUsernameExists(username);
+  }
+
   @Operation(summary = "Delete one user by ID")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
@@ -57,7 +63,7 @@ public class UserController {
   @PostMapping
   UserDto createUser(@RequestBody NewUserDto newUserDto) throws AlreadyExistsException {
 
-    if (userService.validateExists(newUserDto.getUsername()))
+    if (userService.validateUsernameExists(newUserDto.getUsername()))
       throw new AlreadyExistsException(
           "User with username " + newUserDto.getUsername() + " already exists in the database.");
 
