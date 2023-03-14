@@ -25,7 +25,7 @@ public class UserService {
 
   @Autowired private HistoryService historyService;
 
-  public boolean validateExists(String username) {
+  public boolean validateUsernameExists(String username) {
     return userRepo.existsByUsername(username);
   }
 
