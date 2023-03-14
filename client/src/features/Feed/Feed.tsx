@@ -8,15 +8,6 @@ import { createProject } from "src/api/v1/projects/projects";
 import { queryClient } from "src/index";
 import { IProjectsPage } from "src/types/entities/Project";
 
-const newProject = (title: string) => {
-  return {
-    ownerId: 1,
-    title,
-    description:
-      "Dette er en middels lang prosjektbeskrivelse med tilfeldig innhold. En middels lang prosjektbeskrivelse med tilfeldig innhold er det dette.",
-  };
-};
-
 const pageSize = 20;
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
@@ -54,8 +45,6 @@ const Feed = () => {
           },
         });
       },
-
-      //meta: { type: "infinite" },
 
       onError: (err) => {
         console.log(err);
@@ -97,12 +86,6 @@ const Feed = () => {
     },
   });
 
-  const makeDummies = () => {
-    for (let i = 0; i < 100; i++) {
-      newProjectMutation.mutate(newProject("New project title " + i));
-    }
-  };
-
   // ~~~ Scrolling
 
   const onScroll = useCallback(() => {
@@ -129,7 +112,6 @@ const Feed = () => {
 
   return (
     <>
-      <button onPointerUp={makeDummies}>Dev: Spawn projects</button>
       <div className="feed" role="feed" ref={containerRef}>
         {isInitialLoading ? "Loading gif" : error ? "Error" : <>{feedItems}</>}
       </div>

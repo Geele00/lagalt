@@ -1,6 +1,5 @@
 package no.lagalt.server.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.ProjectDto;
 import no.lagalt.server.Dtos.Skill.SkillDto;
@@ -100,8 +99,6 @@ public class UserService {
 
   public UserDto save(NewUserDto newUserDto) {
     LagaltUser newUser = userMapper.toUser(newUserDto);
-
-    newUser.setCreatedAt(LocalDateTime.now());
 
     LagaltUser savedUser = save(newUser);
 

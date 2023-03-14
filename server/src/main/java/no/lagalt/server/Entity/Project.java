@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter
 @Setter
@@ -17,10 +19,13 @@ public class Project {
   private Integer projectId;
 
   @ManyToOne(
-      fetch = FetchType.LAZY
-      // cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
-      )
-  @JoinColumn(name = "owner", nullable = false)
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "owners_projects",
+      joinColumns = {@JoinColumn(name = "project_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  // @JoinColumn(name = "owner", nullable = false)
   private LagaltUser owner;
 
   @Column(nullable = false)
@@ -50,6 +55,7 @@ public class Project {
   private MessageBoard messageBoard;
 
   @Column(nullable = false)
+  @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;

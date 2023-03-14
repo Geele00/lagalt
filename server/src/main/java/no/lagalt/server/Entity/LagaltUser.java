@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import no.lagalt.server.Utils.Enum.Gender;
 import no.lagalt.server.Utils.Enum.ProfileStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter
 @Setter
@@ -35,26 +37,37 @@ public class LagaltUser {
   @Column(nullable = false)
   private LocalDate dob;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @Column(nullable = false)
+  private String email;
+
+  @Column(nullable = false)
+  private Gender gender;
+
+  @ManyToOne private Country country;
+
+  @ManyToOne private City city;
+
+  @Column(length = 510)
+  private String bio;
+
+  @Column(nullable = false)
+  private ProfileStatus profileStatus;
+
+  @Column(nullable = false)
+  @DateTimeFormat(iso = ISO.DATE_TIME)
+  private LocalDateTime createdAt;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lagaltUser")
+  private History history = new History();
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinTable(
       name = "users_chats",
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "chat_id")})
   private List<Chat> chats;
-
-  @Column(nullable = false)
-  private String email;
-
-  // @Column(nullable = false)
-  private Gender gender;
-
-  @OneToOne private Country country;
-
-  @Column(length = 510)
-  private String bio;
-
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lagaltUser")
-  private History history;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -70,12 +83,10 @@ public class LagaltUser {
       inverseJoinColumns = {@JoinColumn(name = "notification_id")})
   private List<Notification> notifications;
 
-  @OneToMany(mappedBy = "owner")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "owners_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
   private List<Project> projects;
-
-  @Column(nullable = false)
-  private ProfileStatus profileStatus;
-
-  @Column(nullable = false)
-  private LocalDateTime createdAt;
 }

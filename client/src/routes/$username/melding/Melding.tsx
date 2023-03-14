@@ -41,7 +41,7 @@ const Melding = () => {
   } = useInfiniteQuery<IChatMessagePage, Error>({
     queryKey,
     meta: { params: `?target=${recipientUsername}&size=${pageSize}` },
-    refetchInterval: 3000,
+    // refetchInterval: 3000,
   });
 
   const sendMessageMutation = useMutation({
@@ -68,8 +68,8 @@ const Melding = () => {
 
           const prevCopy = { ...prev };
 
-          const messageId = ((prev as any).pages.at(-1).content[0].messageId +
-            1) as number;
+          const messageId = ((prev as any).pages.at(-1).content.at(-1)
+            .messageId + 1) as number;
 
           const authorUsername = authState.username as string;
 

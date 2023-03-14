@@ -1,6 +1,5 @@
 package no.lagalt.server.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Entity.*;
@@ -16,8 +15,8 @@ import org.webjars.NotFoundException;
 @Service
 public class ProjectService {
 
-  @Autowired private ProjectRepository projectRepo;
   @Autowired private UserRepository userRepo;
+  @Autowired private ProjectRepository projectRepo;
 
   @Autowired private ProjectMapper projectMapper;
 
@@ -79,32 +78,26 @@ public class ProjectService {
     return projectMapper.toDto(savedProject);
   }
 
-  public ProjectDto createProject(NewProjectDto newProjectDto) {
-
-    Integer ownerId = newProjectDto.getOwnerId();
+  public ProjectDto createProject(NewProjectDto newProjectDto, String uid) {
 
     LagaltUser owner =
         userRepo
-            .findById(ownerId)
+            .findByUid(uid)
             .orElseThrow(
-                () -> new NotFoundException("User not found in database with ID: " + ownerId));
-
-    List<Project> existingProjects = owner.getProjects();
+                () -> new NotFoundException("User not found in database with UID: " + uid));
 
     String projectTitle = newProjectDto.getTitle();
 
-    boolean alreadyExists =
-        existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
+    boolean alreadyExistsWithTitle =
+        owner.getProjects().stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
 
-    if (alreadyExists)
+    if (alreadyExistsWithTitle)
       throw new AlreadyExistsException(
           "Project with title \"" + projectTitle + "\" already exists on your account.");
 
     Project newProject = projectMapper.toProject(newProjectDto);
 
     newProject.setOwner(owner);
-
-    newProject.setCreatedAt(LocalDateTime.now());
 
     Project savedProject = save(newProject);
 

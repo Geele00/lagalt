@@ -1,6 +1,7 @@
 package no.lagalt.server.Dtos.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +35,9 @@ public class NewUserDto {
 
   private ProfileStatus profileStatus;
 
-  // private CountryDto country;
-  //
-  // private CityDto city;
+  private LocalDateTime createdAt = LocalDateTime.now();
 
+  private String country;
+
+  private String city;
 }

@@ -4,12 +4,10 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class NewMessageDto {
 
   private String content;
@@ -18,5 +16,5 @@ public class NewMessageDto {
 
   private Integer parentId;
 
-  private LocalDateTime createdAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
 }
