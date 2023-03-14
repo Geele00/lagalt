@@ -54,7 +54,7 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
 
         <NavLink to="/">Hjelp</NavLink>
 
-        {!authState.username || authState.username === "auth" ? (
+        {!authState.username || authState.username === "anon" ? (
           <>
             <NavLink to="/logg-inn">Logg inn</NavLink>
             <NavLink to="/ny-bruker">Ny bruker</NavLink>
