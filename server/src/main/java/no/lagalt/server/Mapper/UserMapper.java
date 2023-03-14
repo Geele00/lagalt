@@ -18,13 +18,13 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
 
   @Mapping(target = "history", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "projects", ignore = true)
   @Mapping(target = "userId", ignore = true)
   @Mapping(target = "country", ignore = true)
   @Mapping(target = "notifications", ignore = true)
   @Mapping(target = "avatarUrl", ignore = true)
   @Mapping(target = "chats", ignore = true)
+  @Mapping(target = "city", ignore = true)
   LagaltUser toUser(NewUserDto newUserDto);
 
   UserDto toDto(LagaltUser user);
@@ -32,6 +32,7 @@ public interface UserMapper {
   List<UserDto> toDto(Iterable<LagaltUser> user);
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "historyId", ignore = true)
   void updateHistoryFromDtoByLagaltUser(
       UpdateHistoryDto updateHistoryDto, LagaltUser lagaltUser, @MappingTarget History history);
 }

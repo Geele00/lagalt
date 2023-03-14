@@ -1,7 +1,7 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,11 +15,9 @@ public class History {
   @Column(nullable = false)
   private int historyId;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  private Set<Project> seenProjects;
+  @OneToMany private List<Project> seenProjects;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  private Set<Project> clickedProjects;
+  @OneToMany private List<Project> clickedProjects;
 
   @OneToOne(
       cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},

@@ -1,32 +1,24 @@
 package no.lagalt.server.Service;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import no.lagalt.server.Dtos.Chat.ChatDto;
-import no.lagalt.server.Dtos.Chat.ChatMessageDto;
-import no.lagalt.server.Dtos.Message.MessageDto;
-import no.lagalt.server.Dtos.Message.NewMessageDto;
-import no.lagalt.server.Entity.Chat;
-import no.lagalt.server.Entity.LagaltUser;
-import no.lagalt.server.Entity.Message;
-import no.lagalt.server.Mapper.ChatMapper;
-import no.lagalt.server.Mapper.MessageMapper;
-import no.lagalt.server.Repository.ChatRepository;
-import no.lagalt.server.Repository.UserRepository;
-import no.lagalt.server.Utils.Exception.ChatNotFoundException;
-import no.lagalt.server.Utils.Exception.NotFoundException;
+import no.lagalt.server.Dtos.Chat.*;
+import no.lagalt.server.Dtos.Message.*;
+import no.lagalt.server.Entity.*;
+import no.lagalt.server.Mapper.*;
+import no.lagalt.server.Repository.*;
+import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ChatService {
+
   @Autowired private ChatRepository chatRepo;
-  @Autowired private ChatMapper chatMapper;
   @Autowired private UserRepository userRepo;
+
+  @Autowired private ChatMapper chatMapper;
   @Autowired private MessageMapper messageMapper;
 
   public boolean existsById(Integer id) {
@@ -37,22 +29,11 @@ public class ChatService {
     return chatRepo.existsByUsersIn(users);
   }
 
-  private Chat findById(Integer id) throws NotFoundException {
-    return chatRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
-  }
-
-  public ChatDto getById(Integer id) throws NotFoundException {
-    Chat chat = chatRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
-    return chatMapper.toDto(chat);
-  }
-
   private Chat findByUsers(List<LagaltUser> users) throws ChatNotFoundException {
     return chatRepo.findByUsersIn(users).orElseThrow(() -> new ChatNotFoundException());
   }
 
   public MessageDto postMessage(String uid, NewMessageDto newMessageDto) {
-
-    newMessageDto.setCreatedAt(LocalDateTime.now());
 
     String recipientUsername = newMessageDto.getRecipientUsername();
 
@@ -72,24 +53,25 @@ public class ChatService {
     newMessage.setRecipient(recipient);
     newMessage.setAuthor(author);
 
+    Chat chat = null;
+
     if (!existsByUsers(users)) {
       Chat newChat = new Chat();
       newChat.setUsers(users);
       newChat.setMessages(List.of(newMessage));
-      Chat savedChat = chatRepo.saveAndFlush(newChat);
-      List<Message> updatedMessages = savedChat.getMessages();
-      Message lastMessage = updatedMessages.get(updatedMessages.size() - 1);
-      return messageMapper.toDto(lastMessage);
-    } else {
-      Chat chat = findByUsers(users);
-      List<Message> messages = chat.getMessages();
-      messages.add(newMessage);
-      Chat savedChat = chatRepo.saveAndFlush(chat);
+      chat = newChat;
 
-      List<Message> updatedMessages = savedChat.getMessages();
-      Message lastMessage = updatedMessages.get(updatedMessages.size() - 1);
-      return messageMapper.toDto(lastMessage);
+    } else {
+      Chat existingChat = findByUsers(users);
+      List<Message> messages = existingChat.getMessages();
+      messages.add(newMessage);
+      chat = existingChat;
     }
+
+    Chat savedChat = chatRepo.saveAndFlush(chat);
+    List<Message> updatedMessages = savedChat.getMessages();
+    Message lastMessage = updatedMessages.get(updatedMessages.size() - 1);
+    return messageMapper.toDto(lastMessage);
   }
 
   public Page<ChatMessageDto> getMessages(String uid, String recipientUsername, Pageable pageable) {
@@ -114,8 +96,6 @@ public class ChatService {
 
     if (messagesSize < offsetIdx) {
       return null;
-      // Collections.reverse(messages);
-      // return chatMapper.toChatMessageDto(messages);
     }
 
     List<Message> sub = messages.subList(offsetIdx, lastItemIdx);
@@ -128,21 +108,11 @@ public class ChatService {
           ChatMessageDto dto = chatMapper.toChatMessageDto(message);
           return dto;
         });
-
-    // return chatMapper.toChatMessageDto(sub);
   }
 
   public ChatDto save(Chat chat) {
     Chat savedChat = chatRepo.save(chat);
 
     return chatMapper.toDto(savedChat);
-  }
-
-  public void deleteById(Integer id) throws NotFoundException {
-    try {
-      chatRepo.deleteById(id);
-    } catch (NotFoundException err) {
-      throw err;
-    }
   }
 }

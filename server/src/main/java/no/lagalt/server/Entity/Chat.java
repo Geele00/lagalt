@@ -1,7 +1,6 @@
 package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
@@ -11,12 +10,15 @@ import lombok.*;
 @Table(name = "chat")
 public class Chat {
 
-  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   @Column(nullable = false)
   private Integer chatId;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      // mappedBy = "chats",
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinTable(
       name = "users_chats",
       joinColumns = {@JoinColumn(name = "chat_id")},
@@ -24,5 +26,5 @@ public class Chat {
   private List<LagaltUser> users;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Message> messages = new ArrayList<>();
+  private List<Message> messages;
 }

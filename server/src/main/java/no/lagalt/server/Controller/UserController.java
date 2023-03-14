@@ -2,8 +2,8 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Dtos.Skill.SkillDto;
@@ -89,6 +89,7 @@ public class UserController {
   @Operation(summary = "Get list of skills from user")
   @GetMapping("skills")
   List<SkillDto> getSkills(Authentication auth) {
+
     String uid = auth.getName();
     return userService.getSkillsByUid(uid);
   }
@@ -96,8 +97,7 @@ public class UserController {
   @Operation(summary = "Set skills for user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PostMapping("skills")
-  public void setSkills(@RequestBody List<Integer> idList, Authentication auth)
-      throws NotFoundException {
+  void setSkills(@RequestBody List<Integer> idList, Authentication auth) throws NotFoundException {
     String uid = auth.getName();
     userService.setSkillsByUid(idList, uid);
   }
@@ -116,11 +116,8 @@ public class UserController {
 
   @Operation(summary = "Get projects from user")
   @PostMapping("history")
-  public void addToHistory(ArrayList<Integer> projectIds, Authentication auth) {
-    System.out.println(567);
+  void addToHistory(@RequestBody Set<Integer> projectIds, Authentication auth) {
     String uid = auth.getName();
-
-    System.out.println(projectIds);
 
     historyService.addToSeen(projectIds, uid);
   }

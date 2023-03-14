@@ -12,13 +12,11 @@ import org.mapstruct.Mapping;
     uses = {UserMapper.class})
 public interface MessageMapper {
 
-  @Mapping(target = "channelId", source = "channel.channelId")
   @Mapping(target = "parentId", source = "parentMessage.messageId")
   MessageDto toDto(Message message);
 
   @Mapping(target = "recipient", ignore = true)
   @Mapping(target = "author", ignore = true)
-  @Mapping(target = "channel", ignore = true)
   @Mapping(target = "replies", ignore = true)
   @Mapping(target = "messageId", ignore = true)
   @Mapping(target = "parentMessage", ignore = true)

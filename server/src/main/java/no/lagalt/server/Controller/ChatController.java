@@ -36,13 +36,16 @@ public class ChatController {
     return chat;
   }
 
-  @Operation(summary = "Get a list of projects for the feed")
+  @Operation(summary = "Post a message to the chat")
   @PostMapping
   MessageDto postMessage(@RequestBody NewMessageDto newMessageDto, Authentication auth)
       throws NotFoundException {
 
     String uid = auth.getName();
+    System.out.println(111);
+    MessageDto tmp = chatService.postMessage(uid, newMessageDto);
+    System.out.println(222);
 
-    return chatService.postMessage(uid, newMessageDto);
+    return tmp;
   }
 }

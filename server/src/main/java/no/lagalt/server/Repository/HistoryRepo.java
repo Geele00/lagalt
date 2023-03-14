@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistoryRepo extends JpaRepository<History, Integer> {
-  // Optional<History> findByUidInLagaltUser(String uid);
 
   Optional<History> findByLagaltUser(LagaltUser userDto);
 

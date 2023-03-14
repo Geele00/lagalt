@@ -23,4 +23,8 @@ public class UpdateUserDto {
   private String email;
 
   private String bio;
+
+  private String country;
+
+  private String city;
 }
