@@ -11,6 +11,8 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
 
   const { state } = useRouterContext();
 
+  const { username } = authState;
+
   useEffect(() => {
     if (state.status === "pending") {
       toggleOverlay({ type: "close", overlay: null });
@@ -39,25 +41,25 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         <NavLink to="/">Forsiden</NavLink>
 
         <NavLink
-          to="/$username/nytt-prosjekt"
-          linkProps={{ params: { username: authState.username } }}
+          to={username ? "/$username/nytt-prosjekt" : "logg-inn"}
+          linkProps={{ params: { username } }}
         >
           Nytt prosjekt
         </NavLink>
 
         <NavLink
-          to="/$username"
-          linkProps={{ params: { username: authState.username } }}
+          to={username ? "/$username" : "logg-inn"}
+          linkProps={{ params: { username } }}
         >
           Min side
         </NavLink>
 
         <NavLink to="/">Hjelp</NavLink>
 
-        {!authState.username || authState.username === "anon" ? (
+        {!username || username === "anon" ? (
           <>
-            <NavLink to="/logg-inn">Logg inn</NavLink>
             <NavLink to="/ny-bruker">Ny bruker</NavLink>
+            <NavLink to="/logg-inn">Logg inn</NavLink>
           </>
         ) : (
           <NavLink to="/logg-ut">Logg ut</NavLink>

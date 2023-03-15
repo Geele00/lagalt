@@ -28,7 +28,7 @@ public interface UserMapper {
   // }
   // @Mapping(target = "age", source = "user.dob")
 
-  @Mapping(target = "age", expression = "java(user.getYear())")
+  @Mapping(target = "age", expression = "java(user.getDob().getYear())")
   UserDto toDto(LagaltUser user);
 
   UserPrivateDto toPrivateDto(LagaltUser user);

@@ -26,30 +26,12 @@ const user = {
 
 const ProfilSide = () => {
   const { authState } = useAuth();
-  const { username } = useParams();
-
-  const nav = useNavigate();
+  const { username: usernameFromParams } = useParams();
 
   const { data, error } = useQuery({
-    queryKey: [`/users`, authState, username],
-    meta: { params: `?username=${username}` },
-    // queryFn: () => {
-    //   const { token } = authState;
-    //
-    //   const headers = {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   };
-    //
-    //   return authState.username ? fetchUsers(headers) : null;
-    // },
+    queryKey: [`/users`, authState, usernameFromParams],
+    meta: { params: `?username=${usernameFromParams}` },
   });
-
-  console.log(username);
-  console.log(data && data);
-  console.log(error && error);
 
   return (
     <div className="profile">

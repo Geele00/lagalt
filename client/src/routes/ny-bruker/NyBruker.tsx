@@ -1,43 +1,24 @@
 import "./NyBruker.style.scss";
-import { PointerEvent, useRef, useState, useTransition } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/Auth.Provider";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { createDbUser } from "src/api/v1/users/users";
-import NavArrowBtn from "src/components/Button/NavArrowBtn";
-import { AuthForm } from "./Forms/AuthForm";
-import { UserForm } from "./Forms/UserForm";
 import { auth } from "src/auth/firebase";
+import { AuthFormEvent } from "./NyBruker.types";
+import { Input } from "src/components/Input/Input";
+import Button from "src/components/Button/Button";
+import { NewDbUser } from "src/types/entities/User";
 
 // const provider = new GoogleAuthProvider();
 
 const NyBruker = () => {
   const { authState, signIn } = useAuth();
   const nav = useNavigate();
-  const userFormRef = useRef<HTMLFormElement>(null);
-
-  const [stage, setStage] = useState(1);
-
-  const navigateForm = (e: PointerEvent<HTMLButtonElement>) => {
-    const { direction } = e.currentTarget.dataset;
-
-    console.log(e.currentTarget);
-
-    switch (direction) {
-      case "next":
-        // validate
-        setStage((prev) => prev + 1);
-        break;
-      case "prev":
-        setStage((prev) => prev - 1);
-        break;
-    }
-  };
 
   const dob = new Date(1994, 4, 4).toISOString();
-  const password = "mockPassword";
   const mockUser = {
-    username: "mockUser17",
+    username: "mockUser20",
+    email: "testmail3@gmail.com",
     firstName: "Mock",
     lastName: "User",
     gender: 1,
@@ -45,7 +26,6 @@ const NyBruker = () => {
     dob,
     profileStatus: 1,
     skills: [],
-    email: "mockemail17@gmail.com",
     country: "Norge",
     city: "Oslo",
   };
@@ -54,6 +34,7 @@ const NyBruker = () => {
     const user = createDbUser(
       {
         ...mockUser,
+        password: "mockPassword",
         uid: "lskjf",
       },
       {
@@ -67,23 +48,23 @@ const NyBruker = () => {
     console.log(user);
   };
 
-  const devNewUser = () => {
-    createUserWithEmailAndPassword(auth, mockUser.email, password)
+  const createFbAndDbUser = (
+    password: any = "mockPassword",
+    userInfo: any = mockUser
+  ) => {
+    createUserWithEmailAndPassword(auth, userInfo.email, password)
       .then(async ({ user }) => {
         if (!user) throw new Error();
 
-        updateProfile(user, { displayName: mockUser.username, photoURL: "" });
+        updateProfile(user, { displayName: userInfo.username, photoURL: "" });
 
-        const token = await user.getIdToken();
-
-        return { token, uid: user.uid };
+        return await user.getIdToken();
       })
-      .then(({ token, uid }) => {
+      .then((token) => {
+        signIn(token, userInfo.username);
+
         createDbUser(
-          {
-            ...mockUser,
-            uid,
-          },
+          { ...userInfo },
           {
             headers: {
               "Content-Type": "application/json",
@@ -91,8 +72,6 @@ const NyBruker = () => {
             },
           }
         );
-
-        signIn(token, mockUser.username);
 
         nav({ to: "/" });
       })
@@ -104,16 +83,172 @@ const NyBruker = () => {
       });
   };
 
+  const onSubmit = async (e: AuthFormEvent) => {
+    e.preventDefault();
+    console.log(e);
+
+    const {
+      username: { value: username },
+      email: { value: email },
+      password: { value: password },
+      passwordConfirmation: { value: passwordConfirmation },
+      firstName: { value: firstName },
+      lastName: { value: lastName },
+      gender: { value: gender },
+      bio: { value: bio },
+      dob: { value: dob },
+      profileStatus: { value: profileStatus },
+      country: { value: country },
+      city: { value: city },
+    } = e.target;
+
+    const userInfo: NewDbUser = {
+      username,
+      email,
+      firstName,
+      lastName,
+      gender,
+      bio,
+      dob,
+      profileStatus,
+      country,
+      city,
+    };
+
+    if (password !== passwordConfirmation) {
+      // passwords don't match exception
+    }
+
+    createFbAndDbUser(password, userInfo);
+  };
+
   return (
     <div className="signup">
-      <button onPointerUp={devNewUser}>Dev cheatcode: Make user</button>
+      <button onPointerUp={createFbAndDbUser}>Dev cheatcode: Make user</button>
       <button onPointerUp={dbNewUser}>Dev cheatcode: Make DB user</button>
-      <nav className="signup__nav">
-        <NavArrowBtn onPointerUp={navigateForm} data-direction="prev" />
-        <NavArrowBtn onPointerUp={navigateForm} data-direction="next" />
-      </nav>
-      {stage === 1 && <UserForm ref={userFormRef} />}
-      {stage === 2 && <AuthForm />}
+      <form className="signup__form" onSubmit={onSubmit}>
+        <button className="signup__form__google">
+          <img src="/google/web/2x/btn_google_signin_light_normal_web@2x.png" />
+        </button>
+
+        <fieldset className="signup__form__auth">
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={40}
+            type="email"
+            name="email"
+            placeholder="Epostadresse"
+          />
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={30}
+            type="password"
+            name="password"
+            placeholder="Passord"
+          />
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={30}
+            type="password"
+            name="passwordConfirmation"
+            placeholder="Passord"
+          />
+        </fieldset>
+
+        <hr />
+
+        <Input
+          // maxLength={15}
+          type="text"
+          name="username"
+          placeholder="Brukernavn"
+        />
+        <fieldset className="signup__form__name">
+          <Input
+            // required
+            // minLength={3}
+            autoComplete="off"
+            maxLength={30}
+            type="text"
+            name="firstName"
+            placeholder="Fornavn"
+          />
+
+          <Input
+            // required
+            minLength={3}
+            autoComplete="off"
+            maxLength={30}
+            type="text"
+            name="lastName"
+            placeholder="Etternavn"
+          />
+        </fieldset>
+
+        <Input
+          // required
+          // minLength={3}
+          autoComplete="off"
+          maxLength={30}
+          type="date"
+          name="dob"
+          defaultValue={"1990-01-01"}
+        />
+
+        <fieldset className="signup__form__gender">
+          <label>
+            <Input
+              // required
+              autoComplete="off"
+              type="radio"
+              name="gender"
+              value="male"
+            />
+            <p>Mann</p>
+          </label>
+          <label>
+            <Input
+              // required
+              autoComplete="off"
+              type="radio"
+              name="gender"
+              value="female"
+            />
+            <p>Kvinne</p>
+          </label>
+        </fieldset>
+
+        <fieldset className="signup__form__location">
+          <select name="country">
+            <option>Norge</option>
+          </select>
+
+          <select name="city">
+            <option>By</option>
+            <option>Oslo</option>
+          </select>
+        </fieldset>
+
+        <textarea
+          autoComplete="off"
+          name="bio"
+          placeholder="Skriv litt om deg selv"
+          className="signup__form__about-me"
+        />
+
+        <div className="signup__form__privacy">
+          <input type="checkbox" name="profileStatus" />
+          <label>Privat profil</label>
+        </div>
+
+        <Button className="signup__form__submit">Registrer</Button>
+      </form>
     </div>
   );
 };
