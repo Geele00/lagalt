@@ -1,5 +1,6 @@
 package no.lagalt.server.Dtos.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class NewUserDto {
 
   private String lastName;
 
-  private LocalDateTime dob;
+  private LocalDate dob;
 
   private String email;
 
