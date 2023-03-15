@@ -70,14 +70,6 @@ public class ProjectService {
     return projectRepo.save(project);
   }
 
-  public ProjectDto save(UpdateProjectDto updateProjectDto) {
-    Project projectToUpdate = projectMapper.toProject(updateProjectDto);
-
-    Project savedProject = save(projectToUpdate);
-
-    return projectMapper.toDto(savedProject);
-  }
-
   public ProjectDto createProject(NewProjectDto newProjectDto, String uid) {
 
     LagaltUser owner =
@@ -88,16 +80,18 @@ public class ProjectService {
 
     String projectTitle = newProjectDto.getTitle();
 
-    boolean alreadyExistsWithTitle =
+    boolean alreadyExistsWithTitleForUser =
         owner.getProjects().stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
 
-    if (alreadyExistsWithTitle)
+    if (alreadyExistsWithTitleForUser)
       throw new AlreadyExistsException(
           "Project with title \"" + projectTitle + "\" already exists on your account.");
 
     Project newProject = projectMapper.toProject(newProjectDto);
 
     newProject.setOwner(owner);
+    // set industries
+    // set wanted skills
 
     Project savedProject = save(newProject);
 

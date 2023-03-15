@@ -1,12 +1,11 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
-import { INewProject } from "src/types/entities/Project";
-import { createProject } from "src/api/v1/projects/projects";
-import { queryClient } from "src/index";
 import { IProjectsPage } from "src/types/entities/Project";
+import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
+import { ErrorComponent } from "@tanstack/react-router";
 
 const pageSize = 20;
 
@@ -22,11 +21,15 @@ const Feed = () => {
   const { isFetching, data, error, fetchNextPage, isInitialLoading } =
     useInfiniteQuery<IProjectsPage>({
       queryKey,
+      enabled: !!authState.token,
 
-      meta: { params: `?size=${pageSize}&sort=createdAt,desc` },
+      meta: {
+        params: `?size=${pageSize}&sort=createdAt,desc`,
+        token: authState.token,
+      },
 
-      onSuccess: async (res) => {
-        const lastPage = res.pages.at(-1);
+      onSuccess: async (data) => {
+        const lastPage = data.pages.at(-1);
 
         if (!lastPage) return;
 
@@ -72,20 +75,6 @@ const Feed = () => {
     return !!data?.pages.at(-1)?.last;
   }, [data]);
 
-  const newProjectMutation = useMutation({
-    mutationFn: (newProject: INewProject) => {
-      const { token } = authState;
-      if (!token) throw new Error("No token error blabla");
-      return createProject(newProject, token);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKey);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
   // ~~~ Scrolling
 
   const onScroll = useCallback(() => {
@@ -110,11 +99,23 @@ const Feed = () => {
     };
   }, [onScroll]);
 
+  const loadingScreen = useMemo(() => {
+    if (!isInitialLoading) return null;
+    return <LoadingScreen />;
+  }, [isInitialLoading]);
+
+  const errorScreen = useMemo(() => {
+    if (!error) return null;
+    return <ErrorComponent error={error} />;
+  }, [isInitialLoading]);
+
   return (
     <>
-      <div className="feed" role="feed" ref={containerRef}>
-        {isInitialLoading ? "Loading gif" : error ? "Error" : <>{feedItems}</>}
-      </div>
+      {loadingScreen ?? errorScreen ?? (
+        <div className="feed" role="feed" ref={containerRef}>
+          {feedItems}
+        </div>
+      )}
     </>
   );
 };

@@ -54,6 +54,8 @@ public class Project {
       fetch = FetchType.LAZY)
   private MessageBoard messageBoard;
 
+  private String imageUrl;
+
   @Column(nullable = false)
   @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime createdAt;

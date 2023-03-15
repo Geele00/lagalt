@@ -1,6 +1,6 @@
 import "./NyttProsjekt.scss";
 import { useMutation } from "@tanstack/react-query";
-import { fetchProjects } from "src/api/v1/projects/projects";
+import { createProject, fetchProjects } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/Auth.Provider";
 import { queryClient } from "src/index";
 import { INewProject } from "src/types/entities/Project";
@@ -11,21 +11,11 @@ const NyttProsjekt = () => {
   const newProjectMutation = useMutation({
     mutationFn: (newProject: INewProject) => {
       const { token } = authState;
-
-      if (!token) throw new Error("No token error blabla");
-
-      return fetchProjects({
-        method: "POST",
-        body: JSON.stringify(newProject),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          // filterOpts
-        },
-      });
+      if (!token) throw new Error("Authentication failed");
+      return createProject(newProject, token);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["/feed"]);
+      queryClient.invalidateQueries(["/projects"]);
     },
     onError: (err) => {
       console.log(err);

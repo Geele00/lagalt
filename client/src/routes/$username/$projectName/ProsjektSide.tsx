@@ -32,6 +32,9 @@ export const ProsjektSide = () => {
 
   const { data } = useQuery({
     queryKey: ["/projects", authState, projectName],
+
+    meta: { token: authState.token },
+
     queryFn: () => {
       const params = `?title=${projectName}`;
 
