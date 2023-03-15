@@ -1,35 +1,16 @@
-export interface User {
-  avatarUrl: string;
-
+export interface UserPrivate {
+  userId: number;
   username: string;
-
-  email: string;
-
-  gender: string;
-
+  avatarUrl: string;
+  profileStatus: boolean;
   bio: string;
-
-  country: string;
-
-  city: string;
-
-  skills: [];
-
-  history: [];
-
-  projects: [];
 }
 
-export interface NewDbUser {
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl?: string;
-  gender?: string;
-  dob: Date;
-  bio: string;
-  profileStatus: string;
+export interface UserPublic extends UserPrivate {
+  age: number;
+  gender: string;
   country: string;
   city: string;
+  skills: [];
+  projects: [];
 }
