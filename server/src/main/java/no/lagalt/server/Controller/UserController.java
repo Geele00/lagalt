@@ -60,7 +60,11 @@ public class UserController {
   @Operation(summary = "Create new user")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  UserDto createUser(@RequestBody NewUserDto newUserDto) throws AlreadyExistsException {
+  UserDto createUser(@RequestBody NewUserDto newUserDto, Authentication auth)
+      throws AlreadyExistsException {
+
+    String uid = auth.getName();
+    newUserDto.setUid(uid);
 
     if (userService.validateUsernameExists(newUserDto.getUsername()))
       throw new AlreadyExistsException(
