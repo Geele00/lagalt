@@ -1,9 +1,8 @@
 import "./UserForm.style.scss";
-import { forwardRef } from "react";
 import { Input } from "src/components/Input/Input";
 import { AuthFormEvent } from "./AuthForms.types";
 
-export const UserForm = forwardRef(({}, ref: any) => {
+export const UserForm = () => {
   const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
 
@@ -52,7 +51,7 @@ export const UserForm = forwardRef(({}, ref: any) => {
   };
 
   return (
-    <form className="signup__user" ref={ref} onSubmit={onSubmit}>
+    <form className="signup__user" onSubmit={onSubmit}>
       <button type="submit">SUBMITTTT!!!!</button>
       <Input
         maxLength={15}
@@ -169,4 +168,4 @@ export const UserForm = forwardRef(({}, ref: any) => {
       </fieldset>
     </form>
   );
-});
+};
