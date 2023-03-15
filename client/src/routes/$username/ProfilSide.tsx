@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { fetchUsers } from "src/api/v1/users/users";
 import { useAuth } from "src/auth/Auth.Provider";
 import "./Profilside.style.scss";
@@ -26,27 +26,30 @@ const user = {
 
 const ProfilSide = () => {
   const { authState } = useAuth();
+  const { username } = useParams();
 
   const nav = useNavigate();
 
-  const { data } = useQuery({
-    queryKey: [`/users`, "users", authState],
-    queryFn: () => {
-      const { token } = authState;
-
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      return authState.username
-        ? fetchUsers(headers, `?username=${authState.username}`)
-        : null;
-    },
+  const { data, error } = useQuery({
+    queryKey: [`/users`, authState, username],
+    meta: { params: `?username=${username}` },
+    // queryFn: () => {
+    //   const { token } = authState;
+    //
+    //   const headers = {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   };
+    //
+    //   return authState.username ? fetchUsers(headers) : null;
+    // },
   });
-  console.log(data);
+
+  console.log(username);
+  console.log(data && data);
+  console.log(error && error);
 
   return (
     <div className="profile">
