@@ -36,16 +36,17 @@ public class ProjectController {
     return projectService.getById(id);
   }
 
-  @Operation(summary = "Update a project")
-  @PutMapping("{id}")
-  ProjectDto updateProject(@RequestBody UpdateProjectDto updateProjectDto, @PathVariable Integer id)
-      throws NotFoundException {
-    if (!projectService.validateExists(id)) throw new NotFoundException(id);
-
-    ProjectDto savedProject = projectService.save(updateProjectDto);
-
-    return savedProject;
-  }
+  // @Operation(summary = "Update a project")
+  // @PutMapping("{id}")
+  // ProjectDto updateProject(@RequestBody UpdateProjectDto updateProjectDto)
+  //    throws NotFoundException {
+  //  Integer projectId = updateProjectDto.getProjectId();
+  //  if (!projectService.validateExists(projectId)) throw new NotFoundException(projectId);
+  //
+  //  ProjectDto savedProject = projectService.save(updateProjectDto);
+  //
+  //  return savedProject;
+  // }
 
   @Operation(summary = "Create new project")
   @ResponseStatus(HttpStatus.CREATED)
