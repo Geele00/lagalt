@@ -1,10 +1,59 @@
 import "./UserForm.style.scss";
 import { forwardRef } from "react";
 import { Input } from "src/components/Input/Input";
+import { AuthFormEvent } from "./AuthForms.types";
 
 export const UserForm = forwardRef(({}, ref: any) => {
+  const onSubmit = async (e: AuthFormEvent) => {
+    e.preventDefault();
+
+    const {
+      username: { value: username },
+      email: { value: email },
+      password: { value: password },
+      passwordConfirmation: { value: passwordConfirmation },
+    } = e.target;
+
+    if (password !== passwordConfirmation) {
+      // passwords don't match exception
+    }
+
+    console.log(e.target);
+
+    console.log(username, email, password);
+
+    // createDbUser({
+    //   username,
+    //   email,
+    //   uid: "8kjlj8lkj",
+    // });
+
+    // const onSubmit = async (e: AuthFormEvent) => {
+    //   e.preventDefault();
+    //
+    //   const {
+    //     username: { value: username },
+    //     email: { value: email },
+    //     password: { value: password },
+    //     passwordConfirmation: { value: passwordConfirmation },
+    //   } = e.target;
+    //
+    //   if (password !== passwordConfirmation) {
+    //     // passwords don't match exception
+    //   }
+    //
+    //   try {
+    //     createUser({ email, password, username });
+    //     nav({ to: "/" });
+    //   } catch (err) {
+    //     // error logic
+    //   }
+    // };
+  };
+
   return (
-    <form className="signup__user" ref={ref}>
+    <form className="signup__user" ref={ref} onSubmit={onSubmit}>
+      <button type="submit">SUBMITTTT!!!!</button>
       <Input
         maxLength={15}
         type="text"
@@ -88,6 +137,36 @@ export const UserForm = forwardRef(({}, ref: any) => {
         <label>Synlig profil</label>
         <input type="checkbox" name="privacy" />
       </div>
+
+      <fieldset className="signup__user__auth">
+        <Input
+          required
+          minLength={5}
+          autoComplete="off"
+          maxLength={40}
+          type="email"
+          name="email"
+          placeholder="Epostadresse"
+        />
+        <Input
+          required
+          minLength={5}
+          autoComplete="off"
+          maxLength={30}
+          type="password"
+          name="password"
+          placeholder="Passord"
+        />
+        <Input
+          required
+          minLength={5}
+          autoComplete="off"
+          maxLength={30}
+          type="password"
+          name="passwordConfirmation"
+          placeholder="Passord"
+        />
+      </fieldset>
     </form>
   );
 });

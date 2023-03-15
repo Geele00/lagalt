@@ -5,13 +5,20 @@ import "./ProfileButton.style.scss";
 export const ProfileButton = () => {
   const { signOut, authState } = useAuth();
 
+  const signedInUsername = authState.username;
+
   const isSignedIn =
-    !!authState.username && authState.username !== "anon" && "signed-in";
+    !!signedInUsername && signedInUsername !== "anon" && "signed-in";
+
+  const paramsUsername =
+    !!signedInUsername && signedInUsername !== "anon"
+      ? signedInUsername
+      : "logg-inn";
 
   return (
     <Link
       to="/$username"
-      params={{ username: authState.username ?? "logg-inn" }}
+      params={{ username: paramsUsername }}
       className="main-header__profile-button profile-button"
     >
       <div className={`profile-button__logo ${isSignedIn}`}>

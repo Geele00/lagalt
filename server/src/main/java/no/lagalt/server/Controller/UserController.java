@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/v1/users")
 @RestController
 public class UserController {
-
   @Autowired private UserService userService;
   @Autowired private HistoryService historyService;
 

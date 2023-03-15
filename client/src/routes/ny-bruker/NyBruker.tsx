@@ -38,7 +38,6 @@ const NyBruker = () => {
   const password = "mockPassword";
   const mockUser = {
     username: "mockUser17",
-    email: "mockemail17@gmail.com",
     firstName: "Mock",
     lastName: "User",
     gender: 1,
@@ -46,10 +45,13 @@ const NyBruker = () => {
     dob,
     profileStatus: 1,
     skills: [],
+    email: "mockemail17@gmail.com",
+    country: "Norge",
+    city: "Oslo",
   };
 
   const dbNewUser = () => {
-    createDbUser(
+    const user = createDbUser(
       {
         ...mockUser,
         uid: "lskjf",
@@ -61,6 +63,8 @@ const NyBruker = () => {
         },
       }
     );
+
+    console.log(user);
   };
 
   const devNewUser = () => {

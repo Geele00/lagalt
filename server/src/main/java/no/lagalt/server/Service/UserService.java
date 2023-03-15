@@ -7,6 +7,7 @@ import no.lagalt.server.Dtos.User.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.*;
+import no.lagalt.server.Utils.Enum.ProfileStatus;
 import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   @Autowired private UserRepository userRepo;
-  @Autowired private UserMapper userMapper;
-
+  @Autowired private CountryRepo countryRepo;
+  @Autowired private CityRepo cityRepo;
   @Autowired private SkillRepository skillRepo;
+
+  @Autowired private UserMapper userMapper;
   @Autowired private SkillMapper skillMapper;
 
   @Autowired private ProjectMapper projectMapper;
-
-  @Autowired private HistoryService historyService;
 
   public boolean validateUsernameExists(String username) {
     return userRepo.existsByUsername(username);
@@ -68,6 +69,11 @@ public class UserService {
   public UserDto getByUsername(String username) throws NotFoundException {
     LagaltUser user = findByUsername(username);
 
+    if (user.getProfileStatus() == ProfileStatus.Private) {
+      var privateDto = userMapper.toPrivateDto(user);
+      return userMapper.toDtoFromPrivate(privateDto);
+    }
+
     return userMapper.toDto(user);
   }
 
@@ -97,8 +103,21 @@ public class UserService {
     return userMapper.toDto(savedUser);
   }
 
-  public UserDto save(NewUserDto newUserDto) {
+  public UserDto save(NewUserDto newUserDto) throws NotFoundException {
     LagaltUser newUser = userMapper.toUser(newUserDto);
+
+    Country country =
+        countryRepo
+            .findByName(newUserDto.getCountry())
+            .orElseThrow(() -> new NotFoundException("Country not found"));
+
+    City city =
+        cityRepo
+            .findByName(newUserDto.getCity())
+            .orElseThrow(() -> new NotFoundException("City not found"));
+
+    newUser.setCountry(country);
+    newUser.setCity(city);
 
     LagaltUser savedUser = save(newUser);
 
