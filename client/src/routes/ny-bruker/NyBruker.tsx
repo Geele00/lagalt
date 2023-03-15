@@ -7,7 +7,7 @@ import { auth } from "src/auth/firebase";
 import { AuthFormEvent } from "./NyBruker.types";
 import { Input } from "src/components/Input/Input";
 import Button from "src/components/Button/Button";
-import { NewDbUser } from "src/types/entities/User";
+import { NewDbUser } from "src/api/v1/users/types";
 
 // const provider = new GoogleAuthProvider();
 
@@ -15,7 +15,6 @@ const NyBruker = () => {
   const { authState, signIn } = useAuth();
   const nav = useNavigate();
 
-  const dob = new Date(1994, 4, 4).toISOString();
   const mockUser = {
     username: "mockUser20",
     email: "testmail3@gmail.com",
@@ -23,7 +22,7 @@ const NyBruker = () => {
     lastName: "User",
     gender: 1,
     bio: "Mock bio",
-    dob,
+    dob: new Date(1994, 4, 4).toISOString(),
     profileStatus: 1,
     skills: [],
     country: "Norge",
@@ -49,22 +48,25 @@ const NyBruker = () => {
   };
 
   const createFbAndDbUser = (
-    password: any = "mockPassword",
-    userInfo: any = mockUser
+    password: string = "mockPassword",
+    newDbUser: NewDbUser = mockUser
   ) => {
-    createUserWithEmailAndPassword(auth, userInfo.email, password)
+    createUserWithEmailAndPassword(auth, newDbUser.email, password)
       .then(async ({ user }) => {
         if (!user) throw new Error();
 
-        updateProfile(user, { displayName: userInfo.username, photoURL: "" });
+        updateProfile(user, {
+          displayName: newDbUser.username,
+          photoURL: newDbUser.avatarUrl || "",
+        });
 
         return await user.getIdToken();
       })
       .then((token) => {
-        signIn(token, userInfo.username);
+        signIn(token, newDbUser.username);
 
         createDbUser(
-          { ...userInfo },
+          { ...newDbUser },
           {
             headers: {
               "Content-Type": "application/json",
@@ -102,7 +104,7 @@ const NyBruker = () => {
       city: { value: city },
     } = e.target;
 
-    const userInfo: NewDbUser = {
+    const newDbUser: NewDbUser = {
       username,
       email,
       firstName,
@@ -119,12 +121,14 @@ const NyBruker = () => {
       // passwords don't match exception
     }
 
-    createFbAndDbUser(password, userInfo);
+    createFbAndDbUser(password, newDbUser);
   };
 
   return (
     <div className="signup">
-      <button onPointerUp={createFbAndDbUser}>Dev cheatcode: Make user</button>
+      <button onPointerUp={() => createFbAndDbUser()}>
+        Dev cheatcode: Make user
+      </button>
       <button onPointerUp={dbNewUser}>Dev cheatcode: Make DB user</button>
       <form className="signup__form" onSubmit={onSubmit}>
         <button className="signup__form__google">

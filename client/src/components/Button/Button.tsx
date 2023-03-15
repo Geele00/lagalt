@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes } from "react";
 
 interface IButton {
   children?: any;
