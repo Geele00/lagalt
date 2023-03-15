@@ -7,6 +7,7 @@ import { auth } from "src/auth/firebase";
 import { AuthFormEvent } from "./NyBruker.types";
 import { Input } from "src/components/Input/Input";
 import Button from "src/components/Button/Button";
+import { NewDbUser } from "src/types/entities/User";
 
 // const provider = new GoogleAuthProvider();
 
@@ -15,7 +16,6 @@ const NyBruker = () => {
   const nav = useNavigate();
 
   const dob = new Date(1994, 4, 4).toISOString();
-  const password = "mockPassword";
   const mockUser = {
     username: "mockUser20",
     email: "testmail3@gmail.com",
@@ -34,6 +34,7 @@ const NyBruker = () => {
     const user = createDbUser(
       {
         ...mockUser,
+        password: "mockPassword",
         uid: "lskjf",
       },
       {
@@ -47,7 +48,10 @@ const NyBruker = () => {
     console.log(user);
   };
 
-  const createFbAndDbUser = (userInfo: any = mockUser) => {
+  const createFbAndDbUser = (
+    password: any = "mockPassword",
+    userInfo: any = mockUser
+  ) => {
     createUserWithEmailAndPassword(auth, userInfo.email, password)
       .then(async ({ user }) => {
         if (!user) throw new Error();
@@ -60,9 +64,7 @@ const NyBruker = () => {
         signIn(token, userInfo.username);
 
         createDbUser(
-          {
-            ...userInfo,
-          },
+          { ...userInfo },
           {
             headers: {
               "Content-Type": "application/json",
@@ -100,11 +102,9 @@ const NyBruker = () => {
       city: { value: city },
     } = e.target;
 
-    const userInfo = {
+    const userInfo: NewDbUser = {
       username,
       email,
-      password,
-      passwordConfirmation,
       firstName,
       lastName,
       gender,
@@ -115,13 +115,11 @@ const NyBruker = () => {
       city,
     };
 
-    createFbAndDbUser(userInfo);
-
     if (password !== passwordConfirmation) {
       // passwords don't match exception
     }
 
-    console.log(username, email, password);
+    createFbAndDbUser(password, userInfo);
   };
 
   return (
