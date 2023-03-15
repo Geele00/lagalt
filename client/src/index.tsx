@@ -17,13 +17,12 @@ export const queryClient = new QueryClient({
       refetchOnReconnect: true,
 
       queryFn: async ({ queryKey, pageParam, meta }) => {
-        const [qKey, queryAuthState] = queryKey;
-
-        const { token } = queryAuthState as IAuthState;
-        if (!token) return;
+        const token = meta?.token;
 
         const metaParams = meta?.params ?? "";
         const pageQuery = pageParam ? `&page=${pageParam}` : "";
+
+        const [qKey] = queryKey;
 
         const res = await fetch(`${apiUri}${qKey}${metaParams}${pageQuery}`, {
           ...defaultOptions,

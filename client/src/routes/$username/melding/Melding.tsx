@@ -4,7 +4,7 @@ import {
   useInfiniteQuery,
   useMutation,
 } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { ErrorComponent, useParams } from "@tanstack/react-router";
 import {
   FormEvent,
   KeyboardEvent,
@@ -17,6 +17,7 @@ import { sendChatMessageFetch } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/Auth.Provider";
 import { queryClient } from "src/index";
 import { IChatMessagePage } from "src/types/entities/Chat";
+import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 
 const pageSize = 20;
 
@@ -40,7 +41,10 @@ const Melding = () => {
     dataUpdatedAt,
   } = useInfiniteQuery<IChatMessagePage, Error>({
     queryKey,
-    meta: { params: `?target=${recipientUsername}&size=${pageSize}` },
+    meta: {
+      params: `?target=${recipientUsername}&size=${pageSize}`,
+      token: authState.token,
+    },
     // refetchInterval: 3000,
   });
 
@@ -89,13 +93,13 @@ const Melding = () => {
 
       return { previousData };
     },
-    onSettled: () => {
-      queryClient.invalidateQueries(queryKey);
-    },
-    onError: (err, text, context) => {
-      const previousData = context?.previousData;
+    onSettled: (data, error, vars, context) => {
+      if (error) {
+        const previousData = context?.previousData;
+        queryClient.setQueryData(queryKey, previousData);
+      }
 
-      queryClient.setQueryData(queryKey, previousData);
+      queryClient.invalidateQueries(queryKey);
     },
   });
 
@@ -147,13 +151,13 @@ const Melding = () => {
     textEl.value = "";
   };
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
     console.log(e.target);
     console.log(e.currentTarget);
-  };
+  }, []);
 
-  const onKeyUp = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyUp = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     switch (e.key) {
       case "Enter":
         if (e.ctrlKey) {
@@ -163,7 +167,7 @@ const Melding = () => {
       case "Escape":
         e.currentTarget.blur();
     }
-  };
+  }, []);
 
   // ~~~ Painting
 
@@ -184,22 +188,22 @@ const Melding = () => {
     [data, dataUpdatedAt]
   );
 
-  const spinner = useMemo(() => {
+  const loadingScreen = useMemo(() => {
     if (!isInitialLoading) return null;
-    return <p>Loading...</p>;
+    return <LoadingScreen />;
   }, [isInitialLoading]);
 
-  const errorMessage = useMemo(() => {
+  const errorScreen = useMemo(() => {
     if (!error) return null;
     if (parseInt(error.message) === 404)
       return <p>Send din første melding til {recipientUsername}</p>;
-    return "Her har det skjedd en feil";
+    return <ErrorComponent error={error} />;
   }, [error]);
 
   return (
     <div className="user-chat">
       <section className="user-chat__history" ref={containerRef}>
-        {spinner ?? errorMessage ?? messages}
+        {loadingScreen ?? errorScreen ?? messages}
       </section>
       <form
         className="user-chat__compose"

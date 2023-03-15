@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { fetchUsers } from "src/api/v1/users/users";
+import { Link, useParams } from "@tanstack/react-router";
 import { useAuth } from "src/auth/Auth.Provider";
 import "./Profilside.style.scss";
 
@@ -30,7 +29,7 @@ const ProfilSide = () => {
 
   const { data, error } = useQuery({
     queryKey: [`/users`, authState, usernameFromParams],
-    meta: { params: `?username=${usernameFromParams}` },
+    meta: { params: `?username=${usernameFromParams}`, token: authState.token },
   });
 
   return (
