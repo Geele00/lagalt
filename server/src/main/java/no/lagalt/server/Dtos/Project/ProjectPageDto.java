@@ -18,6 +18,8 @@ public class ProjectPageDto {
 
   private LocalDateTime updatedAt;
 
+  private String imageUrl;
+
   // private List<Integer> notifications;
   //
   // private List<Integer> industries;
