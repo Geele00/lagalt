@@ -7,7 +7,6 @@ const App = () => {
     <>
       <Header />
       <main>
-        <div id="overlay"></div>
         <Outlet />
       </main>
     </>

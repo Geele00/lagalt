@@ -1,10 +1,9 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { IProjectsPage } from "src/types/entities/Project";
-import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 import { ErrorComponent } from "@tanstack/react-router";
 
 const pageSize = 20;
@@ -18,15 +17,34 @@ const Feed = () => {
 
   // ~~~ Query logic
 
-  const { isFetching, data, error, fetchNextPage, isInitialLoading } =
+  const placeholderData = useMemo(
+    () => () => {
+      const placeHolders = [];
+      for (let i = 0; i < 20; i++) {
+        placeHolders.push({
+          content: [
+            {
+              title: "",
+              description: "",
+              projectId: i,
+            },
+          ],
+        });
+      }
+      return { pages: placeHolders } as InfiniteData<IProjectsPage>;
+    },
+    []
+  );
+
+  const { isFetching, data, error, fetchNextPage, isPlaceholderData } =
     useInfiniteQuery<IProjectsPage>({
       queryKey,
       enabled: !!authState.token,
-
       meta: {
         params: `?size=${pageSize}&sort=createdAt,desc`,
         token: authState.token,
       },
+      placeholderData,
 
       onSuccess: async (data) => {
         const lastPage = data.pages.at(-1);
@@ -48,18 +66,16 @@ const Feed = () => {
           },
         });
       },
-
-      onError: (err) => {
-        console.log(err);
-      },
     });
 
+  // if placeholderpreview
   const feedItems = useMemo(
     () =>
       data?.pages.map((page) =>
         page?.content.map((project) => (
           <ProjectPreview
             className="feed__project-preview"
+            isPlaceholderData={isPlaceholderData || null}
             title={project.title}
             description={project.description}
             key={project.projectId + project.title}
@@ -99,19 +115,14 @@ const Feed = () => {
     };
   }, [onScroll]);
 
-  const loadingScreen = useMemo(() => {
-    if (!isInitialLoading) return null;
-    return <LoadingScreen />;
-  }, [isInitialLoading]);
-
   const errorScreen = useMemo(() => {
     if (!error) return null;
     return <ErrorComponent error={error} />;
-  }, [isInitialLoading]);
+  }, [error]);
 
   return (
     <>
-      {loadingScreen ?? errorScreen ?? (
+      {errorScreen ?? (
         <div className="feed" role="feed" ref={containerRef}>
           {feedItems}
         </div>

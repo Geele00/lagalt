@@ -1,12 +1,13 @@
 import "./NyttProsjekt.scss";
-import { useMutation } from "@tanstack/react-query";
-import { createProject, fetchProjects } from "src/api/v1/projects/projects";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createProject } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/Auth.Provider";
-import { queryClient } from "src/index";
 import { INewProject } from "src/types/entities/Project";
+import { HrDivider } from "src/components/HrDivider/HrDivider";
 
 const NyttProsjekt = () => {
   const { authState } = useAuth();
+  const queryClient = useQueryClient();
 
   const newProjectMutation = useMutation({
     mutationFn: (newProject: INewProject) => {
@@ -27,7 +28,7 @@ const NyttProsjekt = () => {
       <fieldset className="new-project__create" spellCheck={false}>
         <legend>Lag et nytt prosjekt</legend>
 
-        <hr />
+        <HrDivider />
 
         <div className="new-project__create__name">
           <label>Prosjektnavn</label>
@@ -48,21 +49,21 @@ const NyttProsjekt = () => {
           <textarea />
         </div>
 
-        <hr />
+        <HrDivider />
 
         <div className="new-project__create__add-users">
           <label>Legg til brukere</label>
           <input />
         </div>
 
-        <hr />
+        <HrDivider />
 
         <div className="new-project__create__skills">
           <label>Ønskede kvalifikasjoner</label>
           <input />
         </div>
 
-        <hr />
+        <HrDivider />
 
         <div className="new-project__create__location">
           <label>Fysisk tilstedeværelse kreves</label>

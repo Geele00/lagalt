@@ -3,6 +3,7 @@ import {
   InfiniteData,
   useInfiniteQuery,
   useMutation,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { ErrorComponent, useParams } from "@tanstack/react-router";
 import {
@@ -15,7 +16,6 @@ import {
 } from "react";
 import { sendChatMessageFetch } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/Auth.Provider";
-import { queryClient } from "src/index";
 import { IChatMessagePage } from "src/types/entities/Chat";
 import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 
@@ -24,6 +24,7 @@ const pageSize = 20;
 const Melding = () => {
   const { authState } = useAuth();
   const { username: recipientUsername } = useParams();
+  const queryClient = useQueryClient();
 
   // ~~~ Query logic
 

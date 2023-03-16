@@ -90,7 +90,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
 
   return (
     <AuthContext.Provider value={contextValue}>
-      <RouterProvider router={router} context={authState} />
+      <RouterProvider router={router} context={{ queryClient, authState }} />
     </AuthContext.Provider>
   );
 };
