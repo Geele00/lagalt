@@ -1,0 +1,38 @@
+.search-result {
+  width: 100%;
+  display: flex;
+  margin-inline: auto;
+  // padding-block: 1em;
+  line-height: 1.5em;
+  height: 3em;
+  padding: 0.2em;
+
+  & > * {
+    margin-block: auto;
+    // border: 1px solid red;
+    // height: 100%;
+  }
+
+  img {
+    height: 100%;
+  }
+
+  & > p {
+    text-indent: 1ch;
+  }
+
+  & > div {
+    background: salmon;
+    height: 100%;
+    width: 5em;
+    margin-left: auto;
+    display: flex;
+
+    & > p {
+      margin-block: auto;
+      margin-left: auto;
+      padding-right: 0.5ch;
+      text-align: right;
+    }
+  }
+}
