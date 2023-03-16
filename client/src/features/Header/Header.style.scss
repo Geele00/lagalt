@@ -11,6 +11,7 @@
 
   &__menu {
     margin-right: auto;
+    z-index: 910;
   }
 
   &__search-bar {
@@ -19,7 +20,7 @@
   }
 
   &[data-overlay="search"] {
-    &:focus-within {
+    @container main-header (width < 500px) {
       .filter,
       .profile-button {
         display: none;

@@ -22,12 +22,6 @@
     flex-flow: column;
     gap: 3ch;
 
-    hr {
-      border: none;
-      height: 1px;
-      background-color: var(--clr_grey_light);
-    }
-
     &__google {
       all: unset;
       cursor: pointer;
