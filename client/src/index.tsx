@@ -3,7 +3,6 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { defaultOptions } from "./api/v1/defaults";
-import { IAuthState } from "./auth/Auth.types";
 import { AuthProvider } from "./auth/Auth.Provider";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
@@ -40,7 +39,7 @@ export const queryClient = new QueryClient({
 
         return res.json();
       },
-      getNextPageParam: (lastPage: any, pages) => {
+      getNextPageParam: (lastPage: any) => {
         if (!lastPage) return 0;
 
         return parseInt(lastPage.number) + 1;
