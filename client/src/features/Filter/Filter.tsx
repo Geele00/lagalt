@@ -9,41 +9,36 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
         onPointerUp={() => toggleOverlay({ overlay: "filter", type: "toggle" })}
         title="Filter"
       >
-        {/* <span>Filter</span> */}
-        <i></i>
+        <span aria-hidden></span>
       </button>
 
       <div className="filter__body" aria-expanded={activeOverlay === "filter"}>
-        <button
-          className="filter__body-toggle"
-          role="Exit filter menu"
-          onPointerUp={() =>
-            toggleOverlay({ overlay: "filter", type: "close" })
-          }
-        />
-        <div className="filter-main">
-          <section className="filter-main__pop-menu">
-            <label>
-              <input type="radio" name="pop-filter" value="new" />
-              <p>Nytt</p>
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="pop-filter"
-                value="popular"
-                defaultChecked={true}
-              />
-              <p>Pop</p>
-            </label>
-            <label>
-              <input type="radio" name="pop-filter" value="idk" />
-              <p>Idk</p>
-            </label>
-          </section>
-          <section>Industrier</section>
-          <section>Roller</section>
-        </div>
+        <ul className="filter__body__main">
+          <li>
+            <p>Koding</p>
+          </li>
+          <li>
+            <p>Fotografi</p>
+          </li>
+          <li>
+            <p>Tegning</p>
+          </li>
+          <li>
+            <p>Keramikk</p>
+          </li>
+          <li>
+            <p>Arkitektur</p>
+          </li>
+          <li>
+            <p>Billedkunst</p>
+          </li>
+          <li>
+            <p>Animasjon</p>
+          </li>
+          <li>
+            <p>UX Design</p>
+          </li>
+        </ul>
       </div>
     </section>
   );

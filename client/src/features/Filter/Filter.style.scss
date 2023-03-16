@@ -10,18 +10,8 @@
     display: flex;
     width: 3ch;
     z-index: 800;
-    // padding-inline: 1ch;
-    // margin-left: auto;
 
-    // & > span {
-    //   margin-block: auto;
-    //
-    //   &::selection {
-    //     pointer-events: none;
-    //   }
-    // }
-
-    i {
+    span {
       height: 0.7ch;
       width: 0.7ch;
       border-right: 2px solid var(--clr_text_1);
@@ -33,79 +23,41 @@
 
   &__body {
     display: none;
+    // height: 100svh;
+    // width: 100svw;
+    background-color: var(--clr_primary_1);
+    color: var(--clr_text_1);
+    position: absolute;
+    inset: 0;
+    top: 100cqh;
+    width: 100svw;
+    height: 100svh;
+    z-index: 801;
 
     &[aria-expanded="true"] {
       display: block;
     }
 
-    &-toggle {
-      all: unset;
-      position: absolute;
-      width: 100%;
-      inset: 0;
-      background-color: transparent;
-      z-index: 800;
-    }
+    &__main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      padding: 1em;
 
-    .filter-main {
-      position: absolute;
-      inset: 0;
-      top: 100cqh;
-      width: 100svw;
-      height: 100svh;
-      z-index: 801;
-      background-color: var(--clr_primary_1);
-      color: var(--clr_text_1);
-
-      &__pop-menu {
-        display: flex;
-        gap: 0.5em;
-        height: 2em;
-        padding-inline: 0.5em;
-
-        & > label {
-          margin-inline: auto;
-          flex-grow: 1;
-          display: grid;
-          position: relative;
-          border-radius: 0.5rem;
-
-          & > * {
-            border-radius: 0.5rem;
-            margin: auto;
-            grid-row: 1;
-            grid-column: 1;
-          }
-
-          & > input {
-            cursor: pointer;
-            appearance: none;
-            width: 100%;
-            margin: 0;
-            display: block;
-            border: 1px solid var(--clr_white);
-
-            &:checked {
-              background-color: var(--clr_white);
-
-              & ~ p {
-                color: var(--clr_primary_1);
-                font-weight: 600;
-              }
-            }
-          }
-        }
-      }
-
-      & > * {
-        text-align: center;
-        text-transform: uppercase;
+      & > li {
+        box-shadow: 0 0 2px 2px var(--clr_white);
+        border-radius: 0.5em;
+        width: 100%;
+        height: 6em;
         margin-inline: auto;
-        padding-block: 1em;
-        line-height: 1.5em;
-        // font-size: 1.5em;
-        // text-indent: 2ch;
-        border-bottom: 1px solid var(--clr_grey);
+        display: flex;
+        // padding-block: 1em;
+        // line-height: 1.5em;
+        & > p {
+          margin: auto auto 1ch auto;
+          text-align: center;
+          text-transform: uppercase;
+        }
       }
     }
   }
