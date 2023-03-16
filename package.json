@@ -1,0 +1,21 @@
+{
+  "name": "lagalt",
+  "version": "1.0.0",
+  "description": "Lagalt App Case Assignment",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd ./client && npm run build; npm run preview;",
+    "server": "cd ./server && gradle clean build; gradle bootRun;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weskeiser/lagalt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weskeiser/lagalt/issues"
+  },
+  "homepage": "https://github.com/weskeiser/lagalt#readme"
+}
