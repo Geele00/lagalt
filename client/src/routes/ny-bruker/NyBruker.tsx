@@ -8,49 +8,29 @@ import { AuthFormEvent } from "./NyBruker.types";
 import { Input } from "src/components/Input/Input";
 import Button from "src/components/Button/Button";
 import { NewDbUser } from "src/api/v1/users/types";
+import { HrDivider } from "src/components/HrDivider/HrDivider";
 
 // const provider = new GoogleAuthProvider();
+
+const mockUser = {
+  username: "mockUser20",
+  email: "testmail3@gmail.com",
+  firstName: "Mock",
+  lastName: "User",
+  gender: 1,
+  bio: "Mock bio",
+  dob: new Date(1994, 4, 4).toISOString(),
+  profileStatus: 1,
+  skills: [],
+  country: "Norge",
+  city: "Oslo",
+};
 
 const NyBruker = () => {
   const { authState, signIn } = useAuth();
   const nav = useNavigate();
 
-  const mockUser = {
-    username: "mockUser20",
-    email: "testmail3@gmail.com",
-    firstName: "Mock",
-    lastName: "User",
-    gender: 1,
-    bio: "Mock bio",
-    dob: new Date(1994, 4, 4).toISOString(),
-    profileStatus: 1,
-    skills: [],
-    country: "Norge",
-    city: "Oslo",
-  };
-
-  const dbNewUser = () => {
-    const user = createDbUser(
-      {
-        ...mockUser,
-        password: "mockPassword",
-        uid: "lskjf",
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authState.token}`,
-        },
-      }
-    );
-
-    console.log(user);
-  };
-
-  const createFbAndDbUser = (
-    password: string = "mockPassword",
-    newDbUser: NewDbUser = mockUser
-  ) => {
+  const createFbAndDbUser = (password: string, newDbUser: NewDbUser) => {
     createUserWithEmailAndPassword(auth, newDbUser.email, password)
       .then(async ({ user }) => {
         if (!user) throw new Error();
@@ -126,10 +106,10 @@ const NyBruker = () => {
 
   return (
     <div className="signup">
-      <button onPointerUp={() => createFbAndDbUser()}>
+      {/* <button onPointerUp={() => createFbAndDbUser("lksdjf", mockUser)}>
         Dev cheatcode: Make user
       </button>
-      <button onPointerUp={dbNewUser}>Dev cheatcode: Make DB user</button>
+      */}
       <form className="signup__form" onSubmit={onSubmit}>
         <button className="signup__form__google">
           <img src="/google/web/2x/btn_google_signin_light_normal_web@2x.png" />
@@ -165,7 +145,7 @@ const NyBruker = () => {
           />
         </fieldset>
 
-        <hr />
+        <HrDivider />
 
         <Input
           // maxLength={15}

@@ -2,6 +2,7 @@ import "./Authform.style.scss";
 import Button from "src/components/Button/Button";
 import { Input } from "src/components/Input/Input";
 import { AuthFormEvent } from "./AuthForms.types";
+import { HrDivider } from "src/components/HrDivider/HrDivider";
 
 export const AuthForm = () => {
   const onSubmit = async (e: AuthFormEvent) => {
@@ -80,7 +81,7 @@ export const AuthForm = () => {
       />
       <Button className="signup__auth__submit">Registrer</Button>
 
-      <hr></hr>
+      <HrDivider />
 
       <button className="signup__auth__google">
         <img src="/google/web/2x/btn_google_signin_light_normal_web@2x.png" />

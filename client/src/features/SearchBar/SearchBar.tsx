@@ -1,7 +1,9 @@
 import "./Searchbar.style.scss";
-import { Dispatch, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ISearchBar } from "./SearchBar.types";
+import { SearchResult } from "./SearchResult/SearchResult";
+import { HrDivider } from "src/components/HrDivider/HrDivider";
 
 export const SearchBar = ({
   className,
@@ -48,6 +50,33 @@ export const SearchBar = ({
 
   return (
     <>
+      <div
+        aria-expanded={activeOverlay === "search"}
+        className="search-results"
+      >
+        <ul>
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+          <HrDivider />
+          <SearchResult />
+        </ul>
+      </div>
+
       <form
         className={`${className} search-bar`}
         role="search"
@@ -70,22 +99,13 @@ export const SearchBar = ({
           onFocus={() => toggleOverlay({ overlay: "search", type: "open" })}
         />
       </form>
-      {overlayRef.current &&
-        createPortal(
-          <div
-            aria-expanded={activeOverlay === "search"}
-            className="search-results"
-          >
-            <button
-              onPointerUp={() =>
-                toggleOverlay({ overlay: "search", type: "close" })
-              }
-            >
-              Steng
-            </button>
-          </div>,
-          overlayRef.current
-        )}
+
+      <button
+        className="search__close"
+        role="Exit search results"
+        onPointerUp={() => toggleOverlay({ overlay: "search", type: "close" })}
+        disabled={activeOverlay !== "search"}
+      />
     </>
   );
 };
