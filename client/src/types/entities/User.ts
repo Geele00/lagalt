@@ -2,12 +2,14 @@ export interface UserPrivate {
   userId: number;
   username: string;
   avatarUrl: string;
-  profileStatus: boolean;
+  profileStatus: "Public" | "Private";
   bio: string;
 }
 
 export interface UserPublic extends UserPrivate {
-  age: number;
+  firstName: string;
+  lastName: string;
+  age: number | null;
   gender: string;
   country: string;
   city: string;
