@@ -1,6 +1,5 @@
 import "./Searchbar.style.scss";
 import { useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import { ISearchBar } from "./SearchBar.types";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
