@@ -19,8 +19,6 @@ import { useAuth } from "src/auth/Auth.Provider";
 import { IChatMessagePage } from "src/types/entities/Chat";
 import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 
-const pageSize = 20;
-
 const Melding = () => {
   const { authState } = useAuth();
   const { username: recipientUsername } = useParams();
@@ -31,7 +29,7 @@ const Melding = () => {
   const queryKey = [
     `/chats`,
     {
-      filters: { target: recipientUsername, size: pageSize },
+      filters: { target: recipientUsername, size: 20 },
       token: authState.token,
     },
   ];

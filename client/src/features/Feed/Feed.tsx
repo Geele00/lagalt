@@ -6,8 +6,6 @@ import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { IProjectsPage } from "src/types/entities/Project";
 import { ErrorComponent } from "@tanstack/react-router";
 
-const pageSize = 20;
-
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
 const Feed = () => {
