@@ -1,4 +1,4 @@
-package no.lagalt.server.Dtos.Project;
+package no.lagalt.server.Dtos.Page;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ProjectPageDto<T> {
+public class PageDto<T> {
 
-  List<T> projects;
+  List<T> content;
 
   Integer pageNumber;
 

@@ -24,7 +24,7 @@ public interface ProjectMapper {
 
   List<ProjectDto> toDto(List<Project> project);
 
-  ProjectDto previewToDto(ProjectPreviewDto project);
-
   ProjectPreviewDto toPreviewDto(Project project);
+
+  List<ProjectPreviewDto> toPreviewDto(List<Project> project);
 }

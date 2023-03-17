@@ -1,4 +1,4 @@
-import { INewProject, IProjectsPage } from "src/types/entities/Project";
+import { INewProject, IProjectsPage } from "src/types/models/Project";
 import { defaultOptions } from "src/api/v1/defaults";
 
 const projectsUri = import.meta.env.VITE_API_V1_URL + "/projects";

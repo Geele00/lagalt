@@ -3,39 +3,38 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
-import { IProjectsPage } from "src/types/entities/Project";
+import { IProjectsPage } from "src/types/models/Project";
 import { ErrorComponent } from "@tanstack/react-router";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
+
+const filters = {
+  size: 20,
+  sort: "createdAt,desc",
+};
 
 const Feed = () => {
   const { authState } = useAuth();
 
   // ~~~ Query logic
 
-  const placeholderData = useMemo(
-    () => () => {
-      const placeHolders = [];
-      for (let i = 0; i < 20; i++) {
-        placeHolders.push({
-          content: [
-            {
-              title: "",
-              description: "",
-              projectId: i,
-            },
-          ],
-        });
-      }
-      return { pages: placeHolders } as InfiniteData<IProjectsPage>;
-    },
-    []
-  );
+  const placeholderData = useMemo(() => {
+    const placeHolders = [];
 
-  const filters = {
-    size: 20,
-    sort: "createdAt,desc",
-  };
+    for (let i = 0; i < 20; i++) {
+      placeHolders.push({
+        content: [
+          {
+            title: "",
+            description: "",
+            projectId: i,
+          },
+        ],
+      });
+    }
+
+    return { pages: placeHolders } as InfiniteData<IProjectsPage>;
+  }, []);
 
   const queryKey = [`/feed`, { filters, token: authState.token }];
 
@@ -65,6 +64,8 @@ const Feed = () => {
       },
     });
 
+  console.log(data && data);
+
   const feedItems = useMemo(
     () =>
       data?.pages.map((page) =>
@@ -88,7 +89,7 @@ const Feed = () => {
   const containerRef = useRef<HTMLUListElement>(null);
 
   const reachedFinalPage = useMemo(() => {
-    return !!data?.pages.at(-1)?.last;
+    return !data?.pages.at(-1)?.hasNextPage;
   }, [data]);
 
   // ~~~ Scrolling

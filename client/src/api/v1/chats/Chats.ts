@@ -1,6 +1,6 @@
 import { defaultOptions } from "src/api/v1/defaults";
-import { IChatMessagePage } from "src/types/entities/Chat";
-import { SendMessage } from "src/types/entities/Message";
+import { IChatMessagePage } from "src/types/models/Chat";
+import { SendMessage } from "src/types/models/Message";
 
 const endpoint = import.meta.env.VITE_API_V1_URL + "/chats";
 

@@ -1,4 +1,4 @@
-import { UserPrivate, UserPublic } from "src/types/entities/User";
+import { UserPrivate, UserPublic } from "src/types/models/User";
 import { defaultOptions } from "src/api/v1/defaults";
 import { NewDbUser } from "./types";
 

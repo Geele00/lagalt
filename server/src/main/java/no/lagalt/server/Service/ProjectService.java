@@ -1,6 +1,7 @@
 package no.lagalt.server.Service;
 
 import java.util.List;
+import no.lagalt.server.Dtos.Page.PageDto;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Mapper.*;
@@ -48,16 +49,25 @@ public class ProjectService {
     return projectMapper.toDto(project);
   }
 
-  public Page<ProjectPreviewDto> getPage(Pageable pageable, String uid) throws NotFoundException {
+  public PageDto<ProjectPreviewDto> getPage(Pageable pageable, String uid)
+      throws NotFoundException {
 
     Page<Project> projectsPage = projectRepo.findAll(pageable);
 
     if (projectsPage.isEmpty()) throw new NotFoundException("No projects found in database");
 
-    return projectsPage.map(
-        project -> {
-          return projectMapper.toPreviewDto(project);
-        });
+    List<Project> projects = projectsPage.toList();
+
+    List<ProjectPreviewDto> previewDtoList = projectMapper.toPreviewDto(projects);
+    Integer pageNumber = projectsPage.getNumber();
+    boolean hasNextPage = projectsPage.hasNext();
+
+    return new PageDto<ProjectPreviewDto>(previewDtoList, pageNumber, hasNextPage);
+
+    // return projectsPage.map(
+    //    project -> {
+    //      return projectMapper.toPreviewDto(project);
+    //    });
   }
 
   public List<ProjectDto> getAll() {
