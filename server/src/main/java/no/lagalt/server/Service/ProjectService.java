@@ -63,11 +63,6 @@ public class ProjectService {
     boolean hasNextPage = projectsPage.hasNext();
 
     return new PageDto<ProjectPreviewDto>(previewDtoList, pageNumber, hasNextPage);
-
-    // return projectsPage.map(
-    //    project -> {
-    //      return projectMapper.toPreviewDto(project);
-    //    });
   }
 
   public List<ProjectDto> getAll() {

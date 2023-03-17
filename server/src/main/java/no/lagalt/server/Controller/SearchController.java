@@ -1,8 +1,11 @@
 package no.lagalt.server.Controller;
 
+// import io.swagger.v3.oas.annotations.Operation;
+// import no.lagalt.server.Dtos.Page.PageDto;
+// import no.lagalt.server.Interfaces.Searchable;
+// import no.lagalt.server.Service.*;
+// import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import no.lagalt.server.Service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Search")
@@ -11,13 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SearchController {
 
-  @Autowired private UserService userService;
-  @Autowired private HistoryService historyService;
+  // @Autowired private UserService userService;
+  // @Autowired private HistoryService historyService;
 
   // @Operation(summary = "Search the database")
   // @GetMapping
-  // List<Integer> getSearchResult(
-  //    @RequestParam(name = "query", required = false) String query, Authentication auth) {
-  //
-  // }
+  // PageDto<Searchable> getSearchResult(
+  //    @RequestParam(name = "query", required = false) String query, Authentication auth) {}
 }
