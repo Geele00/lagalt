@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/v1/users")
 @RestController
 public class UserController {
+
   @Autowired private UserService userService;
   @Autowired private HistoryService historyService;
 
@@ -30,8 +31,6 @@ public class UserController {
       @RequestParam(name = "username", required = false) String username,
       @RequestParam(name = "id", required = false) List<String> id)
       throws NotFoundException {
-
-    System.out.println(auth.getName());
 
     if (username != null) return List.of(userService.getByUsername(username));
 

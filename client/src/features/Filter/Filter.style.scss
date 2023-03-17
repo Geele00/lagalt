@@ -1,12 +1,13 @@
 .filter {
   margin-block: auto;
+  height: 100%;
 
   &__header-toggle {
     all: unset;
     padding-left: 2ch;
     cursor: pointer;
     color: var(--clr_text_1);
-    height: 100cqh;
+    height: 100%;
     display: flex;
     width: 3ch;
     z-index: 800;
@@ -23,13 +24,11 @@
 
   &__body {
     display: none;
-    // height: 100svh;
-    // width: 100svw;
     background-color: var(--clr_primary_1);
     color: var(--clr_text_1);
     position: absolute;
     inset: 0;
-    top: 100cqh;
+    top: 100%;
     width: 100svw;
     height: 100svh;
     z-index: 801;

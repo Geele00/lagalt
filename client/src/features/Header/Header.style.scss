@@ -19,6 +19,18 @@
     margin-right: 0.5em;
   }
 
+  &__buttons {
+    height: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    cursor: pointer;
+
+    & > * {
+      grid-row: 1;
+      grid-column: 1;
+    }
+  }
+
   &[data-overlay="search"] {
     @container main-header (width < 500px) {
       .filter,

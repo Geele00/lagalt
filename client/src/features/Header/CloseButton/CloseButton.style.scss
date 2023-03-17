@@ -1,4 +1,39 @@
 .close-button {
+  border: 0;
   display: block;
-  width: 100cqh;
+  height: 100%;
+  aspect-ratio: 1;
+  margin: auto;
+  z-index: 50;
+  background-color: var(--clr_primary_2);
+  cursor: pointer;
+  position: relative;
+  display: grid;
+
+  &:disabled {
+    z-index: -1;
+
+    & > div {
+      height: 0%;
+    }
+  }
+
+  & > div {
+    border-radius: 1em;
+    transition: height 0.2s ease-out;
+    grid-row: 0;
+    grid-column: 0;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    right: 50%;
+    bottom: 0;
+    background-color: var(--clr_white);
+    height: 70%;
+    width: 0.5ch;
+    transform: rotate(-45deg);
+    &:first-child {
+      transform: rotate(45deg);
+    }
+  }
 }

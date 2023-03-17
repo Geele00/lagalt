@@ -4,15 +4,26 @@
   cursor: pointer;
   grid-template-columns: 4fr 2fr;
   width: fit-content;
-  margin-right: 0.5em;
   display: flex;
+  height: 100%;
+  aspect-ratio: 1;
+  z-index: 50;
+
+  &[data-visible="false"] {
+    z-index: -1;
+
+    .profile-button__logo {
+      height: 0;
+    }
+  }
 
   &__logo {
+    transition: height 0.2s ease-out;
     border: 2px solid var(--clr_white);
     border-radius: 50%;
     margin: auto;
-    height: 50cqh;
-    width: 50cqh;
+    height: 60%;
+    aspect-ratio: 1;
     display: grid;
     overflow: hidden;
 

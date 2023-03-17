@@ -1,8 +1,8 @@
-import "./Searchbar.style.scss";
+import "./Search.style.scss";
 import { useEffect, useRef } from "react";
-import { ISearchBar } from "./SearchBar.types";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
+import { ISearchBar } from "./Search.types";
 
 export const SearchBar = ({
   className,
@@ -92,19 +92,11 @@ export const SearchBar = ({
         />
         <input
           onKeyDown={onKeyDown}
-          className="search-bar__input"
           type="text"
           ref={searchInputRef}
           onFocus={() => toggleOverlay({ overlay: "search", type: "open" })}
         />
       </form>
-
-      <button
-        className="search__close"
-        role="Exit search results"
-        onPointerUp={() => toggleOverlay({ overlay: "search", type: "close" })}
-        disabled={activeOverlay !== "search"}
-      />
     </>
   );
 };
