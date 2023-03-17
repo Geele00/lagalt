@@ -1,5 +1,4 @@
 import "./Header.style.scss";
-import { SearchBar } from "src/features/SearchBar/SearchBar";
 import { Filter } from "src/features/Filter/Filter";
 import { useReducer } from "react";
 import { overlayReducer } from "./Header.helpers";
@@ -7,15 +6,10 @@ import { ProfileButton } from "./ProfileButton/ProfileButton";
 import { Menu } from "./Menu/Menu";
 import { CloseButton } from "./CloseButton/CloseButton";
 import { PointerEvent } from "react";
+import { SearchBar } from "../Search/Search";
 
 export const Header = () => {
   const [activeOverlay, toggleOverlay] = useReducer(overlayReducer, null);
-
-  const closeOverlay = (e: PointerEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    toggleOverlay({ overlay: null, type: "close" });
-  };
 
   return (
     <header className="main-header" data-overlay={activeOverlay}>
@@ -33,11 +27,13 @@ export const Header = () => {
         toggleOverlay={toggleOverlay}
       />
 
-      {activeOverlay === null ? (
-        <ProfileButton data-overlay={activeOverlay !== null} />
-      ) : (
-        <CloseButton onPointerUp={closeOverlay} />
-      )}
+      <div className="main-header__buttons">
+        <ProfileButton activeOverlay={activeOverlay} />
+        <CloseButton
+          toggleOverlay={toggleOverlay}
+          activeOverlay={activeOverlay}
+        />
+      </div>
     </header>
   );
 };

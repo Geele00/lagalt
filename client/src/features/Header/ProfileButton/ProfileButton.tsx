@@ -1,8 +1,13 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/Auth.Provider";
+import { OverlayOptions } from "../Header.types";
 import "./ProfileButton.style.scss";
 
-export const ProfileButton = () => {
+interface IProps {
+  activeOverlay: OverlayOptions["overlay"];
+}
+
+export const ProfileButton = ({ activeOverlay }: IProps) => {
   const { signOut, authState } = useAuth();
 
   const nav = useNavigate();
@@ -19,7 +24,8 @@ export const ProfileButton = () => {
 
   return (
     <button
-      className="main-header__profile-button profile-button"
+      data-visible={activeOverlay === null ? true : false}
+      className="profile-button"
       onPointerUp={() =>
         nav({ to: "/$username", params: { username: paramsUsername } })
       }
