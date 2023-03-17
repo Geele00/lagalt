@@ -4,9 +4,13 @@ import java.util.List;
 import no.lagalt.server.Dtos.Project.NewProjectDto;
 import no.lagalt.server.Dtos.Project.ProjectDto;
 import no.lagalt.server.Dtos.Project.ProjectPreviewDto;
+import no.lagalt.server.Dtos.Project.UpdateProjectDto;
 import no.lagalt.server.Entity.Project;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
     componentModel = "spring",
@@ -18,6 +22,7 @@ public interface ProjectMapper {
   @Mapping(target = "projectId", ignore = true)
   @Mapping(target = "messageBoard", ignore = true)
   @Mapping(target = "owner", ignore = true)
+  @Mapping(target = "admins", ignore = true)
   Project toProject(NewProjectDto newProjectDto);
 
   ProjectDto toDto(Project project);
@@ -27,4 +32,7 @@ public interface ProjectMapper {
   ProjectPreviewDto toPreviewDto(Project project);
 
   List<ProjectPreviewDto> toPreviewDto(List<Project> project);
+
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateProjectFromDto(UpdateProjectDto dto, @MappingTarget Project project);
 }

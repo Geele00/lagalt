@@ -7,8 +7,8 @@
 // import no.lagalt.server.Entity.*;
 // import no.lagalt.server.Mapper.*;
 // import no.lagalt.server.Repository.*;
-// import no.lagalt.server.Utils.Enum.ProfileStatus;
-// import no.lagalt.server.Utils.Exception.*;
+// import no.lagalt.server.Enum.ProfileStatus;
+// import no.lagalt.server.Exception.*;
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.stereotype.Service;
 //

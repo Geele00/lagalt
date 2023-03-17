@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import no.lagalt.server.Utils.Enum.AddedBy;
+import no.lagalt.server.Enum.AddedBy;
 
 @Getter
 @Setter

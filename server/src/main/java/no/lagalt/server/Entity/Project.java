@@ -18,16 +18,6 @@ public class Project {
   @Column(nullable = false)
   private Integer projectId;
 
-  @ManyToOne(
-      fetch = FetchType.LAZY,
-      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-  @JoinTable(
-      name = "owners_projects",
-      joinColumns = {@JoinColumn(name = "project_id")},
-      inverseJoinColumns = {@JoinColumn(name = "user_id")})
-  // @JoinColumn(name = "owner", nullable = false)
-  private LagaltUser owner;
-
   @Column(nullable = false)
   private String title;
 
@@ -61,4 +51,31 @@ public class Project {
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
+
+  @ManyToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "owners_projects",
+      joinColumns = {@JoinColumn(name = "project_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private LagaltUser owner;
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "admins_projects",
+      joinColumns = {@JoinColumn(name = "project_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private List<LagaltUser> admins;
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "collaborators_projects",
+      joinColumns = {@JoinColumn(name = "project_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private List<LagaltUser> collaborators;
 }

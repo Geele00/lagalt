@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import no.lagalt.server.Utils.Enum.Gender;
-import no.lagalt.server.Utils.Enum.ProfileStatus;
+import no.lagalt.server.Enum.Gender;
+import no.lagalt.server.Enum.ProfileStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -89,4 +89,22 @@ public class LagaltUser {
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "project_id")})
   private List<Project> projects;
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "admins_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
+  private List<LagaltUser> adminInProjects;
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "collaborators_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
+  private List<LagaltUser> collaboratingInProjects;
 }

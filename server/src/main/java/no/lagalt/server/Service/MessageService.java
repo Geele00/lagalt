@@ -3,10 +3,10 @@ package no.lagalt.server.Service;
 import java.util.List;
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Entity.Message;
+import no.lagalt.server.Exception.NotFoundException;
 import no.lagalt.server.Mapper.MessageMapper;
 import no.lagalt.server.Repository.MessageRepository;
 import no.lagalt.server.Repository.UserRepository;
-import no.lagalt.server.Utils.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,21 +30,6 @@ public class MessageService {
 
     return messageMapper.toDto(messages);
   }
-
-  // public Page<MessageDto> getPage(Pageable pageable, String uid, String recipientUsername) {
-  //
-  //  Optional<LagaltUser> user = userRepository.findByUid(uid);
-  //
-  //  Optional<LagaltUser> recipient = userRepository.findByUsername(recipientUsername);
-  //
-  //  Page<Message> messagePage = messageRepo.findAll(pageable);
-  //
-  //  return messagePage.map(
-  //      message -> {
-  //        MessageDto dto = messageMapper.toDto(message);
-  //        return dto;
-  //      });
-  // }
 
   public MessageDto save(Message message) {
     Message savedMessage = messageRepo.save(message);

@@ -8,8 +8,9 @@ import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
+import no.lagalt.server.Exception.*;
+import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Service.*;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,7 @@ public class UserController {
       Authentication auth,
       @RequestParam(name = "username", required = false) String username,
       @RequestParam(name = "id", required = false) List<String> id)
-      throws NotFoundException {
+      throws UserNotFoundException {
 
     if (username != null) return List.of(userService.getByUsername(username));
 
@@ -52,7 +53,7 @@ public class UserController {
   @Operation(summary = "Delete one user by ID")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
-  void deleteOneById(@PathVariable Integer id) throws NotFoundException {
+  void deleteOneById(@PathVariable Integer id) throws UserNotFoundException {
     userService.deleteById(id);
   }
 
@@ -75,11 +76,11 @@ public class UserController {
   @Operation(summary = "Update a user")
   @PutMapping
   UserDto updateUser(@RequestBody UpdateUserDto updateUserDto, Authentication auth)
-      throws NotFoundException {
+      throws UserNotFoundException {
 
     String uid = auth.getName();
 
-    if (!userService.validateExistsByUid(uid)) throw new NotFoundException(uid);
+    if (!userService.validateExistsByUid(uid)) throw new UserNotFoundException(uid);
 
     UserDto savedUser = userService.save(updateUserDto);
 
@@ -99,7 +100,8 @@ public class UserController {
   @Operation(summary = "Set skills for user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PostMapping("skills")
-  void setSkills(@RequestBody List<Integer> idList, Authentication auth) throws NotFoundException {
+  void setSkills(@RequestBody List<Integer> idList, Authentication auth)
+      throws UserNotFoundException {
     String uid = auth.getName();
     userService.setSkillsByUid(idList, uid);
   }

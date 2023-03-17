@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import no.lagalt.server.Dtos.Skill.SkillDto;
-import no.lagalt.server.Utils.Enum.Gender;
-import no.lagalt.server.Utils.Enum.ProfileStatus;
+import no.lagalt.server.Enum.Gender;
+import no.lagalt.server.Enum.ProfileStatus;
 
 @AllArgsConstructor
 @NoArgsConstructor

@@ -5,10 +5,12 @@ import no.lagalt.server.Dtos.Project.ProjectDto;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Enum.ProfileStatus;
+import no.lagalt.server.Exception.*;
+import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.*;
-import no.lagalt.server.Utils.Enum.ProfileStatus;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,22 @@ public class UserService {
 
   @Autowired private ProjectMapper projectMapper;
 
+  private LagaltUser findByUid(String uid) throws UserNotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new UserNotFoundException(uid, ExceptionArgumentType.UID));
+  }
+
+  private LagaltUser findByUsername(String username) throws UserNotFoundException {
+    return userRepo
+        .findByUsername(username)
+        .orElseThrow(() -> new UserNotFoundException(username, ExceptionArgumentType.USERNAME));
+  }
+
+  private LagaltUser findById(Integer id) throws UserNotFoundException {
+    return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+  }
+
   public boolean validateUsernameExists(String username) {
     return userRepo.existsByUsername(username);
   }
@@ -37,36 +55,19 @@ public class UserService {
     return userRepo.existsById(id);
   }
 
-  private LagaltUser findById(Integer id) throws NotFoundException {
-    return userRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
-  }
-
-  public UserDto getByUid(String uid) throws NotFoundException {
+  public UserDto getByUid(String uid) throws UserNotFoundException {
     LagaltUser user = findByUid(uid);
 
     return userMapper.toDto(user);
   }
 
-  public UserDto getById(Integer id) throws NotFoundException {
+  public UserDto getById(Integer id) throws UserNotFoundException {
     LagaltUser user = findById(id);
 
     return userMapper.toDto(user);
   }
 
-  private LagaltUser findByUid(String uid) throws NotFoundException {
-    return userRepo
-        .findByUid(uid)
-        .orElseThrow(() -> new NotFoundException("User not found in database"));
-  }
-
-  private LagaltUser findByUsername(String username) throws NotFoundException {
-    return userRepo
-        .findByUsername(username)
-        .orElseThrow(
-            () -> new NotFoundException("User not found in database with username: " + username));
-  }
-
-  public UserDto getByUsername(String username) throws NotFoundException {
+  public UserDto getByUsername(String username) throws UserNotFoundException {
     LagaltUser user = findByUsername(username);
 
     if (user.getProfileStatus() == ProfileStatus.Private) {
@@ -124,22 +125,23 @@ public class UserService {
     return userMapper.toDto(savedUser);
   }
 
-  public void deleteById(Integer id) throws NotFoundException {
+  public void deleteById(Integer id) throws UserNotFoundException {
     try {
       userRepo.deleteById(id);
-    } catch (NotFoundException err) {
-      throw err;
+    } catch (UserNotFoundException err) {
+      throw new UserNotFoundException(id);
     }
   }
 
   // ~~~ Skills
 
-  public List<SkillDto> getSkillsByUid(String uid) throws NotFoundException {
-    LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new NotFoundException(uid));
+  public List<SkillDto> getSkillsByUid(String uid) throws UserNotFoundException {
+    LagaltUser user = findByUid(uid);
+
     return skillMapper.toDto(user.getSkills());
   }
 
-  public void setSkillsByUid(List<Integer> idList, String uid) throws NotFoundException {
+  public void setSkillsByUid(List<Integer> idList, String uid) throws UserNotFoundException {
 
     LagaltUser user = findByUid(uid);
 

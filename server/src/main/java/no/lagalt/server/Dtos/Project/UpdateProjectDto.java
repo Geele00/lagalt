@@ -15,9 +15,11 @@ public class UpdateProjectDto {
 
   private String description;
 
+  private String imageUrl;
+
   private List<Integer> industryIds;
 
-  private String imageUrl;
+  private List<Integer> wantedSkillsIds;
 
   private LocalDateTime updatedDateTime = LocalDateTime.now();
 }
