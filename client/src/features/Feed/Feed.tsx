@@ -44,6 +44,7 @@ const Feed = () => {
       queryKey,
       enabled: !!authState.token,
       placeholderData,
+      suspense: true,
 
       onSuccess: async (data) => {
         const lastPage = data.pages.at(-1);
@@ -53,8 +54,6 @@ const Feed = () => {
         const projectIds = lastPage?.content.map(
           (project) => project.projectId
         );
-
-        console.log(projectIds);
 
         fetch(`${apiUri}/users/history`, {
           method: "POST",
@@ -67,24 +66,27 @@ const Feed = () => {
       },
     });
 
-  // if placeholderpreview
   const feedItems = useMemo(
     () =>
       data?.pages.map((page) =>
         page?.content.map((project) => (
-          <ProjectPreview
-            className="feed__project-preview"
-            isPlaceholderData={isPlaceholderData || null}
-            title={project.title}
-            description={project.description}
+          <li
+            className="project-preview"
             key={project.projectId + project.title}
-          />
+          >
+            {!isPlaceholderData && (
+              <ProjectPreview
+                title={project.title}
+                description={project.description}
+              />
+            )}
+          </li>
         ))
       ),
-    [data]
+    [data, isPlaceholderData]
   );
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLUListElement>(null);
 
   const reachedFinalPage = useMemo(() => {
     return !!data?.pages.at(-1)?.last;
@@ -120,13 +122,9 @@ const Feed = () => {
   }, [error]);
 
   return (
-    <>
-      {errorScreen ?? (
-        <div className="feed" role="feed" ref={containerRef}>
-          {feedItems}
-        </div>
-      )}
-    </>
+    <ul className="feed" role="feed" ref={containerRef}>
+      {errorScreen ?? <>{feedItems}</>}
+    </ul>
   );
 };
 
