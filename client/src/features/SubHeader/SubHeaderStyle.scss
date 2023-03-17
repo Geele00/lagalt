@@ -1,0 +1,20 @@
+.subHeader{
+    width: 80%;
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba($color: #df0606, $alpha: 1.0);
+    border: 1px solid black;
+    text-align: center;
+    background-color: aqua;
+
+    @media (max-width: 767px) {
+        width: 100%;
+        
+    }
+
+}
+
+
+
