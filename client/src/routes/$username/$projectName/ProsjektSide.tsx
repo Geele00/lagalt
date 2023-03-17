@@ -31,13 +31,13 @@ export const ProsjektSide = () => {
   const { projectName } = useParams();
 
   const { data } = useQuery({
-    queryKey: ["/projects", authState, projectName],
-
-    meta: { token: authState.token },
+    queryKey: [
+      "/projects",
+      projectName,
+      { filters: { title: projectName, token: authState.token } },
+    ],
 
     queryFn: () => {
-      const params = `?title=${projectName}`;
-
       const { token } = authState;
 
       const headers = {
@@ -47,7 +47,7 @@ export const ProsjektSide = () => {
         },
       };
 
-      return token ? fetchProjects(headers, params) : null;
+      return token ? fetchProjects(headers) : null;
     },
   });
   console.log(data);

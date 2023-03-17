@@ -19,8 +19,6 @@ import { useAuth } from "src/auth/Auth.Provider";
 import { IChatMessagePage } from "src/types/entities/Chat";
 import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 
-const pageSize = 20;
-
 const Melding = () => {
   const { authState } = useAuth();
   const { username: recipientUsername } = useParams();
@@ -28,10 +26,13 @@ const Melding = () => {
 
   // ~~~ Query logic
 
-  const queryKey = useMemo(
-    () => [`/chats`, authState, recipientUsername],
-    [authState, recipientUsername]
-  );
+  const queryKey = [
+    `/chats`,
+    {
+      filters: { target: recipientUsername, size: 20 },
+      token: authState.token,
+    },
+  ];
 
   const {
     data,
@@ -42,10 +43,7 @@ const Melding = () => {
     dataUpdatedAt,
   } = useInfiniteQuery<IChatMessagePage, Error>({
     queryKey,
-    meta: {
-      params: `?target=${recipientUsername}&size=${pageSize}`,
-      token: authState.token,
-    },
+    enabled: !!authState.token,
     // refetchInterval: 3000,
   });
 

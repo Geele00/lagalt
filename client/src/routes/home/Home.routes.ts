@@ -4,7 +4,7 @@ import { rootRoute } from "src/routes/__root";
 export const homeRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: lazy(() => import("src/features/Feed/Feed")),
+  component: lazy(() => import("./Home")),
 
   // onLoad: ({ context }) => {
   //   console.log(context);

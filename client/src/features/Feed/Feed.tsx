@@ -6,14 +6,10 @@ import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { IProjectsPage } from "src/types/entities/Project";
 import { ErrorComponent } from "@tanstack/react-router";
 
-const pageSize = 20;
-
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
 const Feed = () => {
   const { authState } = useAuth();
-
-  const queryKey = [`/feed`, authState, "/projects"];
 
   // ~~~ Query logic
 
@@ -36,14 +32,17 @@ const Feed = () => {
     []
   );
 
+  const filters = {
+    size: 20,
+    sort: "createdAt,desc",
+  };
+
+  const queryKey = [`/feed`, { filters, token: authState.token }];
+
   const { isFetching, data, error, fetchNextPage, isPlaceholderData } =
     useInfiniteQuery<IProjectsPage>({
       queryKey,
       enabled: !!authState.token,
-      meta: {
-        params: `?size=${pageSize}&sort=createdAt,desc`,
-        token: authState.token,
-      },
       placeholderData,
 
       onSuccess: async (data) => {
