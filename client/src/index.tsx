@@ -58,7 +58,7 @@ export const queryClient = new QueryClient({
         return res.json();
       },
       getNextPageParam: (lastPage: any) =>
-        lastPage ? parseInt(lastPage.number) + 1 : 0,
+        lastPage ? parseInt(lastPage.pageNumber) + 1 : 0,
     },
   },
 });

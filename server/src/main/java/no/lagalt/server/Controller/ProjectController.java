@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
+import no.lagalt.server.Exception.*;
 import no.lagalt.server.Service.ProjectService;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -36,17 +36,14 @@ public class ProjectController {
     return projectService.getById(id);
   }
 
-  // @Operation(summary = "Update a project")
-  // @PutMapping("{id}")
-  // ProjectDto updateProject(@RequestBody UpdateProjectDto updateProjectDto)
-  //    throws NotFoundException {
-  //  Integer projectId = updateProjectDto.getProjectId();
-  //  if (!projectService.validateExists(projectId)) throw new NotFoundException(projectId);
-  //
-  //  ProjectDto savedProject = projectService.save(updateProjectDto);
-  //
-  //  return savedProject;
-  // }
+  @Operation(summary = "Update a project")
+  @PutMapping("{id}")
+  void updateProject(@RequestBody UpdateProjectDto updateProjectDto, Authentication auth)
+      throws NotFoundException {
+    String uid = auth.getName();
+
+    projectService.updateProject(updateProjectDto, uid);
+  }
 
   @Operation(summary = "Create new project")
   @ResponseStatus(HttpStatus.CREATED)

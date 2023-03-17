@@ -1,45 +1,49 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+} from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
-import { IProjectsPage } from "src/types/entities/Project";
+import { IProjectsPage } from "src/types/models/Project";
 import { ErrorComponent } from "@tanstack/react-router";
+import { updateProject } from "src/api/v1/projects/projects";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
+
+const filters = {
+  size: 20,
+  sort: "createdAt,desc",
+};
 
 const Feed = () => {
   const { authState } = useAuth();
 
   // ~~~ Query logic
 
-  const placeholderData = useMemo(
-    () => () => {
-      const placeHolders = [];
-      for (let i = 0; i < 20; i++) {
-        placeHolders.push({
-          content: [
-            {
-              title: "",
-              description: "",
-              projectId: i,
-            },
-          ],
-        });
-      }
-      return { pages: placeHolders } as InfiniteData<IProjectsPage>;
-    },
-    []
-  );
+  const placeholderData = useMemo(() => {
+    const placeHolders = [];
 
-  const filters = {
-    size: 20,
-    sort: "createdAt,desc",
-  };
+    for (let i = 0; i < 20; i++) {
+      placeHolders.push({
+        content: [
+          {
+            title: "",
+            description: "",
+            projectId: i,
+          },
+        ],
+      });
+    }
+
+    return { pages: placeHolders } as InfiniteData<IProjectsPage>;
+  }, []);
 
   const queryKey = [`/feed`, { filters, token: authState.token }];
 
-  const { isFetching, data, error, fetchNextPage, isPlaceholderData } =
+  const { isFetching, data, error, fetchNextPage, isPlaceholderData, refetch } =
     useInfiniteQuery<IProjectsPage>({
       queryKey,
       enabled: !!authState.token,
@@ -65,6 +69,28 @@ const Feed = () => {
       },
     });
 
+  const updates = {
+    projectId: 109,
+    title: "lol",
+  };
+
+  const testMut = useMutation({
+    mutationFn: () => {
+      const { token } = authState;
+      if (!token) throw new Error("Authentication failed");
+      return updateProject(updates, token);
+    },
+    onSuccess: () => {
+      refetch();
+      //queryClient.invalidateQueries(["/feed"]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  console.log(data && data);
+
   const feedItems = useMemo(
     () =>
       data?.pages.map((page) =>
@@ -88,7 +114,7 @@ const Feed = () => {
   const containerRef = useRef<HTMLUListElement>(null);
 
   const reachedFinalPage = useMemo(() => {
-    return !!data?.pages.at(-1)?.last;
+    return !data?.pages.at(-1)?.hasNextPage;
   }, [data]);
 
   // ~~~ Scrolling
@@ -122,6 +148,7 @@ const Feed = () => {
 
   return (
     <ul className="feed" role="feed" ref={containerRef}>
+      <button onPointerUp={() => testMut.mutate()}>Update 109</button>
       {errorScreen ?? <>{feedItems}</>}
     </ul>
   );

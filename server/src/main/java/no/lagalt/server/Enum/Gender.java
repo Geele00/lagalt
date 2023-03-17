@@ -1,4 +1,4 @@
-package no.lagalt.server.Utils.Enum;
+package no.lagalt.server.Enum;
 
 public enum Gender {
   Male,

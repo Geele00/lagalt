@@ -3,13 +3,28 @@ import { useEffect, useRef } from "react";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
 import { ISearchBar } from "./Search.types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAuth } from "src/auth/Auth.Provider";
 
 export const SearchBar = ({
   className,
   activeOverlay,
   toggleOverlay,
 }: ISearchBar) => {
+  const { authState } = useAuth();
+
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const filters = {
+    size: 20,
+    sort: "",
+  };
+
+  const queryKey = ["/search", { filters, token: authState.token }];
+
+  // const { data } = useInfiniteQuery({
+  //   queryKey,
+  // });
 
   const overlayRef = useRef<Element | null>(null);
 

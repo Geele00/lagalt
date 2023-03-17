@@ -8,7 +8,7 @@ import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Entity.Country;
 import no.lagalt.server.Entity.History;
 import no.lagalt.server.Entity.Project;
-import no.lagalt.server.Utils.Enum.Gender;
+import no.lagalt.server.Enum.Gender;
 
 @Data
 public class FullUserDto {

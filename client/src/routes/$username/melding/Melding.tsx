@@ -16,7 +16,7 @@ import {
 } from "react";
 import { sendChatMessageFetch } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/Auth.Provider";
-import { IChatMessagePage } from "src/types/entities/Chat";
+import { IChatMessagePage } from "src/types/models/Chat";
 import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
 
 const Melding = () => {
@@ -115,7 +115,7 @@ const Melding = () => {
   }, [data]);
 
   const reachedFinalPage = useMemo(() => {
-    return !!data?.pages.at(-1)?.last;
+    return !data?.pages.at(-1)?.hasNextPage;
   }, [data]);
 
   const onScroll = useCallback(() => {

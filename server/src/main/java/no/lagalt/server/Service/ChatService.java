@@ -4,10 +4,11 @@ import java.util.Collections;
 import java.util.List;
 import no.lagalt.server.Dtos.Chat.*;
 import no.lagalt.server.Dtos.Message.*;
+import no.lagalt.server.Dtos.Page.PageDto;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Exception.*;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.*;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,8 @@ public class ChatService {
     return messageMapper.toDto(lastMessage);
   }
 
-  public Page<ChatMessageDto> getMessages(String uid, String recipientUsername, Pageable pageable) {
+  public PageDto<ChatMessageDto> getMessages(
+      String uid, String recipientUsername, Pageable pageable) {
 
     LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new NotFoundException());
 
@@ -103,11 +105,13 @@ public class ChatService {
 
     Page<Message> messagePage = new PageImpl<Message>(sub, pageable, messagesSize);
 
-    return messagePage.map(
-        message -> {
-          ChatMessageDto dto = chatMapper.toChatMessageDto(message);
-          return dto;
-        });
+    List<Message> messageList = messagePage.toList();
+
+    List<ChatMessageDto> dtoList = chatMapper.toChatMessageDto(messageList);
+    Integer pageNumber = messagePage.getNumber();
+    boolean hasNextPage = messagePage.hasNext();
+
+    return new PageDto<ChatMessageDto>(dtoList, pageNumber, hasNextPage);
   }
 
   public ChatDto save(Chat chat) {

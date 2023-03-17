@@ -2,7 +2,7 @@ import "./NyttProsjekt.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/Auth.Provider";
-import { INewProject } from "src/types/entities/Project";
+import { INewProject } from "src/types/models/Project";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
 
 const NyttProsjekt = () => {

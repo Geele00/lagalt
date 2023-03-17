@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Exception.*;
 import no.lagalt.server.Repository.*;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
