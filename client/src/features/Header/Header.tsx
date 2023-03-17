@@ -21,9 +21,11 @@ export const Header = () => {
     <header className="main-header" data-overlay={activeOverlay}>
       <Menu activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
 
-      {window.location.pathname === "/" && (
+      {
+        //window.location.pathname === "/" && (
         <Filter activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
-      )}
+        //)
+      }
 
       <SearchBar
         className="main-header__search-bar"
