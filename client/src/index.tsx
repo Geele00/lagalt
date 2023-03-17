@@ -7,6 +7,13 @@ import { AuthProvider } from "./auth/Auth.Provider";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
+interface ILastQueryKey {
+  filters?: {
+    [key: string]: string;
+  };
+  token?: string;
+}
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -15,21 +22,32 @@ export const queryClient = new QueryClient({
       refetchOnMount: true,
       refetchOnReconnect: true,
 
-      queryFn: async ({ queryKey, pageParam, meta }) => {
-        const token = meta?.token;
+      queryFn: async ({ queryKey, pageParam }) => {
+        const lastQueryKey = queryKey.at(-1) as ILastQueryKey;
 
-        const metaParams = meta?.params ?? "";
+        const token = lastQueryKey?.token;
+
+        let filterString = "";
+
+        if (!!lastQueryKey.filters) {
+          for (const [k, v] of Object.entries(lastQueryKey.filters)) {
+            const prefix = filterString.length === 0 ? "?" : "&";
+            filterString += `${prefix}${k}=${v}`;
+          }
+        }
+
         const pageQuery = pageParam ? `&page=${pageParam}` : "";
 
-        const [qKey] = queryKey;
-
-        const res = await fetch(`${apiUri}${qKey}${metaParams}${pageQuery}`, {
-          ...defaultOptions,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `${apiUri}${queryKey[0]}${filterString}${pageQuery}`,
+          {
+            ...defaultOptions,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!res.ok) {
           return Promise.reject(
@@ -39,11 +57,8 @@ export const queryClient = new QueryClient({
 
         return res.json();
       },
-      getNextPageParam: (lastPage: any) => {
-        if (!lastPage) return 0;
-
-        return parseInt(lastPage.number) + 1;
-      },
+      getNextPageParam: (lastPage: any) =>
+        lastPage ? parseInt(lastPage.number) + 1 : 0,
     },
   },
 });

@@ -27,11 +27,13 @@ const ProfilSide = () => {
     },
   ];
 
-  const queryKey = [`/users`, authState, usernameFromParams];
+  const queryKey = [
+    `/users`,
+    { filters: { username: usernameFromParams }, token: authState.token },
+  ];
 
   const { data, error } = useQuery({
     queryKey,
-    meta: { params: `?username=${usernameFromParams}`, token: authState.token },
     enabled: !!authState.token,
     placeholderData,
   });
