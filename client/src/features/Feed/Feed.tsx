@@ -44,7 +44,6 @@ const Feed = () => {
       queryKey,
       enabled: !!authState.token,
       placeholderData,
-      suspense: true,
 
       onSuccess: async (data) => {
         const lastPage = data.pages.at(-1);
