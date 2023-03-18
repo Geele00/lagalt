@@ -18,6 +18,7 @@ import { sendChatMessageFetch } from "src/api/v1/chats/Chats";
 import { useAuth } from "src/auth/Auth.Provider";
 import { IChatMessagePage } from "src/types/models/Chat";
 import LoadingScreen from "src/components/LoadingScreen/LoadingScreen";
+import { DefaultError } from "src/types/defaults/DefaultError";
 
 const Melding = () => {
   const { authState } = useAuth();
@@ -41,7 +42,7 @@ const Melding = () => {
     isInitialLoading,
     isFetching,
     dataUpdatedAt,
-  } = useInfiniteQuery<IChatMessagePage, Error>({
+  } = useInfiniteQuery<IChatMessagePage, DefaultError>({
     queryKey,
     enabled: !!authState.token,
     // refetchInterval: 3000,
@@ -110,29 +111,27 @@ const Melding = () => {
   useEffect(() => {
     if (!containerRef.current?.lastChild) return;
     if (!data || data.pages.length > 1) return;
-
     (containerRef.current.lastChild as HTMLElement).scrollIntoView();
   }, [data]);
 
-  const reachedFinalPage = useMemo(() => {
-    return !data?.pages.at(-1)?.hasNextPage;
-  }, [data]);
+  const reachedFinalPage = useMemo(
+    () => !data?.pages.at(-1)?.hasNextPage,
+    [data]
+  );
 
   const onScroll = useCallback(() => {
-    switch (false) {
-      case isFetching:
-      case reachedFinalPage:
-      case !containerRef.current:
-        const { offsetTop, getClientRects } =
-          containerRef.current as HTMLElement;
-        const { top } = getClientRects()[0];
+    if (isFetching) return;
+    if (reachedFinalPage) return;
+    if (!containerRef.current) return;
 
-        const hasReachedTop = top === offsetTop;
+    const { offsetTop } = containerRef.current as HTMLElement;
+    const { top } = containerRef.current.getClientRects()[0];
 
-        if (!hasReachedTop) return;
+    const hasReachedTop = top === offsetTop;
 
-        fetchNextPage();
-    }
+    if (!hasReachedTop) return;
+
+    fetchNextPage();
   }, [isFetching, reachedFinalPage, containerRef, fetchNextPage]);
 
   useEffect(() => {
@@ -172,18 +171,20 @@ const Melding = () => {
 
   const messages = useMemo(
     () =>
-      data?.pages.map((page) =>
-        page?.content?.map((message) => (
-          <article
-            key={message.createdAt}
-            data-author={
-              message.authorUsername === authState.username ? "self" : "other"
-            }
-          >
-            <p>{message.content}</p>
-          </article>
-        ))
-      ),
+      data?.pages
+        .map((page) =>
+          page?.content?.map((message) => (
+            <article
+              key={message.createdAt}
+              data-author={
+                message.authorUsername === authState.username ? "self" : "other"
+              }
+            >
+              <p>{message.content}</p>
+            </article>
+          ))
+        )
+        .reverse(),
     [data, dataUpdatedAt]
   );
 
@@ -194,14 +195,21 @@ const Melding = () => {
 
   const errorScreen = useMemo(() => {
     if (!error) return null;
-    if (parseInt(error.message) === 404)
-      return <p>Send din første melding til {recipientUsername}</p>;
-    return <ErrorComponent error={error} />;
+
+    if (error.cause) {
+      switch (error.cause.code) {
+        case 404:
+          return <h2>Send din første melding til {recipientUsername}</h2>;
+      }
+    }
+
+    return <ErrorComponent error={new Error(error.message)} />;
   }, [error]);
 
   return (
     <div className="user-chat">
       <section className="user-chat__history" ref={containerRef}>
+        <button onPointerUp={() => fetchNextPage()} children="Next page" />
         {loadingScreen ?? errorScreen ?? messages}
       </section>
       <form

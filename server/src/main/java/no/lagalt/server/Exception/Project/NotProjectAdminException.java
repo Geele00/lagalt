@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotProjectAdminException extends ForbiddenException {
 
   public NotProjectAdminException() {
-    super("ACCESS DENIED: User is not admin");
+    super("ACCESS DENIED: User is not admin for this project");
   }
 }

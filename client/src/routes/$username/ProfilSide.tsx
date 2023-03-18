@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { IUserPrivate, IUserPublic } from "src/types/models/User";
 import { ErrorComponent, Link, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useAuth } from "src/auth/Auth.Provider";
+import { DefaultError } from "src/types/defaults/DefaultError";
 import "./Profilside.style.scss";
 
 const ProfilSide = () => {
@@ -43,7 +45,7 @@ const ProfilSide = () => {
     return <ErrorComponent error={error} />;
   }, [error]);
 
-  const user = (data as any)[0];
+  const user = data ? data[0] : placeholderData[0];
 
   const isPublicProfile = user.profileStatus === "Public";
 

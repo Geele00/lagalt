@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
-import no.lagalt.server.Exception.*;
-import no.lagalt.server.Exception.User.UserNotFoundException;
+import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.User.*;
 import no.lagalt.server.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,14 +61,14 @@ public class UserController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   UserDto createUser(@RequestBody NewUserDto newUserDto, Authentication auth)
-      throws AlreadyExistsException {
+      throws UserAlreadyExistsException {
 
     String uid = auth.getName();
     newUserDto.setUid(uid);
 
     if (userService.validateUsernameExists(newUserDto.getUsername()))
-      throw new AlreadyExistsException(
-          "User with username " + newUserDto.getUsername() + " already exists in the database.");
+      throw new UserAlreadyExistsException(
+          newUserDto.getUsername(), ExceptionArgumentType.USERNAME);
 
     return userService.save(newUserDto);
   }

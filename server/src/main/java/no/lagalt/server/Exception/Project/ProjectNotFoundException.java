@@ -1,11 +1,12 @@
 package no.lagalt.server.Exception.Project;
 
 import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ProjectNotFoundException extends RuntimeException {
+public class ProjectNotFoundException extends NotFoundException {
 
   public ProjectNotFoundException(int id) {
     super("Project was not found in database with id: " + id);
