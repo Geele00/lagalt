@@ -1,11 +1,37 @@
+.header__profile {
+  display: grid;
+  flex-flow: column;
+  height: 100%;
+  aspect-ratio: 1;
+
+  & > ul {
+    background-color: var(--clr_primary_2);
+    position: absolute;
+    top: 100cqh;
+    right: 0;
+    width: 6em;
+    // right: 300cqh;
+    // right: 10em;
+    display: none;
+
+    &[aria-expanded="true"] {
+      display: block;
+    }
+  }
+}
+
 .profile-button {
+  grid-row: 1;
+  grid-column: 1;
   background-color: var(--clr_primary_2);
   border: 0;
   cursor: pointer;
   grid-template-columns: 4fr 2fr;
   width: fit-content;
   display: flex;
-  height: 100%;
+  // height: 100%;
+  margin-left: auto;
+  height: 100cqh;
   aspect-ratio: 1;
   z-index: 50;
 

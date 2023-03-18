@@ -78,4 +78,7 @@ public class Project {
       joinColumns = {@JoinColumn(name = "project_id")},
       inverseJoinColumns = {@JoinColumn(name = "user_id")})
   private List<LagaltUser> collaborators;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
+  private ProjectHistory history;
 }

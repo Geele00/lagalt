@@ -1,10 +1,12 @@
 import "./Search.style.scss";
-import { useEffect, useRef } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
 import { ISearchBar } from "./Search.types";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
+
+const searchUri = import.meta.env.VITE_API_V1_URL + "/search";
 
 export const SearchBar = ({
   className,
@@ -13,18 +15,26 @@ export const SearchBar = ({
 }: ISearchBar) => {
   const { authState } = useAuth();
 
+  const [searchString, setSearchString] = useState("");
+
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const filters = {
     size: 20,
-    sort: "",
+    sort: "createdAt",
+    query: searchString,
   };
+
+  console.log(searchString);
 
   const queryKey = ["/search", { filters, token: authState.token }];
 
-  // const { data } = useInfiniteQuery({
-  //   queryKey,
-  // });
+  const { data } = useInfiniteQuery({
+    queryKey,
+    enabled: !!authState.token && !!searchString.length,
+  });
+
+  console.log(data && data);
 
   const overlayRef = useRef<Element | null>(null);
 
@@ -36,13 +46,14 @@ export const SearchBar = ({
     }
   }, []);
 
-  const onInput = (e: any) => {
-    // const input = e.target as HTMLInputElement;
+  const onInput = (e: FormEvent) => {
+    const input = e.target as HTMLInputElement;
+    setSearchString(input.value);
+    console.log(input.value);
   };
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    // submit logic
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +64,6 @@ export const SearchBar = ({
         searchInputRef.current.value = "";
         searchInputRef.current.blur();
     }
-    console.log(e.key);
   };
 
   // const onBlur = (e: React.KeyboardEvent<HTMLInputElement>) => {

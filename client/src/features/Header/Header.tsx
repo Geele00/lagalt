@@ -28,7 +28,10 @@ export const Header = () => {
       />
 
       <div className="main-header__buttons">
-        <ProfileButton activeOverlay={activeOverlay} />
+        <ProfileButton
+          activeOverlay={activeOverlay}
+          toggleOverlay={toggleOverlay}
+        />
         <CloseButton
           toggleOverlay={toggleOverlay}
           activeOverlay={activeOverlay}

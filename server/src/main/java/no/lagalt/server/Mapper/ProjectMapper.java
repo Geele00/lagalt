@@ -2,9 +2,12 @@ package no.lagalt.server.Mapper;
 
 import java.util.List;
 import no.lagalt.server.Dtos.Project.*;
+import no.lagalt.server.Dtos.Search.ProjectSearchResult;
 import no.lagalt.server.Entity.Project;
+import no.lagalt.server.Interfaces.IProjectSearchResult;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -29,6 +32,10 @@ public interface ProjectMapper {
   ProjectPreviewDto toPreviewDto(Project project);
 
   List<ProjectPreviewDto> toPreviewDto(List<Project> project);
+
+  @Mapping(target = "industryNames", source = "res.industries.name")
+  @Mapping(target = "wantedSkillsNames", source = "res.wantedSkillsNames.name")
+  List<ProjectSearchResult> toSearchResultDto(List<IProjectSearchResult> res);
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   void updateProjectFromDto(UpdateProjectDto dto, @MappingTarget Project project);

@@ -6,7 +6,6 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
-import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { IProjectsPage } from "src/types/models/Project";
 import { ErrorComponent } from "@tanstack/react-router";
 import { updateProject } from "src/api/v1/projects/projects";
@@ -42,7 +41,7 @@ const Feed = () => {
     return { pages: placeHolders } as InfiniteData<IProjectsPage>;
   }, []);
 
-  const queryKey = [`/feed`, { filters, token: authState.token }];
+  const queryKey = ["/feed", { filters, token: authState.token }];
 
   const { isFetching, data, error, fetchNextPage, isPlaceholderData, refetch } =
     useInfiniteQuery<IProjectsPage>({
@@ -78,7 +77,7 @@ const Feed = () => {
   const testMut = useMutation({
     mutationFn: () => {
       const { token } = authState;
-      if (!token) throw new Error("Authentication failed");
+      if (!token) throw new Error("Authentication error");
       return updateProject(updates, token);
     },
     onSuccess: () => {
@@ -90,9 +89,28 @@ const Feed = () => {
     },
   });
 
-  console.log(data && data);
-
   const feedItems = useFeedItems({ data, isPlaceholderData });
+  //=======
+  //  const feedItems = useMemo(
+  //    () =>
+  //      data?.pages.map((page) =>
+  //        page?.content.map((project) => (
+  //          <li
+  //            className="project-preview"
+  //            key={project.projectId + project.title}
+  //          >
+  //            {!isPlaceholderData && (
+  //              <ProjectPreview
+  //                title={project.title}
+  //                description={project.description}
+  //              />
+  //            )}
+  //          </li>
+  //        ))
+  //      ),
+  //    [data, isPlaceholderData]
+  //  );
+  //>>>>>>> ebff081 (feat: started implementing search)
 
   const containerRef = useRef<HTMLUListElement>(null);
 

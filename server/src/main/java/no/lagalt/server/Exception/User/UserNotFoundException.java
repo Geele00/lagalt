@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class UserNotFoundException extends NotFoundException {
 
+  public UserNotFoundException() {
+    super("User was not found in database");
+  }
+
   public UserNotFoundException(int id) {
     super("User was not found in database with id: " + id);
   }
