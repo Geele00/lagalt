@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useReducer,
   useState,
 } from "react";
 import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./Auth.types";
