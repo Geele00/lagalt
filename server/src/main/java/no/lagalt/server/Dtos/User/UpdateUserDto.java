@@ -1,6 +1,7 @@
 package no.lagalt.server.Dtos.User;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -27,4 +28,6 @@ public class UpdateUserDto {
   private String country;
 
   private String city;
+
+  private List<Integer> skills;
 }

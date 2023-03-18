@@ -3,10 +3,12 @@ package no.lagalt.server.Mapper;
 import java.util.List;
 import no.lagalt.server.Dtos.User.NewUserDto;
 import no.lagalt.server.Dtos.User.UserDto;
-import no.lagalt.server.Dtos.User.UserPrivateDto;
 import no.lagalt.server.Entity.LagaltUser;
+import no.lagalt.server.Enum.ProfileStatus;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
     componentModel = "spring",
@@ -23,19 +25,17 @@ public interface UserMapper {
   @Mapping(target = "city", ignore = true)
   LagaltUser toUser(NewUserDto newUserDto);
 
-  // default Integer dateToInt(LocalDate date) {
-  //  return date.getYear();
-  // }
-  // @Mapping(target = "age", source = "user.dob")
-
   @Mapping(target = "age", expression = "java(user.getDob().getYear())")
   UserDto toDto(LagaltUser user);
 
-  UserPrivateDto toPrivateDto(LagaltUser user);
-
-  @Mapping(target = "age", ignore = true)
-  @Mapping(target = "userId", ignore = true)
-  UserDto toDtoFromPrivate(UserPrivateDto userPrivateDto);
+  @AfterMapping
+  public default void afterToDto(LagaltUser user, @MappingTarget UserDto userDto) {
+    if (user.getProfileStatus() == ProfileStatus.PRIVATE) {
+      userDto.setAge(null);
+      userDto.setFirstName(null);
+      userDto.setLastName(null);
+    }
+  }
 
   List<UserDto> toDto(Iterable<LagaltUser> user);
 

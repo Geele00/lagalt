@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HistoryRepo extends JpaRepository<History, Integer> {
 
-  Optional<History> findByLagaltUser(LagaltUser userDto);
+  Optional<History> findByLagaltUser(LagaltUser user);
 
-  boolean existsByLagaltUser(LagaltUser userDto);
-
-  // void updateProjectsInHistoryFromDto();
-  // void updateHistoryFromDto(UpdateHistoryDto updateHistoryDto, @MappingTarget History history);
+  boolean existsByLagaltUser(LagaltUser user);
 }

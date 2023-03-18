@@ -1,4 +1,4 @@
-package no.lagalt.server.Exception;
+package no.lagalt.server.Exception.Chat;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

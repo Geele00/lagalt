@@ -30,13 +30,13 @@ public class UserController {
   List<UserDto> getUsers(
       Authentication auth,
       @RequestParam(name = "username", required = false) String username,
-      @RequestParam(name = "id", required = false) List<String> id)
+      @RequestParam(name = "id", required = false) List<String> ids)
       throws UserNotFoundException {
 
     if (username != null) return List.of(userService.getByUsername(username));
 
-    if (id != null) {
-      List<Integer> idList = id.stream().map(Integer::parseInt).collect(Collectors.toList());
+    if (ids != null) {
+      List<Integer> idList = ids.stream().map(Integer::parseInt).collect(Collectors.toList());
 
       return userService.getAllById(idList);
     }

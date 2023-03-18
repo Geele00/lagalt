@@ -6,7 +6,6 @@ import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
 import no.lagalt.server.Entity.*;
 import no.lagalt.server.Enum.ExceptionArgumentType;
-import no.lagalt.server.Enum.ProfileStatus;
 import no.lagalt.server.Exception.*;
 import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Mapper.*;
@@ -69,11 +68,6 @@ public class UserService {
 
   public UserDto getByUsername(String username) throws UserNotFoundException {
     LagaltUser user = findByUsername(username);
-
-    if (user.getProfileStatus() == ProfileStatus.Private) {
-      var privateDto = userMapper.toPrivateDto(user);
-      return userMapper.toDtoFromPrivate(privateDto);
-    }
 
     return userMapper.toDto(user);
   }

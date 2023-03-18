@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import no.lagalt.server.Enum.Gender;
 import no.lagalt.server.Enum.ProfileStatus;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter
 @Setter
@@ -54,7 +52,6 @@ public class LagaltUser {
   private ProfileStatus profileStatus;
 
   @Column(nullable = false)
-  @DateTimeFormat(iso = ISO.DATE_TIME)
   private LocalDateTime createdAt;
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lagaltUser")
