@@ -1,11 +1,12 @@
 package no.lagalt.server.Exception.User;
 
 import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends NotFoundException {
 
   public UserNotFoundException(int id) {
     super("User was not found in database with id: " + id);
@@ -17,7 +18,7 @@ public class UserNotFoundException extends RuntimeException {
             ? "User was not found in the database with the provided UID"
             : type == ExceptionArgumentType.USERNAME
                 ? "User was not found in database with username: " + arg
-                : "ERROR(UserNotFoundException): Exception message argument not provided");
+                : "ERROR(UserNotFoundException): Valid exception message argument not provided");
   }
 
   public UserNotFoundException(String message) {

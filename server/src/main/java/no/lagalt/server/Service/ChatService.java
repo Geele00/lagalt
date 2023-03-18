@@ -6,7 +6,10 @@ import no.lagalt.server.Dtos.Chat.*;
 import no.lagalt.server.Dtos.Message.*;
 import no.lagalt.server.Dtos.Page.PageDto;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Enum.ExceptionArgumentType;
 import no.lagalt.server.Exception.*;
+import no.lagalt.server.Exception.Chat.ChatEmptyException;
+import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +33,29 @@ public class ChatService {
     return chatRepo.existsByUsersIn(users);
   }
 
-  private Chat findByUsers(List<LagaltUser> users) throws ChatNotFoundException {
+  private Chat findChatByUsers(List<LagaltUser> users) throws ChatNotFoundException {
     return chatRepo.findByUsersIn(users).orElseThrow(() -> new ChatNotFoundException());
+  }
+
+  private LagaltUser findUserByUid(String uid) throws UserNotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new UserNotFoundException(uid, ExceptionArgumentType.UID));
+  }
+
+  private LagaltUser findUserByUsername(String username) throws UserNotFoundException {
+    return userRepo
+        .findByUsername(username)
+        .orElseThrow(() -> new UserNotFoundException(username, ExceptionArgumentType.USERNAME));
   }
 
   public MessageDto postMessage(String uid, NewMessageDto newMessageDto) {
 
     String recipientUsername = newMessageDto.getRecipientUsername();
 
-    LagaltUser author =
-        userRepo
-            .findByUid(uid)
-            .orElseThrow(() -> new NotFoundException("User not found in database"));
+    LagaltUser author = findUserByUid(uid);
 
-    LagaltUser recipient =
-        userRepo
-            .findByUsername(recipientUsername)
-            .orElseThrow(() -> new NotFoundException(recipientUsername));
+    LagaltUser recipient = findUserByUsername(recipientUsername);
 
     List<LagaltUser> users = List.of(author, recipient);
 
@@ -63,7 +72,7 @@ public class ChatService {
       chat = newChat;
 
     } else {
-      Chat existingChat = findByUsers(users);
+      Chat existingChat = findChatByUsers(users);
       List<Message> messages = existingChat.getMessages();
       messages.add(newMessage);
       chat = existingChat;
@@ -76,25 +85,25 @@ public class ChatService {
   }
 
   public PageDto<ChatMessageDto> getMessages(
-      String uid, String recipientUsername, Pageable pageable) {
+      String uid, String recipientUsername, Pageable pageable)
+      throws ChatEmptyException, UserNotFoundException {
 
-    LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new NotFoundException());
+    List<Message> messages =
+        findChatByUsers(List.of(findUserByUsername(recipientUsername), findUserByUid(uid)))
+            .getMessages();
 
-    LagaltUser recipient =
-        userRepo.findByUsername(recipientUsername).orElseThrow(() -> new NotFoundException());
-
-    Chat chat = findByUsers(List.of(user, recipient));
-
-    List<Message> messages = chat.getMessages();
     Collections.reverse(messages);
+
     int messagesSize = messages.size();
 
-    int pageSize = pageable.getPageSize();
+    if (messagesSize == 0) throw new ChatEmptyException();
+
     int offsetIdx = (int) pageable.getOffset();
 
-    int lastItemRequestedIdx = offsetIdx + pageSize;
+    int lastMessageRequestedIdx = offsetIdx + pageable.getPageSize();
 
-    int lastItemIdx = messagesSize < lastItemRequestedIdx ? messagesSize : lastItemRequestedIdx;
+    int lastItemIdx =
+        messagesSize < lastMessageRequestedIdx ? messagesSize : lastMessageRequestedIdx;
 
     if (messagesSize < offsetIdx) {
       return null;
@@ -103,15 +112,11 @@ public class ChatService {
     List<Message> sub = messages.subList(offsetIdx, lastItemIdx);
     Collections.reverse(sub);
 
-    Page<Message> messagePage = new PageImpl<Message>(sub, pageable, messagesSize);
+    List<ChatMessageDto> dtoList = chatMapper.toChatMessageDto(sub);
 
-    List<Message> messageList = messagePage.toList();
+    boolean hasNextPage = messagesSize - offsetIdx > offsetIdx ? false : true;
 
-    List<ChatMessageDto> dtoList = chatMapper.toChatMessageDto(messageList);
-    Integer pageNumber = messagePage.getNumber();
-    boolean hasNextPage = messagePage.hasNext();
-
-    return new PageDto<ChatMessageDto>(dtoList, pageNumber, hasNextPage);
+    return new PageDto<ChatMessageDto>(dtoList, pageable.getPageNumber(), hasNextPage);
   }
 
   public ChatDto save(Chat chat) {

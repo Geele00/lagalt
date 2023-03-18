@@ -3,10 +3,9 @@ package no.lagalt.server.Service;
 import java.util.List;
 import no.lagalt.server.Dtos.Message.MessageDto;
 import no.lagalt.server.Entity.Message;
-import no.lagalt.server.Exception.NotFoundException;
+import no.lagalt.server.Exception.Message.MessageNotFoundException;
 import no.lagalt.server.Mapper.MessageMapper;
 import no.lagalt.server.Repository.MessageRepository;
-import no.lagalt.server.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +13,14 @@ import org.springframework.stereotype.Service;
 public class MessageService {
   @Autowired private MessageRepository messageRepo;
   @Autowired private MessageMapper messageMapper;
-  @Autowired private UserRepository userRepository;
 
   public boolean existsById(Integer id) {
     return messageRepo.existsById(id);
   }
 
-  public MessageDto findById(Integer id) throws NotFoundException {
-    Message message = messageRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
+  public MessageDto findById(Integer id) throws MessageNotFoundException {
+    Message message = messageRepo.findById(id).orElseThrow(() -> new MessageNotFoundException(id));
+
     return messageMapper.toDto(message);
   }
 
@@ -37,10 +36,10 @@ public class MessageService {
     return messageMapper.toDto(savedMessage);
   }
 
-  public void deleteById(Integer id) throws NotFoundException {
+  public void deleteById(Integer id) throws MessageNotFoundException {
     try {
       messageRepo.deleteById(id);
-    } catch (NotFoundException err) {
+    } catch (MessageNotFoundException err) {
       throw err;
     }
   }

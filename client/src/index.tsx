@@ -50,8 +50,10 @@ export const queryClient = new QueryClient({
         );
 
         if (!res.ok) {
-          return Promise.reject(
-            new Error(`${res.status}`, { cause: res.statusText })
+          return Promise.reject<string>(
+            new Error(`${res.statusText}`, {
+              cause: { code: res.status },
+            })
           );
         }
 

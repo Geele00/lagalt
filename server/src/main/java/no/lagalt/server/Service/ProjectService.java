@@ -99,23 +99,26 @@ public class ProjectService {
     save(project);
   }
 
+  private LagaltUser findUserByUid(String uid) throws UserNotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new UserNotFoundException(uid, ExceptionArgumentType.UID));
+  }
+
+  public boolean existsByUserAndTitle(LagaltUser user, String projectTitle) {
+    return user.getProjects().stream()
+        .anyMatch(project -> projectTitle.matches(project.getTitle()));
+  }
+
   public ProjectDto createProject(NewProjectDto newProjectDto, String uid)
       throws UserNotFoundException, AlreadyExistsException {
 
-    LagaltUser owner =
-        userRepo
-            .findByUid(uid)
-            .orElseThrow(
-                () -> new UserNotFoundException("User not found in database with UID: " + uid));
+    LagaltUser owner = findUserByUid(uid);
 
     String projectTitle = newProjectDto.getTitle();
 
-    boolean alreadyExistsWithTitleForUser =
-        owner.getProjects().stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
-
-    if (alreadyExistsWithTitleForUser)
-      throw new AlreadyExistsException(
-          "Project with title \"" + projectTitle + "\" already exists on your account.");
+    if (existsByUserAndTitle(owner, projectTitle))
+      throw new ProjectAlreadyExistsException(projectTitle, ExceptionArgumentType.TITLE);
 
     Project newProject = projectMapper.toProject(newProjectDto);
 

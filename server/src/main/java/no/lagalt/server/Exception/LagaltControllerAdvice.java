@@ -21,10 +21,10 @@ public class LagaltControllerAdvice {
   @ExceptionHandler(NotFoundException.class)
   @ResponseBody
   public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + ex.getMessage());
   }
 
-  @ResponseStatus(value = HttpStatus.NOT_FOUND)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   @ExceptionHandler(AlreadyExistsException.class)
   @ResponseBody
   public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException ex) {

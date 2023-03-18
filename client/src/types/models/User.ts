@@ -1,4 +1,4 @@
-export interface UserPrivate {
+export interface IUserPrivate {
   userId: number;
   username: string;
   avatarUrl: string;
@@ -6,7 +6,7 @@ export interface UserPrivate {
   bio: string;
 }
 
-export interface UserPublic extends UserPrivate {
+export interface IUserPublic extends IUserPrivate {
   firstName: string;
   lastName: string;
   age: number | null;
