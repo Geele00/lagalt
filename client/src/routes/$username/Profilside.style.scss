@@ -65,10 +65,10 @@
 
   &__projects,
   &__projects-contributing {
-    display: none;
+    text-indent: 1ch;
 
-    &:has(li) {
-      display: block;
+    &:empty {
+      display: none;
     }
   }
 }

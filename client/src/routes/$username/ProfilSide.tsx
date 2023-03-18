@@ -47,7 +47,12 @@ const ProfilSide = () => {
 
   const user = data ? data[0] : placeholderData[0];
 
-  const isPublicProfile = user.profileStatus === "Public";
+  const isPublicProfile = user.profileStatus === "PUBLIC";
+
+  console.log(user.profileStatus);
+  const firstName = isPublicProfile ? user.firstName : user.username;
+  const lastName = isPublicProfile ? user.lastName : "";
+  const fullName = isPublicProfile ? `${firstName} ${lastName}` : user.username;
 
   return (
     <div className="profile">
@@ -56,9 +61,7 @@ const ProfilSide = () => {
           <header className="profile__header">
             <figure>
               <img src="/images/wes-portrait.jpg" alt="profile photo" />
-              <figcaption>{`${user.firstName ?? user.username} ${
-                user.lastName
-              }`}</figcaption>
+              <figcaption>{fullName}</figcaption>
             </figure>
 
             <Link
@@ -72,23 +75,27 @@ const ProfilSide = () => {
             </Link>
           </header>
 
-          <section className="profile__projects">
-            <h2>{user.firstName} sine prosjekter</h2>
+          {isPublicProfile && (
+            <>
+              <section className="profile__projects">
+                <h2>Egne prosjekter</h2>
 
-            <ul>
-              <li>Project1</li>
-              <li>Project2</li>
-            </ul>
-          </section>
+                <ul>
+                  <li>Project1</li>
+                  <li>Project2</li>
+                </ul>
+              </section>
 
-          <section className="profile__projects-contributing">
-            <h2>{user.firstName} bidrar til disse prosjektene:</h2>
+              <section className="profile__projects-contributing">
+                <h2>Bidrar til disse prosjektene:</h2>
 
-            <ul>
-              <li>Project1</li>
-              <li>Project2</li>
-            </ul>
-          </section>
+                <ul>
+                  <li>Project1</li>
+                  <li>Project2</li>
+                </ul>
+              </section>
+            </>
+          )}
         </>
       )}
     </div>
