@@ -10,6 +10,7 @@ import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
 import { IProjectsPage } from "src/types/models/Project";
 import { ErrorComponent } from "@tanstack/react-router";
 import { updateProject } from "src/api/v1/projects/projects";
+import useFeedItems from "./useFeedItems";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
@@ -91,25 +92,7 @@ const Feed = () => {
 
   console.log(data && data);
 
-  const feedItems = useMemo(
-    () =>
-      data?.pages.map((page) =>
-        page?.content.map((project) => (
-          <li
-            className="project-preview"
-            key={project.projectId + project.title}
-          >
-            {!isPlaceholderData && (
-              <ProjectPreview
-                title={project.title}
-                description={project.description}
-              />
-            )}
-          </li>
-        ))
-      ),
-    [data, isPlaceholderData]
-  );
+  const feedItems = useFeedItems({ data, isPlaceholderData });
 
   const containerRef = useRef<HTMLUListElement>(null);
 

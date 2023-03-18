@@ -1,3 +1,4 @@
+import React, {useState } from "react";
 import "./NyBruker.style.scss";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "src/auth/Auth.Provider";
@@ -29,7 +30,9 @@ const mockUser = {
 const NyBruker = () => {
   const { authState, signIn } = useAuth();
   const nav = useNavigate();
+  const [passwordNotMatching, setPasswordNotMatching] = useState(false);
 
+  // Flytt funksjonalitet til egen fil
   const createFbAndDbUser = (password: string, newDbUser: NewDbUser) => {
     createUserWithEmailAndPassword(auth, newDbUser.email, password)
       .then(async ({ user }) => {
@@ -67,38 +70,31 @@ const NyBruker = () => {
 
   const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
-    console.log(e);
+    setPasswordNotMatching(false);
 
+    // Mulig å gjøre slik, så kan du bare legge til flere felter i formen uten å måtte endre noe annet
     const {
-      username: { value: username },
-      email: { value: email },
       password: { value: password },
       passwordConfirmation: { value: passwordConfirmation },
-      firstName: { value: firstName },
-      lastName: { value: lastName },
-      gender: { value: gender },
-      bio: { value: bio },
-      dob: { value: dob },
-      profileStatus: { value: profileStatus },
-      country: { value: country },
-      city: { value: city },
+      
     } = e.target;
 
-    const newDbUser: NewDbUser = {
-      username,
-      email,
-      firstName,
-      lastName,
-      gender,
-      bio,
-      dob,
-      profileStatus,
-      country,
-      city,
-    };
-
+    const newDbUser: NewDbUser = Object.keys(e.target)
+      .filter((key) => key !== "passwordConfirmation" && key !== "password")
+      .reduce((acc, cur) => {
+        if (e.target[cur].name == "" || e.target[cur].name == undefined ) return acc;
+        
+        return {
+          ...acc, 
+          ...{ [e.target[cur].name]: { value: e.target[cur].value}}
+        }
+    }, {}) as NewDbUser;
+    
     if (password !== passwordConfirmation) {
       // passwords don't match exception
+      setPasswordNotMatching(true);
+      return
+
     }
 
     createFbAndDbUser(password, newDbUser);
@@ -106,6 +102,7 @@ const NyBruker = () => {
 
   return (
     <div className="signup">
+      {passwordNotMatching && <p>Passordene er ikke like</p>}
       {/* <button onPointerUp={() => createFbAndDbUser("lksdjf", mockUser)}>
         Dev cheatcode: Make user
       </button>

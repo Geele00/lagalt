@@ -13,14 +13,14 @@ export const Header = () => {
 
   return (
     <header className="main-header" data-overlay={activeOverlay}>
-      <Menu activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
-
-      {
-        //window.location.pathname === "/" && (
-        <Filter activeOverlay={activeOverlay} toggleOverlay={toggleOverlay} />
-        //)
-      }
-
+      <Menu 
+        activeOverlay={activeOverlay} 
+        toggleOverlay={toggleOverlay} 
+      />
+      <Filter 
+        activeOverlay={activeOverlay} 
+        toggleOverlay={toggleOverlay} 
+      />
       <SearchBar
         className="main-header__search-bar"
         activeOverlay={activeOverlay}

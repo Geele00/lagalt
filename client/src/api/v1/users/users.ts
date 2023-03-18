@@ -20,6 +20,9 @@ export const fetchUsers = async (
   return res.json();
 };
 
+// Når kompleksiteten øker vil du nok få utfordringer med fetchUsers, som skal håndtere alt :-) 
+// tror du fort bare kan lage en fetch som gjør post. Du sparer ikke noe spes eller at det er lurt å kalle fetchusers.
+// 
 export const createDbUser = (newDbUser: NewDbUser, options?: RequestInit) =>
   fetchUsers({
     method: "POST",

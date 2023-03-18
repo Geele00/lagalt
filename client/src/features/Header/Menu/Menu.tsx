@@ -3,14 +3,40 @@ import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
 import { useRouterContext } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { IMenu } from "./Menu.types";
+import { IMenu, INavItem, AuthState } from "./Menu.types";
 import { useAuth } from "src/auth/Auth.Provider";
+
+const navData: INavItem[] = [{ 
+  title: "Forsiden", 
+  to: "/",
+}, {
+  title: "Nytt prosjekt",
+  to: "/$username/nytt-prosjekt",
+  authState: AuthState.loggedIn,
+}, {
+  title: "Min side",
+  to: "/$username",
+  authState: AuthState.loggedIn,
+}, {
+  title: "Hjelp",
+  to: "/hjelp",
+}, {
+  title: "Ny bruker",
+  to: "/ny-bruker",
+  authState: AuthState.loggedOut,
+}, {
+  title: "Logg inn",
+  to: "/logg-inn",
+  authState: AuthState.loggedOut,
+}, {
+  title: "Logg ut",
+  to: "/logg-ut",
+  authState: AuthState.loggedIn,
+}];
 
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
-
   const { state } = useRouterContext();
-
   const { username } = authState;
 
   useEffect(() => {
@@ -26,6 +52,10 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         aria-hidden
         onPointerUp={() => toggleOverlay({ overlay: "menu", type: "toggle" })}
       >
+        {/*
+          Dette virker litt snedig og bare stappe inn div'er. 
+
+        */}
         <div></div>
         <div></div>
         <div></div>
@@ -38,6 +68,22 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         role="menubar"
         aria-expanded={activeOverlay === "menu"}
       >
+        {navData.map((navItem) => {
+          if((navItem.authState === AuthState.loggedIn && !username)) return null;
+          if((navItem.authState === AuthState.loggedOut && username)) return null;
+          return (
+              <NavLink
+                key={navItem.to}
+                to={navItem.to}
+                linkProps={navItem.authState == AuthState.loggedIn ? { params: { username }} : {}}
+              >
+                {navItem.title}
+              </NavLink>
+            );
+          }
+        ) 
+        }
+{/* 
         <NavLink to="/">Forsiden</NavLink>
 
         <NavLink
@@ -63,7 +109,7 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
           </>
         ) : (
           <NavLink to="/logg-ut">Logg ut</NavLink>
-        )}
+        )} */}
       </ul>
     </nav>
   );

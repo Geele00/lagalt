@@ -8,7 +8,9 @@ export const sendChatMessageFetch = async (
   body: SendMessage,
   token: string
 ): Promise<IChatMessagePage[]> => {
-  const res = await fetch(`${endpoint}`, {
+  // Denne ville aldri gått inn i error. 
+  // du kan gjøre det slik eller smelle det inn i en try catch- Your choice :-) 
+  return fetch(`${endpoint}`, {
     ...defaultOptions,
     method: "POST",
     body: JSON.stringify(body),
@@ -16,11 +18,10 @@ export const sendChatMessageFetch = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  })
+  .then((res) => res.json())
+  .catch((err) => {
+    throw new Error(err.statusText)
   });
 
-  if (!res.ok) {
-    return Promise.reject(new Error(res.statusText));
-  }
-
-  return res.json();
 };

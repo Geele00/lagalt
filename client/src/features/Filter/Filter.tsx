@@ -1,5 +1,6 @@
 import "./Filter.style.scss";
 import { IFilter } from "./Filter.types";
+import { filters as filterData } from "./filterData";
 
 export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
   return (
@@ -14,30 +15,11 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
 
       <div className="filter__body" aria-expanded={activeOverlay === "filter"}>
         <ul className="filter__body__main">
-          <li>
-            <p>Koding</p>
-          </li>
-          <li>
-            <p>Fotografi</p>
-          </li>
-          <li>
-            <p>Tegning</p>
-          </li>
-          <li>
-            <p>Keramikk</p>
-          </li>
-          <li>
-            <p>Arkitektur</p>
-          </li>
-          <li>
-            <p>Billedkunst</p>
-          </li>
-          <li>
-            <p>Animasjon</p>
-          </li>
-          <li>
-            <p>UX Design</p>
-          </li>
+          {filterData.map((filter) => (
+            <li key={filter.value}>
+                <p>{filter.name}</p>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
