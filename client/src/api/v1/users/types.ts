@@ -1,4 +1,3 @@
-
 export interface NewDbUser {
   username: string;
   email: string;

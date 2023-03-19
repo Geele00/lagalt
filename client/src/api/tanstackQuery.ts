@@ -1,5 +1,4 @@
 import { QueryClient } from "@tanstack/react-query";
-import { defaultOptions } from "./v1/defaults";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
@@ -37,9 +36,7 @@ export const queryClient = new QueryClient({
         const res = await fetch(
           `${apiUri}${queryKey[0]}${filterString}${pageQuery}`,
           {
-            ...defaultOptions,
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }

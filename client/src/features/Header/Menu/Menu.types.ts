@@ -2,14 +2,17 @@ import { Dispatch } from "react";
 import { OverlayOptions } from "../Header.types";
 
 export enum AuthState {
-  'loggedIn',
-  'loggedOut',
+  "loggedIn",
+  "loggedOut",
 }
- 
+
 export interface INavItem {
   title: string;
   to: string;
-  authState?: AuthState;
+  condition?: AuthState;
+  params?: {
+    username?: boolean;
+  };
 }
 
 export interface IMenu {

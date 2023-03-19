@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 export interface IAuthState {
   token: string | null;
   username: string | "anon" | null;
+  signedIn: boolean;
 }
 
 export interface IAuthProvider {

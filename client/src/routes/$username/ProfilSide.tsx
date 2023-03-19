@@ -49,7 +49,6 @@ const ProfilSide = () => {
 
   const isPublicProfile = user.profileStatus === "PUBLIC";
 
-  console.log(user.profileStatus);
   const firstName = isPublicProfile ? user.firstName : user.username;
   const lastName = isPublicProfile ? user.lastName : "";
   const fullName = isPublicProfile ? `${firstName} ${lastName}` : user.username;

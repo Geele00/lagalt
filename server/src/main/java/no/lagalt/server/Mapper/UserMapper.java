@@ -30,11 +30,14 @@ public interface UserMapper {
 
   @AfterMapping
   public default void afterToDto(LagaltUser user, @MappingTarget UserDto userDto) {
+    System.out.println(111);
     if (user.getProfileStatus() == ProfileStatus.PRIVATE) {
+      System.out.println(222);
       userDto.setAge(null);
       userDto.setFirstName(null);
       userDto.setLastName(null);
     }
+    System.out.println(333);
   }
 
   List<UserDto> toDto(Iterable<LagaltUser> user);

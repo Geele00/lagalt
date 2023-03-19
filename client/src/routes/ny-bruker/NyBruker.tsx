@@ -1,15 +1,12 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import "./NyBruker.style.scss";
-import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "src/auth/Auth.Provider";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { createDbUser } from "src/api/v1/users/users";
 import { auth } from "src/auth/firebase";
 import { AuthFormEvent } from "./NyBruker.types";
 import { Input } from "src/components/Input/Input";
 import Button from "src/components/Button/Button";
 import { NewDbUser } from "src/api/v1/users/types";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
+import { useCreateUser } from "src/auth/useCreateUser";
 
 // const provider = new GoogleAuthProvider();
 
@@ -28,45 +25,7 @@ const mockUser = {
 };
 
 const NyBruker = () => {
-  const { authState, signIn } = useAuth();
-  const nav = useNavigate();
   const [passwordNotMatching, setPasswordNotMatching] = useState(false);
-
-  // Flytt funksjonalitet til egen fil
-  const createFbAndDbUser = (password: string, newDbUser: NewDbUser) => {
-    createUserWithEmailAndPassword(auth, newDbUser.email, password)
-      .then(async ({ user }) => {
-        if (!user) throw new Error();
-
-        updateProfile(user, {
-          displayName: newDbUser.username,
-          photoURL: newDbUser.avatarUrl || "",
-        });
-
-        return await user.getIdToken();
-      })
-      .then((token) => {
-        signIn(token, newDbUser.username);
-
-        createDbUser(
-          { ...newDbUser },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        nav({ to: "/" });
-      })
-      .catch((err) => {
-        auth.signOut();
-        // delete newly created user from db
-        console.log(err.code);
-        console.log(err.message);
-      });
-  };
 
   const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
@@ -76,28 +35,27 @@ const NyBruker = () => {
     const {
       password: { value: password },
       passwordConfirmation: { value: passwordConfirmation },
-      
     } = e.target;
 
     const newDbUser: NewDbUser = Object.keys(e.target)
       .filter((key) => key !== "passwordConfirmation" && key !== "password")
       .reduce((acc, cur) => {
-        if (e.target[cur].name == "" || e.target[cur].name == undefined ) return acc;
-        
+        if (e.target[cur].name == "" || e.target[cur].name == undefined)
+          return acc;
+
         return {
-          ...acc, 
-          ...{ [e.target[cur].name]: { value: e.target[cur].value}}
-        }
-    }, {}) as NewDbUser;
-    
+          ...acc,
+          ...{ [e.target[cur].name]: { value: e.target[cur].value } },
+        };
+      }, {}) as NewDbUser;
+
     if (password !== passwordConfirmation) {
       // passwords don't match exception
       setPasswordNotMatching(true);
-      return
-
+      return;
     }
 
-    createFbAndDbUser(password, newDbUser);
+    useCreateUser(password, newDbUser, auth);
   };
 
   return (

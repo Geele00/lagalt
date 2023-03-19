@@ -6,38 +6,49 @@ import { useEffect } from "react";
 import { IMenu, INavItem, AuthState } from "./Menu.types";
 import { useAuth } from "src/auth/Auth.Provider";
 
-const navData: INavItem[] = [{ 
-  title: "Forsiden", 
-  to: "/",
-}, {
-  title: "Nytt prosjekt",
-  to: "/$username/nytt-prosjekt",
-  authState: AuthState.loggedIn,
-}, {
-  title: "Min side",
-  to: "/$username",
-  authState: AuthState.loggedIn,
-}, {
-  title: "Hjelp",
-  to: "/hjelp",
-}, {
-  title: "Ny bruker",
-  to: "/ny-bruker",
-  authState: AuthState.loggedOut,
-}, {
-  title: "Logg inn",
-  to: "/logg-inn",
-  authState: AuthState.loggedOut,
-}, {
-  title: "Logg ut",
-  to: "/logg-ut",
-  authState: AuthState.loggedIn,
-}];
+const navData: INavItem[] = [
+  {
+    title: "Forsiden",
+    to: "/",
+  },
+  {
+    title: "Nytt prosjekt",
+    to: "/$username/nytt-prosjekt",
+    condition: AuthState.loggedIn,
+  },
+  {
+    title: "Min side",
+    to: "/$username",
+    condition: AuthState.loggedIn,
+    params: {
+      username: true,
+    },
+  },
+  {
+    title: "Hjelp",
+    to: "/hjelp",
+  },
+  {
+    title: "Ny bruker",
+    to: "/ny-bruker",
+    condition: AuthState.loggedOut,
+  },
+  {
+    title: "Logg inn",
+    to: "/logg-inn",
+    condition: AuthState.loggedOut,
+  },
+  {
+    title: "Logg ut",
+    to: "/logg-ut",
+    condition: AuthState.loggedIn,
+  },
+];
 
 export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
   const { authState } = useAuth();
   const { state } = useRouterContext();
-  const { username } = authState;
+  const { username, signedIn } = authState;
 
   useEffect(() => {
     if (state.status === "pending") {
@@ -52,10 +63,6 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         aria-hidden
         onPointerUp={() => toggleOverlay({ overlay: "menu", type: "toggle" })}
       >
-        {/*
-          Dette virker litt snedig og bare stappe inn div'er. 
-
-        */}
         <div></div>
         <div></div>
         <div></div>
@@ -69,47 +76,24 @@ export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
         aria-expanded={activeOverlay === "menu"}
       >
         {navData.map((navItem) => {
-          if((navItem.authState === AuthState.loggedIn && !username)) return null;
-          if((navItem.authState === AuthState.loggedOut && username)) return null;
+          const { condition, to, params, title } = navItem;
+
+          const requiresSignedIn = condition === AuthState.loggedIn;
+          const requiresSignedOut = condition === AuthState.loggedOut;
+
+          if (requiresSignedIn && !signedIn) return null;
+          if (requiresSignedOut && signedIn) return null;
+
           return (
-              <NavLink
-                key={navItem.to}
-                to={navItem.to}
-                linkProps={navItem.authState == AuthState.loggedIn ? { params: { username }} : {}}
-              >
-                {navItem.title}
-              </NavLink>
-            );
-          }
-        ) 
-        }
-{/* 
-        <NavLink to="/">Forsiden</NavLink>
-
-        <NavLink
-          to={username ? "/$username/nytt-prosjekt" : "logg-inn"}
-          linkProps={{ params: { username } }}
-        >
-          Nytt prosjekt
-        </NavLink>
-
-        <NavLink
-          to={username ? "/$username" : "logg-inn"}
-          linkProps={{ params: { username } }}
-        >
-          Min side
-        </NavLink>
-
-        <NavLink to="/">Hjelp</NavLink>
-
-        {!username || username === "anon" ? (
-          <>
-            <NavLink to="/ny-bruker">Ny bruker</NavLink>
-            <NavLink to="/logg-inn">Logg inn</NavLink>
-          </>
-        ) : (
-          <NavLink to="/logg-ut">Logg ut</NavLink>
-        )} */}
+            <NavLink
+              key={to}
+              to={to}
+              linkProps={params?.username ? { params: { username } } : {}}
+            >
+              {title}
+            </NavLink>
+          );
+        })}
       </ul>
     </nav>
   );

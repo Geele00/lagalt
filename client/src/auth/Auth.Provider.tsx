@@ -18,6 +18,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   const [authState, setAuthState] = useState<IAuthState>({
     token: null,
     username: null,
+    signedIn: false,
   });
 
   // useEffect(() => {
@@ -34,7 +35,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
   // }, [authState]);
 
   const signIn: SignIn = (token, username) => {
-    setAuthState({ token, username });
+    setAuthState({ token, username, signedIn: true });
     // queryClient.setQueryData(["auth"], { token, username  });
     // queryClient.invalidateQueries(["auth"]);
   };
@@ -48,11 +49,12 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
         // });
         // queryClient.invalidateQueries(["auth"]);
 
-        setAuthState({ token, username: "anon" });
+        setAuthState({ token, username: "anon", signedIn: false });
       });
     });
   };
 
+  // this might break without connection to firebase
   const signOut = useCallback(() => {
     auth.signOut().then(() => {
       anonSignIn();
@@ -63,7 +65,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
     const unsub = auth.onAuthStateChanged((user) => {
       if (!!user) {
         user.getIdToken().then((token) => {
-          setAuthState({ token, username: user.displayName });
+          setAuthState({ token, username: user.displayName, signedIn: true });
           // queryClient.setQueryData(["auth"], {
           //   token,
           //   username: user.displayName,
