@@ -1,7 +1,7 @@
 {
   "name": "lagalt-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,40 +9,23 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "http": {
-    "proxy": {
-      "/api/v1/users": {
-        "target": "http://localhost:8080/api/v1/users",
-        "secure": "false",
-        "changeOrigin": true
-      },
-      "/api/v1/projects": {
-        "target": "http://localhost:8080/api/v1/projects",
-        "secure": "false",
-        "changeOrigin": true
-      }
-    }
-  },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^4.24.6",
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/node": "^18.14.4",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react-swc": "^3.2.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "eslint": "^8.36.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "dependencies": {
-    "@tanstack/react-loaders": "^0.0.1-beta.53",
     "@tanstack/react-query": "^4.24.6",
     "@tanstack/react-router": "^0.0.1-beta.82",
     "@tanstack/react-router-devtools": "^0.0.1-beta.82",
-    "eslint": "^8.34.0",
     "firebase": "^9.17.1",
-    "firebase-tools": "^11.23.1",
-    "firebaseui": "^6.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.58.0"
+    "sass": "^1.58.3"
   }
 }

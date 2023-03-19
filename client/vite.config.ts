@@ -10,13 +10,13 @@ export default defineConfig(({ command }): any => {
         src: "/src",
       },
     },
-    server: {
-      watch: {
-        usePolling: true,
-      },
-      host: true,
-      strictPort: true,
-      port: `${command === "serve" ? 5173 : 80}`,
-    },
+    // server: {
+    //   watch: {
+    //     usePolling: true,
+    //   },
+    //   host: true,
+    //   strictPort: true,
+    //   port: `${command === "serve" ? 5173 : 80}`,
+    // },
   };
 });

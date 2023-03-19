@@ -7,9 +7,15 @@ public class UserDto {
 
   private Integer userId;
 
-  private String userName;
+  private String username;
 
   private String avatarUrl;
 
   private String profileStatus;
+
+  private String firstName;
+
+  private String lastName;
+
+  private Integer age;
 }

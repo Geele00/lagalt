@@ -1,30 +1,69 @@
 package no.lagalt.server.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import no.lagalt.server.Dtos.Page.PageDto;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.*;
+import no.lagalt.server.Exception.Project.*;
+import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Mapper.*;
-import no.lagalt.server.Repository.ProjectRepository;
-import no.lagalt.server.Utils.Exception.*;
+import no.lagalt.server.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
 
+  @Autowired private UserRepository userRepo;
   @Autowired private ProjectRepository projectRepo;
-  @Autowired private UserService userService;
+
   @Autowired private ProjectMapper projectMapper;
 
   public boolean validateExists(Integer id) {
     return projectRepo.existsById(id);
   }
 
-  public ProjectDto getById(Integer id) throws NotFoundException {
-    Project project = projectRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
+  public ProjectDto getByTitle(String title) throws ProjectNotFoundException {
+    Project project =
+        projectRepo
+            .findByTitle(title)
+            .orElseThrow(() -> new ProjectNotFoundException(title, ExceptionArgumentType.TITLE));
 
     return projectMapper.toDto(project);
+  }
+
+  public List<ProjectDto> getAllById(List<Integer> ids) throws ProjectNotFoundException {
+    List<Project> project = projectRepo.findAllById(ids);
+
+    return projectMapper.toDto(project);
+  }
+
+  private Project findById(Integer id) throws ProjectNotFoundException {
+    return projectRepo.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+  }
+
+  public ProjectDto getById(Integer id) throws ProjectNotFoundException {
+    return projectMapper.toDto(findById(id));
+  }
+
+  public PageDto<ProjectPreviewDto> getPage(Pageable pageable, String uid)
+      throws NotFoundException {
+
+    Page<Project> projectsPage = projectRepo.findAll(pageable);
+
+    if (projectsPage.isEmpty()) throw new ProjectNotFoundException("No projects found in database");
+
+    List<Project> projects = projectsPage.toList();
+
+    List<ProjectPreviewDto> previewDtoList = projectMapper.toPreviewDto(projects);
+    Integer pageNumber = projectsPage.getNumber();
+    boolean hasNextPage = projectsPage.hasNext();
+
+    return new PageDto<ProjectPreviewDto>(previewDtoList, pageNumber, hasNextPage);
   }
 
   public List<ProjectDto> getAll() {
@@ -37,43 +76,65 @@ public class ProjectService {
     return projectRepo.save(project);
   }
 
-  public ProjectDto save(UpdateProjectDto updateProjectDto) {
-    Project projectToUpdate = projectMapper.toProject(updateProjectDto);
+  public void updateProject(UpdateProjectDto updateProjectDto, String uid)
+      throws UserNotFoundException, NotProjectAdminException, NotOwnerException {
 
-    Project savedProject = save(projectToUpdate);
+    LagaltUser user = userRepo.findByUid(uid).orElseThrow(() -> new UserNotFoundException(uid));
 
-    return projectMapper.toDto(savedProject);
+    Integer projectId = updateProjectDto.getProjectId();
+
+    Project project = findById(projectId);
+
+    boolean userIsAdmin = project.getAdmins().stream().anyMatch(admin -> admin.getUid() == uid);
+
+    if (!userIsAdmin) throw new NotProjectAdminException();
+
+    Integer updateOwnerId = updateProjectDto.getOwnerId();
+
+    if (updateOwnerId != null && project.getOwner().getUserId() != user.getUserId())
+      throw new NotOwnerException();
+
+    projectMapper.updateProjectFromDto(updateProjectDto, project);
+
+    save(project);
   }
 
-  public ProjectDto createProject(NewProjectDto newProjectDto, Integer ownerId)
-      throws AlreadyExistsException {
-    LagaltUser owner = userService.findById(ownerId);
+  private LagaltUser findUserByUid(String uid) throws UserNotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new UserNotFoundException(uid, ExceptionArgumentType.UID));
+  }
+
+  public boolean existsByUserAndTitle(LagaltUser user, String projectTitle) {
+    return user.getProjects().stream()
+        .anyMatch(project -> projectTitle.matches(project.getTitle()));
+  }
+
+  public ProjectDto createProject(NewProjectDto newProjectDto, String uid)
+      throws UserNotFoundException, AlreadyExistsException {
+
+    LagaltUser owner = findUserByUid(uid);
 
     String projectTitle = newProjectDto.getTitle();
 
-    List<Project> existingProjects = owner.getProjects();
-
-    boolean alreadyExists =
-        existingProjects.stream().anyMatch(project -> projectTitle.matches(project.getTitle()));
-
-    if (alreadyExists)
-      throw new AlreadyExistsException(
-          "Project with title \"" + projectTitle + "\" already exists on your account.");
+    if (existsByUserAndTitle(owner, projectTitle))
+      throw new ProjectAlreadyExistsException(projectTitle, ExceptionArgumentType.TITLE);
 
     Project newProject = projectMapper.toProject(newProjectDto);
 
     newProject.setOwner(owner);
-    newProject.setCreationDateTime(LocalDateTime.now());
+    // set industries
+    // set wanted skills
 
     Project savedProject = save(newProject);
 
     return projectMapper.toDto(savedProject);
   }
 
-  public void deleteById(Integer id) throws NotFoundException {
+  public void deleteById(Integer id) throws ProjectNotFoundException {
     try {
       projectRepo.deleteById(id);
-    } catch (NotFoundException err) {
+    } catch (ProjectNotFoundException err) {
       throw err;
     }
   }

@@ -1,16 +1,8 @@
-import { Outlet, RootRoute } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Header } from "src/features";
+import { RootRoute } from "@tanstack/react-router";
+import App from "src/App/App";
 
 export const rootRoute = new RootRoute({
-  onLoad: ({ context }) => {},
-  component: () => (
-    <>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <TanStackRouterDevtools position="bottom-left" />
-    </>
-  ),
+  component: () => <App />,
 });
+
+// <TanStackRouterDevtools position="bottom-left" />

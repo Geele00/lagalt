@@ -1,44 +1,42 @@
-import { useRouter } from "@tanstack/react-router";
-import { RefObject, useRef } from "react";
-import { Logo } from "src/components";
-import { Menu, SearchBar } from "src/features";
-import { ProfileButton } from "../ProfileButton";
-import { PopFilter } from "./PopFilter";
-import { SkillsFilter } from "./SkillsFilter";
-import "./style.scss";
-
-// For computers, not mobile. Remember to test.
-const closeMenu = (ref: RefObject<any>) => ref.current.unCheck();
+import "./Header.style.scss";
+import { Filter } from "src/features/Filter/Filter";
+import { useReducer } from "react";
+import { overlayReducer } from "./Header.helpers";
+import { ProfileButton } from "./ProfileButton/ProfileButton";
+import { Menu } from "./Menu/Menu";
+import { CloseButton } from "./CloseButton/CloseButton";
+import { PointerEvent } from "react";
+import { SearchBar } from "../Search/Search";
 
 export const Header = () => {
-  const menuToggleRef = useRef<HTMLInputElement>(null);
-
-  const {
-    state: {
-      currentLocation: { pathname },
-    },
-  } = useRouter();
+  const [activeOverlay, toggleOverlay] = useReducer(overlayReducer, null);
 
   return (
-    <header className="main-header">
-      <section
-        className="main-header__left"
-        onMouseLeave={() => closeMenu(menuToggleRef)}
-      >
-        <Menu ref={menuToggleRef} />
-        <Logo />
-      </section>
+    <header className="main-header" data-overlay={activeOverlay}>
+      <Menu 
+        activeOverlay={activeOverlay} 
+        toggleOverlay={toggleOverlay} 
+      />
+      <Filter 
+        activeOverlay={activeOverlay} 
+        toggleOverlay={toggleOverlay} 
+      />
+      <SearchBar
+        className="main-header__search-bar"
+        activeOverlay={activeOverlay}
+        toggleOverlay={toggleOverlay}
+      />
 
-      {pathname === "/" ? (
-        <>
-          <PopFilter />
-          <SkillsFilter />
-        </>
-      ) : null}
-
-      <SearchBar />
-
-      <ProfileButton />
+      <div className="main-header__buttons">
+        <ProfileButton
+          activeOverlay={activeOverlay}
+          toggleOverlay={toggleOverlay}
+        />
+        <CloseButton
+          toggleOverlay={toggleOverlay}
+          activeOverlay={activeOverlay}
+        />
+      </div>
     </header>
   );
 };

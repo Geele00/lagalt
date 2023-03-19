@@ -1,10 +1,11 @@
-import "./style.scss";
+import { Link } from "@tanstack/react-router";
+import "./Logo.style.scss";
 
 export const Logo = () => {
   return (
-    <h1 className="logo">
+    <Link className="main-logo" to="/">
       <span>LAG</span>
       <span>ALT</span>
-    </h1>
+    </Link>
   );
 };

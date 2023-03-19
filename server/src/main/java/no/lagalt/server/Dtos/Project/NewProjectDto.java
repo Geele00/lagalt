@@ -1,8 +1,8 @@
 package no.lagalt.server.Dtos.Project;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
-import no.lagalt.server.Entity.Skill;
 
 @Data
 public class NewProjectDto {
@@ -11,7 +11,11 @@ public class NewProjectDto {
 
   private String description;
 
-  private List<Skill> wantedSkills;
+  private List<Integer> wantedSkillsIds;
 
-  // private List<IndustryDto> industries;
+  private List<Integer> industryIds;
+
+  private String imageUrl;
+
+  private LocalDateTime createdAt = LocalDateTime.now();
 }

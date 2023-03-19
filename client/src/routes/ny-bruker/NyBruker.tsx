@@ -1,71 +1,195 @@
-import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "src/auth/AuthProvider";
-import { AuthInput } from "src/components/AuthInput";
-import { Button } from "src/components/Button";
-import "./style.scss";
-import { AuthFormEvent } from "./types";
+import React, { useState } from "react";
+import "./NyBruker.style.scss";
+import { auth } from "src/auth/firebase";
+import { AuthFormEvent } from "./NyBruker.types";
+import { Input } from "src/components/Input/Input";
+import Button from "src/components/Button/Button";
+import { NewDbUser } from "src/api/v1/users/types";
+import { HrDivider } from "src/components/HrDivider/HrDivider";
+import { useCreateUser } from "src/auth/useCreateUser";
 
-export const NyBruker = () => {
-  const { createFirebaseUser } = useAuth();
-  const nav = useNavigate();
+// const provider = new GoogleAuthProvider();
+
+const mockUser = {
+  username: "mockUser20",
+  email: "testmail3@gmail.com",
+  firstName: "Mock",
+  lastName: "User",
+  gender: 1,
+  bio: "Mock bio",
+  dob: new Date(1994, 4, 4).toISOString(),
+  profileStatus: 1,
+  skills: [],
+  country: "Norge",
+  city: "Oslo",
+};
+
+const NyBruker = () => {
+  const [passwordNotMatching, setPasswordNotMatching] = useState(false);
 
   const onSubmit = async (e: AuthFormEvent) => {
     e.preventDefault();
+    setPasswordNotMatching(false);
 
+    // Mulig å gjøre slik, så kan du bare legge til flere felter i formen uten å måtte endre noe annet
     const {
-      username: { value: username },
-      email: { value: email },
       password: { value: password },
       passwordConfirmation: { value: passwordConfirmation },
     } = e.target;
 
+    const newDbUser: NewDbUser = Object.keys(e.target)
+      .filter((key) => key !== "passwordConfirmation" && key !== "password")
+      .reduce((acc, cur) => {
+        if (e.target[cur].name == "" || e.target[cur].name == undefined)
+          return acc;
+
+        return {
+          ...acc,
+          ...{ [e.target[cur].name]: { value: e.target[cur].value } },
+        };
+      }, {}) as NewDbUser;
+
     if (password !== passwordConfirmation) {
       // passwords don't match exception
+      setPasswordNotMatching(true);
+      return;
     }
 
-    try {
-      await createFirebaseUser(email, password, username);
-    } catch (err) {
-      nav({ to: "/" });
-    }
+    useCreateUser(password, newDbUser, auth);
   };
 
   return (
     <div className="signup">
-      <div className="signup_title">
-        <h1>Ny Bruker</h1>
-      </div>
-      <form className="signup_form" onSubmit={onSubmit}>
-        <AuthInput
-          maxLength={15}
+      {passwordNotMatching && <p>Passordene er ikke like</p>}
+      {/* <button onPointerUp={() => createFbAndDbUser("lksdjf", mockUser)}>
+        Dev cheatcode: Make user
+      </button>
+      */}
+      <form className="signup__form" onSubmit={onSubmit}>
+        <button className="signup__form__google">
+          <img src="/google/web/2x/btn_google_signin_light_normal_web@2x.png" />
+        </button>
+
+        <fieldset className="signup__form__auth">
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={40}
+            type="email"
+            name="email"
+            placeholder="Epostadresse"
+          />
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={30}
+            type="password"
+            name="password"
+            placeholder="Passord"
+          />
+          <Input
+            // required
+            // minLength={5}
+            autoComplete="off"
+            maxLength={30}
+            type="password"
+            name="passwordConfirmation"
+            placeholder="Passord"
+          />
+        </fieldset>
+
+        <HrDivider />
+
+        <Input
+          // maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
-          className="signup"
         />
-        <AuthInput
-          maxLength={40}
-          type="email"
-          name="email"
-          placeholder="E-post"
-          className="mail"
+        <fieldset className="signup__form__name">
+          <Input
+            // required
+            // minLength={3}
+            autoComplete="off"
+            maxLength={30}
+            type="text"
+            name="firstName"
+            placeholder="Fornavn"
+          />
+
+          <Input
+            // required
+            minLength={3}
+            autoComplete="off"
+            maxLength={30}
+            type="text"
+            name="lastName"
+            placeholder="Etternavn"
+          />
+        </fieldset>
+
+        <Input
+          // required
+          // minLength={3}
+          autoComplete="off"
+          maxLength={30}
+          type="date"
+          name="dob"
+          defaultValue={"1990-01-01"}
         />
-        <AuthInput
-          maxLength={20}
-          type="password"
-          name="password"
-          placeholder="Passord"
-          className="password"
+
+        <fieldset className="signup__form__gender">
+          <label>
+            <Input
+              // required
+              autoComplete="off"
+              type="radio"
+              name="gender"
+              value="male"
+            />
+            <p>Mann</p>
+          </label>
+          <label>
+            <Input
+              // required
+              autoComplete="off"
+              type="radio"
+              name="gender"
+              value="female"
+            />
+            <p>Kvinne</p>
+          </label>
+        </fieldset>
+
+        <fieldset className="signup__form__location">
+          <select name="country">
+            <option>Norge</option>
+          </select>
+
+          <select name="city">
+            <option>By</option>
+            <option>Oslo</option>
+          </select>
+        </fieldset>
+
+        <textarea
+          autoComplete="off"
+          name="bio"
+          placeholder="Skriv litt om deg selv"
+          className="signup__form__about-me"
         />
-        <AuthInput
-          maxLength={20}
-          type="password"
-          name="passwordConfirmation"
-          placeholder="Confirm Password"
-          className="password"
-        />
-        <Button className="signup_submit-btn">Registrer</Button>
+
+        <div className="signup__form__privacy">
+          <input type="checkbox" name="profileStatus" />
+          <label>Privat profil</label>
+        </div>
+
+        <Button className="signup__form__submit">Registrer</Button>
       </form>
     </div>
   );
 };
+
+export default NyBruker;

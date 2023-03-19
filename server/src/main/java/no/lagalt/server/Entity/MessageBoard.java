@@ -2,12 +2,13 @@ package no.lagalt.server.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "messageBoard")
 @Getter
 @Setter
+@Entity(name = "message_board")
 public class MessageBoard {
 
   @Id
@@ -21,5 +22,13 @@ public class MessageBoard {
   @OneToOne private Project project;
 
   @Column(nullable = false)
-  private LocalDateTime creationDatetime;
+  private LocalDateTime createdAt;
+
+  @OneToMany(
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "message_boards_channels",
+      joinColumns = {@JoinColumn(name = "message_board_id")},
+      inverseJoinColumns = {@JoinColumn(name = "channel_id")})
+  private List<Channel> channels;
 }

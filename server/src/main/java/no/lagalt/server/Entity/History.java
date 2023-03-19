@@ -19,5 +19,8 @@ public class History {
 
   @OneToMany private List<Project> clickedProjects;
 
-  @OneToOne private LagaltUser lagaltUser;
+  @OneToOne(
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},
+      fetch = FetchType.LAZY)
+  private LagaltUser lagaltUser;
 }

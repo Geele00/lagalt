@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter
 @Setter
@@ -20,20 +22,22 @@ public class Message {
   private String content;
 
   @Column(nullable = false)
-  private LocalDateTime creationDateTime;
+  @DateTimeFormat(iso = ISO.DATE_TIME)
+  private LocalDateTime createdAt;
 
-  // private int score;
+  @OneToOne(fetch = FetchType.LAZY)
+  private LagaltUser author;
 
-  @OneToOne private LagaltUser author;
-
-  @OneToMany(mappedBy = "parentMessage", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Message> replies = new ArrayList<>();
+  @OneToOne(fetch = FetchType.LAZY)
+  private LagaltUser recipient;
 
   @ManyToOne
   @JoinColumn(name = "replies")
   private Message parentMessage;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "messages")
-  private Channel channel;
+  @OneToMany(
+      mappedBy = "parentMessage",
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH},
+      orphanRemoval = true)
+  private List<Message> replies = new ArrayList<>();
 }

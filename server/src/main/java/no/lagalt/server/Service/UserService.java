@@ -1,14 +1,15 @@
 package no.lagalt.server.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import no.lagalt.server.Dtos.Project.ProjectDto;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
 import no.lagalt.server.Entity.*;
+import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.*;
+import no.lagalt.server.Exception.User.UserNotFoundException;
 import no.lagalt.server.Mapper.*;
-import no.lagalt.server.Repository.UserRepository;
-import no.lagalt.server.Utils.Exception.NotFoundException;
+import no.lagalt.server.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,37 +17,57 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   @Autowired private UserRepository userRepo;
+  @Autowired private CountryRepo countryRepo;
+  @Autowired private CityRepo cityRepo;
+  @Autowired private SkillRepository skillRepo;
+
   @Autowired private UserMapper userMapper;
-  @Autowired private SkillService skillService;
   @Autowired private SkillMapper skillMapper;
+
   @Autowired private ProjectMapper projectMapper;
 
-  public boolean validateExists(String userName) {
-    return userRepo.existsByUserName(userName);
+  private LagaltUser findByUid(String uid) throws UserNotFoundException {
+    return userRepo
+        .findByUid(uid)
+        .orElseThrow(() -> new UserNotFoundException(uid, ExceptionArgumentType.UID));
+  }
+
+  private LagaltUser findByUsername(String username) throws UserNotFoundException {
+    return userRepo
+        .findByUsername(username)
+        .orElseThrow(() -> new UserNotFoundException(username, ExceptionArgumentType.USERNAME));
+  }
+
+  private LagaltUser findById(Integer id) throws UserNotFoundException {
+    return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+  }
+
+  public boolean validateUsernameExists(String username) {
+    return userRepo.existsByUsername(username);
+  }
+
+  public boolean validateExistsByUid(String uid) {
+    return userRepo.existsByUid(uid);
   }
 
   public boolean validateExists(Integer id) {
     return userRepo.existsById(id);
   }
 
-  public LagaltUser findById(Integer id) throws NotFoundException {
-    return userRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
+  public UserDto getByUid(String uid) throws UserNotFoundException {
+    LagaltUser user = findByUid(uid);
+
+    return userMapper.toDto(user);
   }
 
-  public UserDto getById(Integer id) throws NotFoundException {
+  public UserDto getById(Integer id) throws UserNotFoundException {
     LagaltUser user = findById(id);
 
     return userMapper.toDto(user);
   }
 
-  public UserDto getByUserName(String userName) throws NotFoundException {
-    LagaltUser user =
-        userRepo
-            .findByUserName(userName)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Resource not found in database with username: " + userName));
+  public UserDto getByUsername(String username) throws UserNotFoundException {
+    LagaltUser user = findByUsername(username);
 
     return userMapper.toDto(user);
   }
@@ -77,42 +98,48 @@ public class UserService {
     return userMapper.toDto(savedUser);
   }
 
-  public UserDto save(NewUserDto newUserDto) {
+  public UserDto save(NewUserDto newUserDto) throws NotFoundException {
     LagaltUser newUser = userMapper.toUser(newUserDto);
 
-    newUser.setCreationDate(LocalDateTime.now());
+    Country country =
+        countryRepo
+            .findByName(newUserDto.getCountry())
+            .orElseThrow(() -> new NotFoundException("Country not found"));
+
+    City city =
+        cityRepo
+            .findByName(newUserDto.getCity())
+            .orElseThrow(() -> new NotFoundException("City not found"));
+
+    newUser.setCountry(country);
+    newUser.setCity(city);
 
     LagaltUser savedUser = save(newUser);
 
     return userMapper.toDto(savedUser);
   }
 
-  public void deleteById(Integer id) throws NotFoundException {
+  public void deleteById(Integer id) throws UserNotFoundException {
     try {
       userRepo.deleteById(id);
-    } catch (NotFoundException err) {
-      throw err;
+    } catch (UserNotFoundException err) {
+      throw new UserNotFoundException(id);
     }
   }
 
   // ~~~ Skills
 
-  public List<SkillDto> getSkills(Integer userId) throws NotFoundException {
-    LagaltUser user = userRepo.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+  public List<SkillDto> getSkillsByUid(String uid) throws UserNotFoundException {
+    LagaltUser user = findByUid(uid);
+
     return skillMapper.toDto(user.getSkills());
   }
 
-  public void setSkills(List<Integer> idList, String userName) throws NotFoundException {
+  public void setSkillsByUid(List<Integer> idList, String uid) throws UserNotFoundException {
 
-    LagaltUser user =
-        userRepo
-            .findByUserName(userName)
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Resource not found in database with username: " + userName));
+    LagaltUser user = findByUid(uid);
 
-    List<Skill> newSkills = skillService.findAllById(idList);
+    List<Skill> newSkills = skillRepo.findAllById(idList);
 
     user.setSkills(newSkills);
 
@@ -121,9 +148,52 @@ public class UserService {
 
   // ~~~ Projects
 
-  public List<ProjectDto> getProjects(Integer userId) {
-    List<Project> projects = findById(userId).getProjects();
+  public List<ProjectDto> getProjectsByUid(String uid) {
+    List<Project> projects = findByUid(uid).getProjects();
 
     return projectMapper.toDto(projects);
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 }

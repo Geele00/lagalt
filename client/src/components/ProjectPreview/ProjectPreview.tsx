@@ -1,30 +1,43 @@
-import { IProjectPreview } from "./types";
-import "./style.scss";
+import "./ProjectPreview.style.scss";
+import { Link } from "@tanstack/react-router";
+import { IProjectPreview } from "./ProjectPreview.types";
 
-export const ProjectPreview = ({
-  title,
-  description,
-  className,
-}: IProjectPreview) => {
+export const ProjectPreview = ({ title, description }: IProjectPreview) => {
   return (
-    <article className={`${className} project-preview`}>
-      <section className="project-preview__main">
+    <>
+      <article className="project-preview__main">
         <h2>{title}</h2>
 
         <p>{description}</p>
 
         <footer>
-          <p>Likes</p>
-          <p>Comments</p>
-          <p>10 hours ago</p>
-          <p>Favourite</p>
-        </footer>
-      </section>
+          <Link>
+            <figure>
+              <img src="/images/light-bulb.svg" alt="Likes" />
+              <figcaption>20</figcaption>
+            </figure>
+          </Link>
 
-      <section className="project-preview__right">
-        <img />
-        <ul></ul>
-      </section>
-    </article>
+          <Link>
+            <figure>
+              <img
+                src="/images/comment.svg"
+                alt="Comment bubble"
+                id="comment-bubble"
+              />
+              <figcaption>20</figcaption>
+            </figure>
+          </Link>
+
+          <Link>
+            <img src="/images/bookmark-simple.svg" alt="Bookmark" />
+          </Link>
+
+          <p>10 timer siden</p>
+        </footer>
+      </article>
+
+      <section className="project-preview__right"></section>
+    </>
   );
 };

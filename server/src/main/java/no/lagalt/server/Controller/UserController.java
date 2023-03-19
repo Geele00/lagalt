@@ -2,16 +2,18 @@ package no.lagalt.server.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import no.lagalt.server.Dtos.Project.*;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Dtos.User.*;
+import no.lagalt.server.Enum.ExceptionArgumentType;
+import no.lagalt.server.Exception.User.*;
 import no.lagalt.server.Service.*;
-import no.lagalt.server.Utils.Exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
@@ -21,25 +23,20 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
   @Autowired private UserService userService;
-
-  @Autowired private ProjectService projectService;
+  @Autowired private HistoryService historyService;
 
   @Operation(summary = "Get a list of users")
   @GetMapping
   List<UserDto> getUsers(
-      Principal p,
+      Authentication auth,
       @RequestParam(name = "username", required = false) String username,
-      @RequestParam(name = "id", required = false) List<String> id)
-      throws NotFoundException {
+      @RequestParam(name = "id", required = false) List<String> ids)
+      throws UserNotFoundException {
 
-    System.out.println(p.getName());
+    if (username != null) return List.of(userService.getByUsername(username));
 
-    if (username != null) return List.of(userService.getByUserName(username));
-
-    if (id != null) {
-      List<Integer> idList = id.stream().map(Integer::parseInt).collect(Collectors.toList());
-
-      System.out.println(idList);
+    if (ids != null) {
+      List<Integer> idList = ids.stream().map(Integer::parseInt).collect(Collectors.toList());
 
       return userService.getAllById(idList);
     }
@@ -47,35 +44,43 @@ public class UserController {
     return userService.getAll();
   }
 
-  @Operation(summary = "Get one user by ID")
-  @GetMapping("{id}")
-  public UserDto getOneById(@PathVariable Integer id) throws NotFoundException {
-    return userService.getById(id);
+  @Operation(summary = "Check if a username exists in the database")
+  @GetMapping("validate/{username}")
+  boolean validateExistingUsername(@PathVariable String username) {
+    return userService.validateUsernameExists(username);
   }
 
   @Operation(summary = "Delete one user by ID")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("{id}")
-  void deleteOneById(@PathVariable Integer id) throws NotFoundException {
+  void deleteOneById(@PathVariable Integer id) throws UserNotFoundException {
     userService.deleteById(id);
   }
 
   @Operation(summary = "Create new user")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  UserDto createUser(@RequestBody NewUserDto newUserDto) throws AlreadyExistsException {
-    if (userService.validateExists(newUserDto.getUserName()))
-      throw new AlreadyExistsException(
-          "User with username " + newUserDto.getUserName() + " already exists in the database.");
+  UserDto createUser(@RequestBody NewUserDto newUserDto, Authentication auth)
+      throws UserAlreadyExistsException {
+
+    String uid = auth.getName();
+    newUserDto.setUid(uid);
+
+    if (userService.validateUsernameExists(newUserDto.getUsername()))
+      throw new UserAlreadyExistsException(
+          newUserDto.getUsername(), ExceptionArgumentType.USERNAME);
 
     return userService.save(newUserDto);
   }
 
   @Operation(summary = "Update a user")
-  @PutMapping("{id}")
-  UserDto updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable Integer id)
-      throws NotFoundException {
-    if (!userService.validateExists(id)) throw new NotFoundException(id);
+  @PutMapping
+  UserDto updateUser(@RequestBody UpdateUserDto updateUserDto, Authentication auth)
+      throws UserNotFoundException {
+
+    String uid = auth.getName();
+
+    if (!userService.validateExistsByUid(uid)) throw new UserNotFoundException(uid);
 
     UserDto savedUser = userService.save(updateUserDto);
 
@@ -85,39 +90,39 @@ public class UserController {
   // ~~~ Skills
 
   @Operation(summary = "Get list of skills from user")
-  @GetMapping("{userId}/skills")
-  List<SkillDto> getSkills(@PathVariable Integer userId) {
-    return userService.getSkills(userId);
+  @GetMapping("skills")
+  List<SkillDto> getSkills(Authentication auth) {
+
+    String uid = auth.getName();
+    return userService.getSkillsByUid(uid);
   }
 
   @Operation(summary = "Set skills for user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PostMapping("{userName}/skills")
-  public void setSkills(@RequestBody List<Integer> idList, @PathVariable String userName)
-      throws NotFoundException {
-
-    userService.setSkills(idList, userName);
+  @PostMapping("skills")
+  void setSkills(@RequestBody List<Integer> idList, Authentication auth)
+      throws UserNotFoundException {
+    String uid = auth.getName();
+    userService.setSkillsByUid(idList, uid);
   }
 
   // ~~~ Projects
 
-  @Operation(summary = "Delete a project")
-  @DeleteMapping("{userId}/projects/{projectId}")
-  void deleteProjectById(@PathVariable Integer id) throws NotFoundException {
-    projectService.deleteById(id);
+  @Operation(summary = "Get projects from user")
+  @GetMapping("projects")
+  List<ProjectDto> getProjects(Authentication auth) {
+    String uid = auth.getName();
+
+    return userService.getProjectsByUid(uid);
   }
+
+  // ~~~ History
 
   @Operation(summary = "Get projects from user")
-  @GetMapping("{userId}/projects")
-  List<ProjectDto> getProjects(@PathVariable Integer userId) {
-    return userService.getProjects(userId);
-  }
+  @PostMapping("history")
+  void addToHistory(@RequestBody Set<Integer> projectIds, Authentication auth) {
+    String uid = auth.getName();
 
-  @Operation(summary = "Create new project")
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping("{userId}/projects")
-  ProjectDto createProject(@RequestBody NewProjectDto newProjectDto, @PathVariable Integer userId)
-      throws AlreadyExistsException {
-    return projectService.createProject(newProjectDto, userId);
+    historyService.addToSeen(projectIds, uid);
   }
 }

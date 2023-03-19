@@ -1,21 +1,25 @@
 package no.lagalt.server.Dtos.Project;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
-import no.lagalt.server.Dtos.User.UserDto;
 
 @Data
 public class UpdateProjectDto {
 
   private Integer projectId;
 
-  private UserDto owner;
+  private Integer ownerId;
 
   private String title;
 
   private String description;
 
-  private LocalDateTime updatedDateTime;
+  private String imageUrl;
 
-  // private List<IndustryDto> industries;
+  private List<Integer> industryIds;
+
+  private List<Integer> wantedSkillsIds;
+
+  private LocalDateTime updatedDateTime = LocalDateTime.now();
 }

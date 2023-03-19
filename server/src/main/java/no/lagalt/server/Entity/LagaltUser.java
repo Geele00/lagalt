@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import no.lagalt.server.Utils.Enum.Gender;
-import no.lagalt.server.Utils.Enum.ProfileStatus;
+import no.lagalt.server.Enum.Gender;
+import no.lagalt.server.Enum.ProfileStatus;
 
 @Getter
 @Setter
@@ -19,10 +19,12 @@ public class LagaltUser {
   @Column(nullable = false)
   private Integer userId;
 
+  private String uid;
+
   private String avatarUrl;
 
   @Column(nullable = false)
-  private String userName;
+  private String username;
 
   @Column(nullable = false)
   private String firstName;
@@ -39,14 +41,30 @@ public class LagaltUser {
   @Column(nullable = false)
   private Gender gender;
 
-  @OneToOne private Country country;
+  @ManyToOne private Country country;
 
-  // private Enum roles;
+  @ManyToOne private City city;
 
   @Column(length = 510)
   private String bio;
 
-  @OneToOne private History history;
+  @Column(nullable = false)
+  private ProfileStatus profileStatus;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lagaltUser")
+  private History history = new History();
+
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "users_chats",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "chat_id")})
+  private List<Chat> chats;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -62,12 +80,28 @@ public class LagaltUser {
       inverseJoinColumns = {@JoinColumn(name = "notification_id")})
   private List<Notification> notifications;
 
-  @OneToMany(mappedBy = "owner")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "owners_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
   private List<Project> projects;
 
-  @Column(nullable = false)
-  private ProfileStatus profileStatus;
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "admins_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
+  private List<LagaltUser> adminInProjects;
 
-  @Column(nullable = false)
-  private LocalDateTime creationDate;
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(
+      name = "collaborators_projects",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "project_id")})
+  private List<LagaltUser> collaboratingInProjects;
 }

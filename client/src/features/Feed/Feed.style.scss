@@ -1,0 +1,16 @@
+.feed {
+  // container: feed / size;
+  // height: 100svh;
+  margin-top: 1em;
+
+  scroll-behavior: smooth;
+  overflow: scroll;
+  // overscroll-behavior-y: contain;
+
+  max-width: 570px;
+  margin-inline: auto;
+
+  .project-preview {
+    margin-bottom: 0.5em;
+  }
+}

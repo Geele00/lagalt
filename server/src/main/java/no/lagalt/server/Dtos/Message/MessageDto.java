@@ -1,32 +1,22 @@
 package no.lagalt.server.Dtos.Message;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import no.lagalt.server.Entity.LagaltUser;
+import no.lagalt.server.Dtos.User.UserDto;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class MessageDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer messageId;
 
   private String content;
 
-  private LagaltUser author;
+  private Integer parentId;
 
-  private LocalDateTime creationDateTime;
+  private UserDto author;
 
-  // private int score;
-
-  private Integer channelId;
+  private UserDto recipient;
 }

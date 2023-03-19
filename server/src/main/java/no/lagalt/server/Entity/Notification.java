@@ -24,7 +24,4 @@ public class Notification {
   @Transient
   @ManyToMany(fetch = FetchType.LAZY)
   private List<LagaltUser> recipients;
-
-  // @ManyToMany
-  // private Project project;
 }
