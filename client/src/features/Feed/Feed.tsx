@@ -90,27 +90,6 @@ const Feed = () => {
   });
 
   const feedItems = useFeedItems({ data, isPlaceholderData });
-  //=======
-  //  const feedItems = useMemo(
-  //    () =>
-  //      data?.pages.map((page) =>
-  //        page?.content.map((project) => (
-  //          <li
-  //            className="project-preview"
-  //            key={project.projectId + project.title}
-  //          >
-  //            {!isPlaceholderData && (
-  //              <ProjectPreview
-  //                title={project.title}
-  //                description={project.description}
-  //              />
-  //            )}
-  //          </li>
-  //        ))
-  //      ),
-  //    [data, isPlaceholderData]
-  //  );
-  //>>>>>>> ebff081 (feat: started implementing search)
 
   const containerRef = useRef<HTMLUListElement>(null);
 

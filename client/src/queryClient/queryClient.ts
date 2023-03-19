@@ -30,7 +30,6 @@ export const queryClient = new QueryClient({
           `${apiUri}${queryKey[0]}${filterString}${pageQuery}`,
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }

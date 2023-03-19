@@ -1,6 +1,7 @@
 package no.lagalt.server.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import no.lagalt.server.Dtos.Page.PageDto;
 import no.lagalt.server.Dtos.Search.ProjectSearchResult;
@@ -9,6 +10,9 @@ import no.lagalt.server.Interfaces.IProjectSearchResult;
 import no.lagalt.server.Mapper.*;
 import no.lagalt.server.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,20 +22,33 @@ public class SearchService {
 
   @Autowired private ProjectMapper projectMapper;
 
+  public PageDto<ProjectSearchResult> getBySkill(Integer skillId) {
+
+    return null;
+  }
+
   public PageDto<ProjectSearchResult> getSearchResults(String query, String uid)
       throws UserNotFoundException {
 
-    var twoWeeksAgo = LocalDateTime.now().plusDays(14);
+    List<Order> orders = new ArrayList<Order>();
 
-    List<IProjectSearchResult> containing =
-        projectRepo.findAllByTitleContainsIgnoreCaseAndCreatedAtAfterOrderByTitle(
-            query, twoWeeksAgo);
+    Order byTitle = new Order(Direction.ASC, "Title");
+    orders.add(byTitle);
+    Order byCreationDate = new Order(Direction.DESC, "CreatedAt");
+    orders.add(byCreationDate);
 
-    System.out.println(containing.size());
+    var twoWeeksAgo = LocalDateTime.now().minusDays(14);
+    var twoYearsAgo = LocalDateTime.now().minusYears(2);
 
-    List<ProjectSearchResult> res = projectMapper.toSearchResultDto(containing);
+    List<IProjectSearchResult> results =
+        projectRepo.findAllByTitleContainsIgnoreCaseAndCreatedAtAfter(
+            query, twoYearsAgo, Sort.by(orders));
 
-    return new PageDto<ProjectSearchResult>(res, 1, true);
+    System.out.println(results.size());
+
+    List<ProjectSearchResult> resultsDtoList = projectMapper.toSearchResultDto(results);
+
+    return new PageDto<ProjectSearchResult>(resultsDtoList, 1, true);
   }
 }
 

@@ -18,20 +18,19 @@ export const fetchUsers = async (
   return res.json();
 };
 
-// Når kompleksiteten øker vil du nok få utfordringer med fetchUsers, som skal håndtere alt :-)
-// tror du fort bare kan lage en fetch som gjør post. Du sparer ikke noe spes eller at det er lurt å kalle fetchusers.
-//
 export const createDbUser = async (
   newDbUser: NewDbUser,
   options?: RequestInit
 ) => {
-  return await fetch(apiUri, {
+  const res = await fetch(apiUri, {
     ...options,
     method: "POST",
     body: JSON.stringify(newDbUser),
-  })
-    .then((res) => res.json())
-    .catch((err) => {
-      throw new Error(err.statusText);
-    });
+  });
+
+  if (!res.ok) {
+    return Promise.reject(res);
+  }
+
+  return res.json();
 };

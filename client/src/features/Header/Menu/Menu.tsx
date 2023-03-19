@@ -3,8 +3,9 @@ import { Logo } from "src/components/Logo/Logo";
 import { NavLink } from "src/components/NavLink/NavLink";
 import { useRouterContext } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { IMenu, INavItem, AuthState } from "./Menu.types";
+import { INavItem, AuthState } from "./Menu.types";
 import { useAuth } from "src/auth/Auth.Provider";
+import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
 
 const navData: INavItem[] = [
   {
@@ -45,7 +46,9 @@ const navData: INavItem[] = [
   },
 ];
 
-export const Menu = ({ activeOverlay, toggleOverlay }: IMenu) => {
+export const Menu = () => {
+  const { activeOverlay, toggleOverlay } = useOverlay();
+
   const { authState } = useAuth();
   const { state } = useRouterContext();
   const { username, signedIn } = authState;

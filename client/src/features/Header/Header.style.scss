@@ -32,12 +32,12 @@
     }
   }
 
-  &[data-overlay="search"] {
-    @container main-header (width < 500px) {
-      .filter,
-      .profile-button {
-        display: none;
-      }
-    }
-  }
+  // &[data-overlay="search"] {
+  //   @container main-header (width < 500px) {
+  //     .filter,
+  //     .profile-button {
+  //       display: none;
+  //     }
+  //   }
+  // }
 }

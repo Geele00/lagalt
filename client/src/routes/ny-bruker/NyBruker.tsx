@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import "./NyBruker.style.scss";
+import { useState } from "react";
 import { auth } from "src/auth/firebase";
 import { AuthFormEvent } from "./NyBruker.types";
 import { Input } from "src/components/Input/Input";
@@ -31,31 +31,25 @@ const NyBruker = () => {
     e.preventDefault();
     setPasswordNotMatching(false);
 
-    // Mulig å gjøre slik, så kan du bare legge til flere felter i formen uten å måtte endre noe annet
     const {
       password: { value: password },
       passwordConfirmation: { value: passwordConfirmation },
     } = e.target;
 
-    const newDbUser: NewDbUser = Object.keys(e.target)
-      .filter((key) => key !== "passwordConfirmation" && key !== "password")
-      .reduce((acc, cur) => {
-        if (e.target[cur].name == "" || e.target[cur].name == undefined)
-          return acc;
+    const newDbUser = {};
 
-        return {
-          ...acc,
-          ...{ [e.target[cur].name]: { value: e.target[cur].value } },
-        };
-      }, {}) as NewDbUser;
+    for (const entry of e.target) {
+      const { name, value } = entry as HTMLInputElement;
+      if (!name || name.startsWith("password")) continue;
+      Object.assign(newDbUser, { [name]: value });
+    }
 
     if (password !== passwordConfirmation) {
-      // passwords don't match exception
       setPasswordNotMatching(true);
       return;
     }
 
-    useCreateUser(password, newDbUser, auth);
+    useCreateUser(password, newDbUser as NewDbUser, auth);
   };
 
   return (
