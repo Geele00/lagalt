@@ -57,6 +57,7 @@ const Melding = () => {
 
       return sendChatMessageFetch({ content, recipientUsername }, token);
     },
+
     onMutate: async (newMessageText) => {
       await queryClient.cancelQueries({
         queryKey,
