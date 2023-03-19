@@ -1,8 +1,10 @@
+import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
 import "./Filter.style.scss";
-import { IFilter } from "./Filter.types";
 import { filters as filterData } from "./filterData";
 
-export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
+export const Filter = () => {
+  const { activeOverlay, toggleOverlay } = useOverlay();
+
   return (
     <section className="filter">
       <button
@@ -17,7 +19,7 @@ export const Filter = ({ activeOverlay, toggleOverlay }: IFilter) => {
         <ul className="filter__body__main">
           {filterData.map((filter) => (
             <li key={filter.value}>
-                <p>{filter.name}</p>
+              <p>{filter.name}</p>
             </li>
           ))}
         </ul>

@@ -1,16 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Dispatch } from "react";
 import { useAuth } from "src/auth/Auth.Provider";
-import { OverlayOptions } from "../Header.types";
+import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
 import "./ProfileButton.style.scss";
 
-interface IProps {
-  activeOverlay: OverlayOptions["overlay"];
-  toggleOverlay: Dispatch<OverlayOptions>;
-}
-
-export const ProfileButton = ({ activeOverlay, toggleOverlay }: IProps) => {
+export const ProfileButton = () => {
   const { signOut, authState } = useAuth();
+  const { activeOverlay, toggleOverlay } = useOverlay();
 
   const nav = useNavigate();
   const username = authState.username || "";

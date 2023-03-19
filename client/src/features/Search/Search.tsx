@@ -3,17 +3,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { HrDivider } from "src/components/HrDivider/HrDivider";
 import { ISearchBar } from "./Search.types";
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
+import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
 
-const searchUri = import.meta.env.VITE_API_V1_URL + "/search";
-
-export const SearchBar = ({
-  className,
-  activeOverlay,
-  toggleOverlay,
-}: ISearchBar) => {
+export const SearchBar = ({ className }: ISearchBar) => {
   const { authState } = useAuth();
+  const { activeOverlay, toggleOverlay } = useOverlay();
 
   const [searchString, setSearchString] = useState("");
 

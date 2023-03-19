@@ -1,16 +1,12 @@
 import "./CloseButton.style.scss";
-import { Dispatch, PointerEvent } from "react";
-import { OverlayOptions } from "../Header.types";
+import { PointerEvent } from "react";
+import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
 
-interface IProps {
-  activeOverlay: OverlayOptions["overlay"];
-  toggleOverlay: Dispatch<OverlayOptions>;
-}
+export const CloseButton = () => {
+  const { activeOverlay, toggleOverlay } = useOverlay();
 
-export const CloseButton = ({ activeOverlay, toggleOverlay }: IProps) => {
   const closeOverlay = (e: PointerEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     toggleOverlay({ overlay: null, type: "close" });
   };
 
