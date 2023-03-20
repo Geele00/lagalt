@@ -1,7 +1,5 @@
 import { Header } from "src/features/Header/Header";
 import { ThemeProvider } from "src/features/Theme/Theme.Provider";
-
-import "src/App/App.style.scss";
 import Main from "src/features/Main/Main";
 
 const App = () => {
