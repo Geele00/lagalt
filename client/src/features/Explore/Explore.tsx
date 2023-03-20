@@ -1,5 +1,4 @@
 import "./Explore.style.scss";
-import NewsFeed from "src/components/NewsApi/NewsFeed";
 
 export const Explore = () => {
   return (
