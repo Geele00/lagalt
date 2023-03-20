@@ -11,7 +11,7 @@
     margin: auto;
     text-indent: 0.5em;
     z-index: 900;
-    outline: 0;
+    outline: solid;
 
     &:focus {
       box-shadow: 0 0 1px 1px greenyellow;
