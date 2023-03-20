@@ -1,4 +1,9 @@
 .main-header {
+  &:is(.dark-mode) {
+    height: 50%;
+    --clr_primary_1: red;
+  }
+
   position: sticky;
   top: 0;
   container: main-header / size;

@@ -1,6 +1,6 @@
 import "./CloseButton.style.scss";
 import { PointerEvent } from "react";
-import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
+import { useOverlay } from "src/features/Overlay/Overlay.Provider";
 
 export const CloseButton = () => {
   const { activeOverlay, toggleOverlay } = useOverlay();
