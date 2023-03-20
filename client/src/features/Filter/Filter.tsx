@@ -1,4 +1,4 @@
-import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
+import { useOverlay } from "src/features/Overlay/Overlay.Provider";
 import "./Filter.style.scss";
 import { filters as filterData } from "./filterData";
 

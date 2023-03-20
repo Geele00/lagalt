@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-import { ContextValue, IOverlayProvider } from "./OverlayProvider.types";
-import { overlayReducer } from "./OverlayReducer";
+import { ContextValue, IOverlayProvider } from "./Overlay.Provider.types";
+import { overlayReducer } from "./Overlay.reducer";
 
 const OverlayContext = createContext<ContextValue>(null!);
 

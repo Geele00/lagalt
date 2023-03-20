@@ -1,4 +1,4 @@
-import { OverlayOptions } from "./OverlayProvider.types";
+import { OverlayOptions } from "./Overlay.Provider.types";
 
 export const overlayReducer = (
   currentOverlay: OverlayOptions["overlay"],

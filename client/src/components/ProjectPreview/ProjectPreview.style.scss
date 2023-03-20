@@ -6,14 +6,6 @@
   // box-shadow: 0 0 0.2em var(--clr_grey);
   // margin-inline: 0.25em;
   // border-radius: 0.5em;
-  box-shadow: 0 0.4em 0.5em white;
-  transition: box-shadow 0.5s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 0.4em 1em rgb(0, 0, 0);
-  }
-
- 
 
   &:empty {
     height: 6em;
@@ -25,8 +17,6 @@
     display: flex;
     flex-flow: column;
     width: 100%;
-
-    
 
     & > p {
       font-size: 0.8em;

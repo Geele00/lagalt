@@ -5,7 +5,7 @@ import { useRouterContext } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { INavItem, AuthState } from "./Menu.types";
 import { useAuth } from "src/auth/Auth.Provider";
-import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
+import { useOverlay } from "src/features/Overlay/Overlay.Provider";
 
 const navData: INavItem[] = [
   {
@@ -16,6 +16,9 @@ const navData: INavItem[] = [
     title: "Nytt prosjekt",
     to: "/$username/nytt-prosjekt",
     condition: AuthState.loggedIn,
+    params: {
+      username: true,
+    },
   },
   {
     title: "Min side",
@@ -60,7 +63,7 @@ export const Menu = () => {
   }, [state]);
 
   return (
-    <nav className="main-header__menu" aria-haspopup="menu">
+    <nav className="main-header__menu" aria-haspopup="menu" aria-label="Main">
       <button
         className="main-header__menu__hamburger"
         aria-hidden
@@ -89,6 +92,7 @@ export const Menu = () => {
 
           return (
             <NavLink
+              className="main-header__menu__dropdown-item"
               key={to}
               to={to}
               linkProps={params?.username ? { params: { username } } : {}}

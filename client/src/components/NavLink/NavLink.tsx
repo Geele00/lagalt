@@ -6,11 +6,12 @@ interface INavLink {
   to: ToPathOption;
   children: ReactNode;
   linkProps?: any;
+  className: string;
 }
 
-export const NavLink = ({ to, children, linkProps }: INavLink) => {
+export const NavLink = ({ to, children, linkProps, className }: INavLink) => {
   return (
-    <li className="nav-link" role="menuitem">
+    <li className={`${className} nav-link`} role="menuitem">
       <Link to={to} {...linkProps}>
         {children}
       </Link>

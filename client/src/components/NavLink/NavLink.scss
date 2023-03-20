@@ -1,12 +1,5 @@
 .nav-link {
   text-transform: uppercase;
-  box-shadow: 0px 2px 10px #0e9594;
-  box-shadow: 0 0.4em 0.5em white;
-  transition: box-shadow 0.5s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 0.4em 1em rgb(0, 0, 0);
-  }
 
   a {
     text-decoration: none;
@@ -17,6 +10,4 @@
       color: var(--clr_text_2);
     }
   }
-
-  
 }
