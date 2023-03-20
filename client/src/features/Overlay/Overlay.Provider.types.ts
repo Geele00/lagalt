@@ -1,12 +1,12 @@
-import { Dispatch } from "react";
+import { Dispatch, ReactNode } from "react";
 
 export interface OverlayOptions {
-  overlay: "filter" | "menu" | "search" | null;
+  overlay: "filter" | "menu" | "search" | "profile-menu" | null;
   type: "close" | "open" | "toggle";
 }
 
 export interface IOverlayProvider {
-  children: any;
+  children: ReactNode;
 }
 
 export interface ContextValue {

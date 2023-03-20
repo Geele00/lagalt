@@ -5,7 +5,7 @@ import { HrDivider } from "src/components/HrDivider/HrDivider";
 import { ISearchBar } from "./Search.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
-import { useOverlay } from "src/features/OverlayContext/OverlayProvider";
+import { useOverlay } from "src/features/Overlay/Overlay.Provider";
 
 export const SearchBar = ({ className }: ISearchBar) => {
   const { authState } = useAuth();
