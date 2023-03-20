@@ -36,17 +36,17 @@ const NyBruker = () => {
       passwordConfirmation: { value: passwordConfirmation },
     } = e.target;
 
+    if (password !== passwordConfirmation) {
+      setPasswordNotMatching(true);
+      return;
+    }
+
     const newDbUser = {};
 
     for (const entry of e.target) {
       const { name, value } = entry as HTMLInputElement;
       if (!name || name.startsWith("password")) continue;
       Object.assign(newDbUser, { [name]: value });
-    }
-
-    if (password !== passwordConfirmation) {
-      setPasswordNotMatching(true);
-      return;
     }
 
     useCreateUser(password, newDbUser as NewDbUser, auth);
