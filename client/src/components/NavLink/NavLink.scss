@@ -1,7 +1,11 @@
 .nav-link {
   text-transform: uppercase;
+  display: flex;
+  line-height: 1.5em;
 
   a {
+    flex-grow: 1;
+    height: 100%;
     text-decoration: none;
     color: var(--clr_text_2);
 
