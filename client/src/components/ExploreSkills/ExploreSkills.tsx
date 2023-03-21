@@ -1,46 +1,35 @@
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "src/auth/Auth.Provider";
+import { SkillSearchRes } from "src/types/models/Skill";
 import "./ExploreSkills.style.scss";
 
-const skills = [
-  {
-    name: "Koding",
-    value: "coding",
-  },
-  {
-    name: "Fotografi",
-    value: "photography",
-  },
-  {
-    name: "Tegning",
-    value: "drawing",
-  },
-  {
-    name: "Keramikk",
-    value: "ceramics",
-  },
-  {
-    name: "Arkitektur",
-    value: "architecture",
-  },
-  {
-    name: "Billedkunst",
-    value: "visual-art",
-  },
-  {
-    name: "Animasjon",
-    value: "animation",
-  },
-];
-
 export const ExploreSkills = ({ activeOverlay }: any) => {
+  const { authState } = useAuth();
+  const onPointerUp = (e: any) => {
+    console.log();
+  };
+
+  const filters = {
+    addedBy: "Developer",
+  };
+
+  const queryKey = ["/skills", "default", { filters, token: authState.token }];
+
+  const { data } = useQuery<SkillSearchRes[]>({
+    queryKey,
+    enabled: !!authState.token,
+  });
+
   return (
-    <div className="explore-skills" aria-expanded={activeOverlay === "search"}>
-      <ul>
-        {skills.map((skill) => (
-          <li key={skill.value}>
-            <p>{skill.name}</p>
+    <ul className="test33">
+      {data &&
+        data.map((skill) => (
+          <li key={skill.skillId + "explore"} onPointerUp={onPointerUp}>
+            <button>
+              <p>{skill.name}</p>
+            </button>
           </li>
         ))}
-      </ul>
-    </div>
+    </ul>
   );
 };

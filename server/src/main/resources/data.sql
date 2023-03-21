@@ -122,12 +122,14 @@ VALUES
 ;
 
 INSERT INTO skill(added_by, name)
-VALUES (0, 'Frontend'),
-       (0, 'Html'),
-       (0, 'JavaScript'),
-       (0, 'React'),
-       (0, 'FullStack'),
-       (0, 'Backend');
+VALUES (0, 'Programmering'),
+       (0, 'Animasjon'),
+       (0, 'Spillutvikling'),
+       (0, 'Fotografi'),
+       (0, 'Billedkunst'),
+       (0, 'Tegning'),
+       (0, 'Film'),
+       (0, 'AI');
 
 
 
