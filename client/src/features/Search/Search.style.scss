@@ -29,6 +29,7 @@
     margin-left: auto;
     opacity: 0.3;
     margin-right: 0.5em;
+    z-index: 901;
   }
 }
 
@@ -46,7 +47,6 @@
   top: 3em;
   will-change: transform;
   z-index: 1000;
-  padding-top: 1em;
   // width: 100svw;
   height: 100svh;
 
@@ -60,6 +60,7 @@
   }
 
   & > ul {
+    padding-top: 1em;
     display: flex;
     flex-flow: column;
     gap: 1em;

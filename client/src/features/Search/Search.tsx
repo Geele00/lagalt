@@ -1,11 +1,12 @@
 import "./Search.style.scss";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { SearchResult } from "./SearchResult/SearchResult";
-import { HrDivider } from "src/components/HrDivider/HrDivider";
 import { ISearchBar } from "./Search.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { useOverlay } from "src/features/Overlay/Overlay.Provider";
+import useSearchResults from "./useSearchResults";
+import { IProjectsPage } from "src/types/models/Project";
+import { ExploreSkills } from "src/components/ExploreSkills/ExploreSkills";
 
 export const SearchBar = ({ className }: ISearchBar) => {
   const { authState } = useAuth();
@@ -21,16 +22,13 @@ export const SearchBar = ({ className }: ISearchBar) => {
     query: searchString,
   };
 
-  console.log(searchString);
-
   const queryKey = ["/search", { filters, token: authState.token }];
 
-  const { data } = useInfiniteQuery({
+  const { data } = useInfiniteQuery<IProjectsPage>({
     queryKey,
     enabled: !!authState.token && !!searchString.length,
+    keepPreviousData: true,
   });
-
-  console.log(data && data);
 
   const overlayRef = useRef<Element | null>(null);
 
@@ -58,6 +56,7 @@ export const SearchBar = ({ className }: ISearchBar) => {
     switch (e.key) {
       case "Escape":
         searchInputRef.current.value = "";
+        setSearchString("");
         searchInputRef.current.blur();
     }
   };
@@ -68,33 +67,19 @@ export const SearchBar = ({ className }: ISearchBar) => {
   //   searchInputRef.current.value = "";
   // };
 
+  const searchResults = useSearchResults({ data });
+
   return (
     <>
       <div
         aria-expanded={activeOverlay === "search"}
         className="search-results"
       >
-        <ul>
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-          <HrDivider />
-          <SearchResult />
-        </ul>
+        {searchString.length ? (
+          <ul>{searchResults ?? <p>Ingen resultater</p>}</ul>
+        ) : (
+          <ExploreSkills activeOverlay={activeOverlay} />
+        )}
       </div>
 
       <form

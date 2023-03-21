@@ -7,6 +7,8 @@ import no.lagalt.server.Entity.ProjectHistory;
 import no.lagalt.server.Entity.Skill;
 
 public interface IProjectSearchResult {
+  Integer getProjectId();
+
   String getTitle();
 
   String getDescription();
