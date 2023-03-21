@@ -1,4 +1,4 @@
-.main-header__menu {
+.main-header__nav {
   background-color: var(--clr_primary_1);
   color: var(--clr_text_1);
   border-top-right-radius: 3em;
@@ -35,8 +35,6 @@
     background-color: var(--clr_primary_1);
     color: var(--clr_text_1);
     border-radius: 0 3em 0 0;
-    animation-duration: 0.2s;
-    animation-name: menu-dropdown;
     padding-top: 1em;
     padding-top: 100cqh;
     height: 100vh;
@@ -60,8 +58,6 @@
 
     li {
       transition: all 0.2s ease-out;
-      line-height: 1.5em;
-      padding-block: 1em;
       border-bottom: 1px solid var(--clr_grey);
       font-size: 1.5em;
 
