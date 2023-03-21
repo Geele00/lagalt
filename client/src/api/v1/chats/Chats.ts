@@ -11,6 +11,7 @@ export const sendChatMessageFetch = async (
     method: "POST",
     body: JSON.stringify(body),
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });

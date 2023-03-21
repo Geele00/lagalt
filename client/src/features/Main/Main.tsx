@@ -1,11 +1,8 @@
 import { Outlet } from "@tanstack/react-router";
-import { useTheme } from "../Theme/Theme.Provider";
 
 const Main = () => {
-  const { mode } = useTheme();
-
   return (
-    <main className={`main-wrapper ${mode}`}>
+    <main className={`main-wrapper`}>
       <Outlet />
     </main>
   );
