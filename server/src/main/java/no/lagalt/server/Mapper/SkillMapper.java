@@ -3,6 +3,7 @@ package no.lagalt.server.Mapper;
 import java.util.List;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Entity.Skill;
+import no.lagalt.server.Interfaces.ISkillSearchResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,4 +18,6 @@ public interface SkillMapper {
   SkillDto toDto(Skill skill);
 
   List<SkillDto> toDto(List<Skill> skill);
+
+  List<SkillDto> searchResultToDto(List<ISkillSearchResult> searchResult);
 }
