@@ -30,7 +30,7 @@
 
   &__dropdown {
     --width-start: 10em;
-    --width-end: 15em;
+    --width-end: 19em;
 
     background-color: var(--clr_primary_1);
     color: var(--clr_text_1);
@@ -42,7 +42,7 @@
     position: fixed;
     display: block;
     z-index: 900;
-    transition: all 0.2s ease-out;
+    transition: all 0.15s ease-out;
     min-width: var(--width-end);
     max-width: var(--width-end);
 
@@ -57,9 +57,13 @@
     }
 
     li {
-      transition: all 0.2s ease-out;
+      transition: all 0.15s ease-out;
       border-bottom: 1px solid var(--clr_grey);
       font-size: 1.5em;
+
+      &:hover {
+        font-size: 1.8em;
+      }
 
       a {
         margin-inline: auto;
