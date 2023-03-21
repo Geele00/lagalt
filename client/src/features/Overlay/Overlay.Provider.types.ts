@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode } from "react";
 
 export interface OverlayOptions {
-  overlay: "filter" | "menu" | "search" | "profile-menu" | null;
+  overlay: "filter" | "nav" | "search" | "profile-menu" | null;
   type: "close" | "open" | "toggle";
 }
 
