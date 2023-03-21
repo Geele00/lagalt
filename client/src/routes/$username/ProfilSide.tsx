@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { IUserPrivate, IUserPublic } from "src/types/models/User";
 import { ErrorComponent, Link, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useAuth } from "src/auth/Auth.Provider";
-import { DefaultError } from "src/types/defaults/DefaultError";
 import "./Profilside.style.scss";
 
 const ProfilSide = () => {
@@ -58,10 +56,14 @@ const ProfilSide = () => {
       {errorScreen ?? (
         <>
           <header className="profile__header">
-            <figure>
+            <div className="profile__header__user-info">
               <img src="/images/wes-portrait.jpg" alt="profile photo" />
-              <figcaption>{fullName}</figcaption>
-            </figure>
+              <div className="profile__header__user-info__age-prof">
+                <p>Programmerer</p>
+                <p>27</p>
+              </div>
+              <h1>{fullName}</h1>
+            </div>
 
             <Link
               to="/$username/melding"
@@ -69,31 +71,30 @@ const ProfilSide = () => {
                 username: "testuser2",
               }}
               className="profile__header__message-btn"
+              title="Send melding"
             >
-              Send melding
+              <img src="/images/envelope.svg" />
             </Link>
           </header>
 
           {isPublicProfile && (
-            <>
-              <section className="profile__projects">
-                <h2>Egne prosjekter</h2>
+            <section className="profile__projects">
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    name="project-view"
+                    defaultChecked={true}
+                  />
+                  <span>Prosjekter</span>
+                </label>
 
-                <ul>
-                  <li>Project1</li>
-                  <li>Project2</li>
-                </ul>
-              </section>
-
-              <section className="profile__projects-contributing">
-                <h2>Bidrar til disse prosjektene:</h2>
-
-                <ul>
-                  <li>Project1</li>
-                  <li>Project2</li>
-                </ul>
-              </section>
-            </>
+                <label>
+                  <input type="radio" name="project-view" />
+                  <span>Bidrar</span>
+                </label>
+              </div>
+            </section>
           )}
         </>
       )}
