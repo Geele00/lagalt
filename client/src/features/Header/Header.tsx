@@ -1,19 +1,16 @@
 import "./Header.style.scss";
 import { Filter } from "src/features/Filter/Filter";
-import { ProfileButton } from "./ProfileButton/ProfileButton";
-import { Menu } from "./Menu/Menu";
+import { ProfileMenu } from "./ProfileMenu/ProfileMenu";
 import { CloseButton } from "./CloseButton/CloseButton";
 import { SearchBar } from "src/features/Search/Search";
 import { OverlayProvider } from "src/features/Overlay/Overlay.Provider";
-import { useTheme } from "src/features/Theme/Theme.Provider";
+import { Nav } from "./Nav/Nav";
 
 export const Header = () => {
-  const { mode } = useTheme();
-
   return (
     <OverlayProvider>
-      <header className={`main-header ${mode}`}>
-        <Menu />
+      <header className={`main-header`}>
+        <Nav />
         <Filter />
         <SearchBar className="main-header__search-bar" />
 
@@ -21,7 +18,7 @@ export const Header = () => {
           className="main-header__buttons "
           // onPointerUp={() => toggleMode({ type: "toggle" })}
         >
-          <ProfileButton />
+          <ProfileMenu />
           <CloseButton />
         </div>
       </header>

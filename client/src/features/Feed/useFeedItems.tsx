@@ -1,39 +1,32 @@
-
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import { IPage } from "src/types/models/Page";
+import { IProject } from "src/types/models/Project";
 import { ProjectPreview } from "../../components/ProjectPreview/ProjectPreview";
 
-interface Page {
-  content: {
-    projectId: number;
-    title: string;
-    description: string;
-  }[];
-}
+type IProjectsPage = IPage<IProject>;
 
 interface Props {
   data?: {
-    pages: Page[];
+    pages: IProjectsPage[];
   };
   isPlaceholderData: boolean;
 }
 
 function useFeedItems({ data, isPlaceholderData }: Props) {
-  const feedItems = useMemo(() =>
-    data?.pages.map((page) =>
-      page?.content.map((project) => (
-        <li
-          className="project-preview"
-          key={project.projectId}
-        >
-          {!isPlaceholderData && (
-            <ProjectPreview
-              title={project.title}
-              description={project.description}
-            />
-          )}
-        </li>
-      ))
-    ),
+  const feedItems = useMemo(
+    () =>
+      data?.pages.map((page) =>
+        page?.content.map((project) => (
+          <li className="project-preview" key={project.projectId}>
+            {!isPlaceholderData && (
+              <ProjectPreview
+                title={project.title}
+                description={project.description}
+              />
+            )}
+          </li>
+        ))
+      ),
     [data, isPlaceholderData]
   );
 

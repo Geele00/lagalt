@@ -1,5 +1,6 @@
 import { ReactRouter } from "@tanstack/react-router";
 import { projectRoute } from "./$username/$projectName/ProsjektSide.routes";
+import { userSettingsRoute } from "./$username/innstillinger/Instillinger.routes";
 import { messageRoute } from "./$username/melding/Melding.routes";
 import { newProjectRoute } from "./$username/nytt-prosjekt/NyttProsjekt.routes";
 import { profilePageRoute, userRoute } from "./$username/ProfilSide.routes";
@@ -21,6 +22,7 @@ export const routeTree = rootRoute.addChildren([
     projectRoute,
     newProjectRoute,
     messageRoute,
+    userSettingsRoute,
   ]),
 ]);
 

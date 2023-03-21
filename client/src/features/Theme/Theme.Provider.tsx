@@ -1,5 +1,4 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
-
 import { ThemeContext, ThemeContextValue, IThemeProvider } from "./Theme.types";
 
 const themeReducer = (
@@ -10,6 +9,7 @@ const themeReducer = (
 
   switch (type) {
     case "toggle":
+      console.log(currentMode);
       if (currentMode === "light-mode") return "dark-mode";
       if (currentMode === "dark-mode") return "light-mode";
 

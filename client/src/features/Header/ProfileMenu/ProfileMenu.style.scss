@@ -1,4 +1,4 @@
-.header__profile {
+.profile-menu {
   display: grid;
   flex-flow: column;
   height: 100%;
@@ -12,37 +12,69 @@
     width: fit-content;
     padding: 1ch;
     border-radius: 0 0 0.2em 0.2em;
-    transition: all 0.15s ease-out;
     height: fit-content;
     font-size: 1.5em;
 
-    & * {
+    & > * {
       transition: all 0.15s ease-out;
+      width: 100%;
     }
 
     &[aria-expanded="false"] {
       height: 0;
       font-size: 0;
 
-      & * {
-        height: 0;
-        font-size: 0;
+      .theme-toggle {
+        & input {
+          appearance: none;
+          width: 0;
+        }
       }
     }
 
     &-item {
       background-color: var(--clr_primary_2);
-      transition: all 0.2s ease-out;
+      text-transform: capitalize !important;
+      color: var(--clr_text_2);
       padding-block: 0.5ch;
-      text-align: right;
-      text-transform: capitalize;
+      line-height: 1.5em;
+      display: flex;
 
-      &:is(.toggle-opt) {
-        display: grid;
+      &:last-child {
+        img {
+          transform: rotate(180deg);
+        }
+      }
 
-        & > * {
-          grid-row: 1;
-          grid-column: 1;
+      & img {
+        height: 1em;
+        margin-block: auto;
+        margin-right: 0.7ch;
+      }
+
+      & > a {
+        display: flex;
+      }
+
+      &:is(.theme-toggle) {
+        & * {
+          cursor: pointer;
+        }
+
+        span {
+        }
+
+        label {
+          display: grid;
+
+          & > * {
+            grid-row: 1;
+            grid-column: 1;
+          }
+
+          input {
+            appearance: none;
+          }
         }
       }
     }
@@ -61,9 +93,12 @@
     height: 100cqh;
     aspect-ratio: 1;
     z-index: 50;
+    transition: all 0.15s ease-out;
+    margin: auto;
 
     &[data-visible="false"] {
       z-index: -1;
+      height: 0;
 
       .profile-button__logo {
         height: 0;
@@ -71,7 +106,7 @@
     }
 
     &__logo {
-      transition: height 0.2s ease-out;
+      transition: height 0.15s ease-out;
       border: 2px solid var(--clr_white);
       border-radius: 50%;
       margin: auto;

@@ -29,29 +29,25 @@
     margin-left: auto;
     opacity: 0.3;
     margin-right: 0.5em;
+    z-index: 901;
   }
 }
 
 .search-results {
-  animation-duration: 0.2s;
-  animation-name: search-results;
-  background-color: var(--clr_primary_2);
   background-color: var(--clr_white);
   overflow-y: scroll;
   overscroll-behavior-y: contain;
-  display: none;
-  // display: block;
   position: absolute;
   inset: 0;
   top: 3em;
   will-change: transform;
   z-index: 1000;
-  padding-top: 1em;
-  // width: 100svw;
   height: 100svh;
+  transition: all 0.15s ease-out;
+  margin-top: 100vh;
 
   &[aria-expanded="true"] {
-    display: block;
+    margin-top: 0;
 
     & ~ form > input {
       outline: none;
@@ -60,18 +56,9 @@
   }
 
   & > ul {
+    padding-top: 1em;
     display: flex;
     flex-flow: column;
     gap: 1em;
-  }
-
-  @keyframes search-results {
-    0% {
-      margin-top: 100vh;
-    }
-
-    100% {
-      margin-top: 0;
-    }
   }
 }

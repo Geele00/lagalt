@@ -1,12 +1,10 @@
 .user-chat {
   display: flex;
   flex-flow: column;
-  // flex-grow: 1;
   height: 100%;
-  // contain: size;
 
   &__history {
-    margin: 1ch 1ch 2ch 1ch;
+    padding: 1ch 1ch 2ch 1ch;
     flex-grow: 1;
     overflow-y: scroll;
     display: flex;

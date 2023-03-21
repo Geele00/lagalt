@@ -8,6 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProjectSearchResult {
 
+  Integer projectId;
+
   String title;
 
   String description;

@@ -2,8 +2,6 @@ import { INewProject, IProjectsPage } from "src/types/models/Project";
 
 const projectsUri = import.meta.env.VITE_API_V1_URL + "/projects";
 
-//Samme her som i Chats.ts...
-
 export const fetchProjects = async (
   fetchOptions?: RequestInit,
   params: string = ""
