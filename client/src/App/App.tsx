@@ -1,13 +1,13 @@
 import { Header } from "src/features/Header/Header";
-import { ThemeProvider } from "src/features/Theme/Theme.Provider";
 import Main from "src/features/Main/Main";
+import ThemeWrapper from "src/features/Theme/ThemeWrapper";
 
 const App = () => {
   return (
-    <ThemeProvider>
+    <ThemeWrapper>
       <Header />
       <Main />
-    </ThemeProvider>
+    </ThemeWrapper>
   );
 };
 

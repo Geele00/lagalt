@@ -1,8 +1,8 @@
 .main-header {
-  &:is(.dark-mode) {
-    height: 50%;
-    --clr_primary_1: red;
-  }
+  // &:is(.dark-mode) {
+  //   height: 50%;
+  //   --clr_primary_1: red;
+  // }
 
   position: sticky;
   top: 0;
@@ -14,7 +14,7 @@
   width: 100%;
   z-index: 1000;
 
-  &__menu {
+  &__nav {
     margin-right: auto;
     z-index: 910;
     // max-width: 100px;
