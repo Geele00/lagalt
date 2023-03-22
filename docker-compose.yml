@@ -60,7 +60,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email abbaswb@gmail.com -d lag-alt.no --agree-tos --non-interactive
+    command: certonly --webroot -w /var/www/ --force-renewal --email abbaswb@gmail.com -d www.lag-alt.no --agree-tos --non-interactive
 
 volumes:
   postgres-data:
