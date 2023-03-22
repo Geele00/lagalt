@@ -10,7 +10,16 @@
   max-width: 570px;
   margin-inline: auto;
 
-  .project-preview {
+  &__project-preview {
+    background-color: var(--clr_primary_white);
+    color: var(--clr_text_3);
+    display: flex;
+    height: fit-content;
     margin-bottom: 0.5em;
+
+    &:empty {
+      height: 6em;
+      opacity: 0.5;
+    }
   }
 }

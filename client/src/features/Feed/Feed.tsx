@@ -53,6 +53,8 @@ const Feed = ({ filters }: IFeed) => {
       onSuccess: async (data) => {
         const lastPage = data.pages.at(-1);
 
+        console.log(data);
+
         if (!lastPage) return;
 
         const projectIds = lastPage?.content.map(
@@ -89,6 +91,8 @@ const Feed = ({ filters }: IFeed) => {
       console.log(err);
     },
   });
+
+  console.log(data);
 
   const feedItems = useFeedItems({ data, isPlaceholderData });
 
@@ -129,7 +133,6 @@ const Feed = ({ filters }: IFeed) => {
 
   return (
     <ul className="feed" role="feed" ref={containerRef}>
-      <button onPointerUp={() => testMut.mutate()}>Update 109</button>
       {errorScreen ?? <>{feedItems}</>}
     </ul>
   );

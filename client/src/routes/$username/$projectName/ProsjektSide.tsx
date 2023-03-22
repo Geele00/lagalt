@@ -37,8 +37,16 @@ const ProsjektSide = () => {
       <section className="project-page__main">
         <h1>{sampleProject.title}</h1>
         <ul className="project-page__main__skill-match">
-          <SkillCircle color="#000000" title="Fotograf" />
-          <SkillCircle color="#3c8b2e" title="Koder" />
+          <SkillCircle
+            color="#000000"
+            title="Fotograf"
+            className="project-page__main__skill-match__item"
+          />
+          <SkillCircle
+            color="#3c8b2e"
+            title="Koder"
+            className="project-page__main__skill-match__item"
+          />
         </ul>
 
         <table className="project-page__main__details">

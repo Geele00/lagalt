@@ -17,7 +17,7 @@ function useFeedItems({ data, isPlaceholderData }: Props) {
     () =>
       data?.pages.map((page) =>
         page?.content.map((project) => (
-          <li className="project-preview" key={project.projectId}>
+          <li className="feed__project-preview" key={project.projectId}>
             {!isPlaceholderData && (
               <ProjectPreview
                 title={project.title}

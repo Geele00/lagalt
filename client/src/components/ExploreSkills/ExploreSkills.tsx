@@ -25,6 +25,8 @@ export const ExploreSkills = () => {
     enabled: !!authState.token,
   });
 
+  console.log(data);
+
   return (
     <>
       <h2 className="search__results__suggestions-title">Utforsk</h2>
