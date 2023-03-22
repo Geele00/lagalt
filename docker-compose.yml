@@ -67,4 +67,3 @@ volumes:
 networks:
   backend:
   frontend:
-    driver: “bridge”
