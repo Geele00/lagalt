@@ -13,12 +13,13 @@ import useFeedItems from "./useFeedItems";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
-const filters = {
-  size: 20,
-  sort: "createdAt,desc",
-};
+interface IFeed {
+  filters: {
+    [key: string]: string | number;
+  };
+}
 
-const Feed = () => {
+const Feed = ({ filters }: IFeed) => {
   const { authState } = useAuth();
 
   // ~~~ Query logic

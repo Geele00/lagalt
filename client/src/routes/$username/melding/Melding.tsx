@@ -210,7 +210,6 @@ const Melding = () => {
   return (
     <div className="user-chat">
       <section className="user-chat__history" ref={containerRef}>
-        <button onPointerUp={() => fetchNextPage()} children="Next page" />
         {loadingScreen ?? errorScreen ?? messages}
       </section>
       <form
@@ -218,10 +217,17 @@ const Melding = () => {
         spellCheck={false}
         onSubmit={onSubmit}
       >
-        <textarea placeholder="Skriv en melding" onKeyUp={onKeyUp} />
+        <textarea
+          placeholder={`Chat med ${recipientUsername}`}
+          onKeyUp={onKeyUp}
+        />
+        <button title="Send" className="user-chat__compose__send">
+          <img src="/images/send-message.svg" alt="paper plane" />
+        </button>
         <div className="user-chat__compose__controls">
-          <button>Submit</button>
-          <button>Opt1</button>
+          <button>
+            <img src="/images/wrench.svg" />
+          </button>
           <button>Op2</button>
         </div>
       </form>

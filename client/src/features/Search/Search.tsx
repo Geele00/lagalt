@@ -76,9 +76,11 @@ export const SearchBar = ({ className }: ISearchBar) => {
         className="search-results"
       >
         {searchString.length ? (
-          <ul>{searchResults ?? <p>Ingen resultater</p>}</ul>
+          <ul className="search-results__list">
+            {searchResults ?? <p>Ingen resultater</p>}
+          </ul>
         ) : (
-          <ExploreSkills activeOverlay={activeOverlay} />
+          <ExploreSkills />
         )}
       </div>
 

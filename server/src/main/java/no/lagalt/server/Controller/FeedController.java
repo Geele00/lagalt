@@ -21,12 +21,15 @@ public class FeedController {
 
   @Operation(summary = "Get a list of projects for the feed")
   @GetMapping
-  PageDto<ProjectPreviewDto> getProjects(Pageable pageable, Authentication auth)
+  PageDto<ProjectPreviewDto> getProjects(
+      Pageable pageable,
+      @PathVariable(name = "skill", required = false) String skill,
+      Authentication auth)
       throws ProjectNotFoundException {
 
     String uid = auth.getName();
 
-    return projectService.getPage(pageable, uid);
+    return projectService.getPage(pageable, uid, skill);
   }
 
   // void addToClicked(Integer projectId, Authentication auth) throws NotFoundException {
