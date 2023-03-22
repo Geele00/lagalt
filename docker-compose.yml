@@ -32,7 +32,7 @@ services:
     volumes:
       - Certbot-conf:/etc/letsencrypt
       - Certbot-www:/var/www/certbot
-    hostname: Lag-alt.no
+    hostname: www.Lag-alt.no
     restart: always
     depends_on:
       - app-server
