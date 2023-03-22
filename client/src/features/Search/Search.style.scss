@@ -42,12 +42,13 @@
   top: 3em;
   will-change: transform;
   z-index: 1000;
-  height: 100svh;
   transition: all 0.15s ease-out;
-  margin-top: 100vh;
+  // margin-top: 100vh;
+  height: 0;
 
   &[aria-expanded="true"] {
-    margin-top: 0;
+    height: 100svh;
+    // margin-top: 0;
 
     & ~ form > input {
       outline: none;
@@ -55,7 +56,7 @@
     }
   }
 
-  & > ul {
+  &__list {
     padding-top: 1em;
     display: flex;
     flex-flow: column;

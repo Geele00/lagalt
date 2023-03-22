@@ -50,8 +50,13 @@ public class ProjectService {
     return projectMapper.toDto(findById(id));
   }
 
-  public PageDto<ProjectPreviewDto> getPage(Pageable pageable, String uid)
+  public PageDto<ProjectPreviewDto> getPage(Pageable pageable, String uid, String skillName)
       throws NotFoundException {
+
+    if (skillName != null) {
+      System.out.println(skillName);
+      System.out.println(1233);
+    }
 
     Page<Project> projectsPage = projectRepo.findAll(pageable);
 

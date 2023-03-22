@@ -44,7 +44,7 @@ export const ProfileMenu = () => {
           className="profile-menu__nav-item"
           linkProps={{ params: { username } }}
         >
-          <img src="/images/envelope.svg" />
+          <img src="/images/user.svg" />
           <span>Profil</span>
         </NavLink>
 

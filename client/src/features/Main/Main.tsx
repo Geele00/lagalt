@@ -1,4 +1,5 @@
 import { Outlet } from "@tanstack/react-router";
+import "./Main.style.scss";
 
 const Main = () => {
   return (

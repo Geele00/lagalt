@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { fetchProjects } from "src/api/v1/projects/projects";
 import { useAuth } from "src/auth/Auth.Provider";
-import { ProjectPreview } from "src/components/ProjectPreview/ProjectPreview";
+import { SkillCircle } from "src/components/SkillCircle/SkillCircle";
 import "./ProsjektSide.style.scss";
 
 const sampleProject = {
   id: 55,
-  title: "Space Mission",
-  description: "Vi vil reise til Mars. Uten teknologi. På sykler. Fra Oslo.",
-  industry: "romfart",
+  title: "Tittel",
+  description: "Prosjektbeskrivelse. Blablabla.",
+  industry: "game development",
   owner: "Spacepeloton",
   collaborators: ["daftPunk", "scienceGuy", "LIONKING"],
   openRoles: ["forsker", "romingeniør", "mekaniker", "drømmer"],
@@ -17,45 +16,30 @@ const sampleProject = {
   city: "Oslo",
 };
 
-// const Detail = ({ k, v }: any) => {
-//   return (
-//     <tr>
-//       <th>{k}</th>
-//       <td>{v}</td>
-//     </tr>
-//   );
-// };
-
-export const ProsjektSide = () => {
+const ProsjektSide = () => {
   const { authState } = useAuth();
   const { projectName } = useParams();
 
+  const filters = {
+    title: projectName?.split("-").join(" "),
+  };
+
   const { data } = useQuery({
-    queryKey: [
-      "/projects",
-      projectName,
-      { filters: { title: projectName, token: authState.token } },
-    ],
-
-    queryFn: () => {
-      const { token } = authState;
-
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      return token ? fetchProjects(headers) : null;
-    },
+    queryKey: ["/projects", { filters, token: authState.token }],
+    enabled: !!authState.token,
   });
+
   console.log(data);
 
   return (
     <div className="project-page">
+      <p className="project-page__industry">{sampleProject.industry}</p>
       <section className="project-page__main">
         <h1>{sampleProject.title}</h1>
+        <ul className="project-page__main__skill-match">
+          <SkillCircle color="#000000" title="Fotograf" />
+          <SkillCircle color="#3c8b2e" title="Koder" />
+        </ul>
 
         <table className="project-page__main__details">
           <tbody>
@@ -77,7 +61,7 @@ export const ProsjektSide = () => {
             </tr>
 
             <tr>
-              <th scope="row">Folka:</th>
+              <th scope="row">Brukere:</th>
               {sampleProject.collaborators.map((user) => (
                 <td key={user}>{user}</td>
               ))}
@@ -99,23 +83,40 @@ export const ProsjektSide = () => {
         </p>
       </section>
 
-      <section className="project-page__suggestions">
-        <ProjectPreview
-          title="Prosjekt1"
-          description="Blablablalbal"
-          className="project-page__suggestions-preview"
-        />
-        <ProjectPreview
-          title="Prosjekt1"
-          description="Blablablalbal"
-          className="project-page__suggestions-preview"
-        />
-        <ProjectPreview
-          title="Prosjekt1"
-          description="Blablablalbal"
-          className="project-page__suggestions-preview"
-        />
-      </section>
+      <nav className="project-page__nav">
+        <button>
+          <img src="/images/wrench.svg" />
+        </button>
+        <button>
+          <img src="/images/wrench.svg" />
+        </button>
+        <button>
+          <img src="/images/chat-bubble.svg" />
+        </button>
+        <button>
+          <img src="/images/home.svg" />
+        </button>
+      </nav>
     </div>
   );
 };
+
+export default ProsjektSide;
+
+// <section className="project-page__suggestions">
+//   <ProjectPreview
+//     title="Prosjekt1"
+//     description="Blablablalbal"
+//     className="project-page__suggestions-preview"
+//   />
+//   <ProjectPreview
+//     title="Prosjekt1"
+//     description="Blablablalbal"
+//     className="project-page__suggestions-preview"
+//   />
+//   <ProjectPreview
+//     title="Prosjekt1"
+//     description="Blablablalbal"
+//     className="project-page__suggestions-preview"
+//   />
+// </section>
