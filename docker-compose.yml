@@ -32,6 +32,11 @@ services:
     volumes:
       - Certbot-conf:/etc/letsencrypt
       - Certbot-www:/var/www/certbot
+      - ./letsencrypt/:/etc/letsencrypt
+      - ./nginx/var/www/html:/var/www/html
+      - ./logs/nginx/:/var/log/nginx:rw
+      - ./nginx/includes:/etc/nginx/includes:ro
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       #     - Certbot-conf:/etc/letsencrypt
       #     - Certbot-www:/var/www/certbot
     hostname: www.Lag-alt.no
@@ -64,3 +69,4 @@ volumes:
 networks:
   backend:
   frontend:
+    driver: “bridge”
