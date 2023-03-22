@@ -3,6 +3,7 @@ package no.lagalt.server.Service;
 import java.util.List;
 import no.lagalt.server.Dtos.Skill.SkillDto;
 import no.lagalt.server.Entity.Skill;
+import no.lagalt.server.Enum.AddedBy;
 import no.lagalt.server.Exception.NotFoundException;
 import no.lagalt.server.Mapper.SkillMapper;
 import no.lagalt.server.Repository.SkillRepository;
@@ -19,6 +20,16 @@ public class SkillService {
     var skills = skillRepository.findAllById(idList);
 
     return skillMapper.toDto(skills);
+  }
+
+  public List<SkillDto> getAll() {
+    var skills = skillRepository.findAll();
+    return skillMapper.toDto(skills);
+  }
+
+  public List<SkillDto> getAllByAddedBy(AddedBy addedBy) {
+    var skills = skillRepository.findAllByAddedBy(addedBy);
+    return skillMapper.searchResultToDto(skills);
   }
 
   public Skill findById(Integer id) {
