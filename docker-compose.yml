@@ -31,9 +31,8 @@ services:
       - "443:443"
     volumes:
       - Certbot-conf:/etc/letsencrypt
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - Certbot-www:/var/www/certbot
-    hostname: Lag-alt.no
+    hostname: lag-alt.no
     restart: always
     depends_on:
       - app-server
