@@ -28,6 +28,11 @@ services:
         REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api/v1
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - Certbot-conf:/etc/letsencrypt
+      - Certbot-www:/var/www/certbot
+    hostname: Lag-alt.no
     restart: always
     depends_on:
       - app-server
@@ -51,6 +56,8 @@ services:
 
 volumes:
   postgres-data:
+  Certbot-conf:
+  Certbot-www:
 
 networks:
   backend:
