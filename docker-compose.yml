@@ -30,8 +30,6 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - Certbot-conf:/etc/letsencrypt
-      - Certbot-www:/var/www/certbot
       - ./letsencrypt/:/etc/letsencrypt
       - ./nginx/var/www/html:/var/www/html
       - ./logs/nginx/:/var/log/nginx:rw
