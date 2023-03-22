@@ -30,10 +30,12 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - Certbot-conf:/etc/letsencrypt
-      - Certbot-www:/var/www/certbot
-      #     - Certbot-conf:/etc/letsencrypt
-      #     - Certbot-www:/var/www/certbot
+      #- Certbot-conf:/etc/letsencrypt
+      #- Certbot-www:/var/www/certbot
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      #- Certbot-conf:/etc/letsencrypt
+      #- Certbot-www:/var/www/certbot
     hostname: www.Lag-alt.no
     restart: always
     depends_on:
@@ -55,6 +57,12 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - backend
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
 
 volumes:
   postgres-data:
