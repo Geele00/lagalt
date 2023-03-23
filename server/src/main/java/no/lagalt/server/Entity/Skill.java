@@ -22,6 +22,8 @@ public class Skill {
   @Column(nullable = false)
   private AddedBy addedBy;
 
+  private String imageUrl;
+
   @Transient
   @ManyToMany(fetch = FetchType.LAZY)
   private List<LagaltUser> users;

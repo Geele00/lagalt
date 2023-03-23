@@ -121,15 +121,15 @@ VALUES
 ('110', 'Prosjekt med tittel 110', 'Prosjektbeskrivelse. Et eksempel.', '2023-08-25T10:21:55.071Z')
 ;
 
-INSERT INTO skill(added_by, name)
-VALUES (0, 'Programmering'),
-       (0, 'Animasjon'),
-       (0, 'Spillutvikling'),
-       (0, 'Fotografi'),
-       (0, 'Billedkunst'),
-       (0, 'Tegning'),
-       (0, 'Film'),
-       (0, 'AI');
+INSERT INTO skill(added_by, name, image_url)
+VALUES (0, 'Programmering', '/images/laptop-image.webp'),
+       (0, 'Animasjon', ''),
+       (0, 'Spillutvikling', ''),
+       (0, 'Fotografi', ''),
+       (0, 'Billedkunst', ''),
+       (0, 'Tegning', ''),
+       (0, 'Film', ''),
+       (0, 'AI', '');
 
 
 

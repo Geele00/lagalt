@@ -1,21 +1,29 @@
 .feed {
-  // container: feed / size;
-  // height: 100svh;
-  margin-top: 1em;
-
+  background-color: var(--clr_primary_1);
   scroll-behavior: smooth;
+  max-width: 570px;
+  margin-inline: auto;
+  padding-top: 1em;
   overflow: scroll;
   // overscroll-behavior-y: contain;
 
-  max-width: 570px;
-  margin-inline: auto;
-
-  &__project-preview {
+  &__project-preview-item {
     background-color: var(--clr_primary_white);
     color: var(--clr_text_3);
-    display: flex;
-    height: fit-content;
-    margin-bottom: 0.5em;
+    margin: 0.8em 0.5em;
+    // border-radius: 0.5em;
+    border-radius: 0.8em;
+    outline: 1px solid var(--clr_primary_1);
+
+    & > * {
+      // border-radius: 0.5em;
+      border-radius: 0.8em;
+      padding: 2ch !important;
+    }
+
+    // display: flex;
+    // height: fit-content;
+    // margin-bottom: 0.5em;
 
     &:empty {
       height: 6em;

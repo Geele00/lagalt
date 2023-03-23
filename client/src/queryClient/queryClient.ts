@@ -1,38 +1,31 @@
 import { QueryClient } from "@tanstack/react-query";
-const apiUri = import.meta.env.VITE_API_V1_URL;
+import { defaultFetch } from "src/api/v1/defaults";
 import { ILastQueryKey } from "./types";
+
+export const apiUri = import.meta.env.VITE_API_V1_URL;
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       refetchOnMount: true,
       refetchOnReconnect: true,
+      refetchInterval: 1000 * 60 * 10,
 
       queryFn: async ({ queryKey, pageParam }) => {
-        const lastQueryKey = queryKey.at(-1) as ILastQueryKey;
+        const { token, filters } = queryKey.at(-1) as ILastQueryKey;
 
-        const token = lastQueryKey?.token;
-
-        let filterString = "";
-
-        if (!!lastQueryKey.filters) {
-          for (const [k, v] of Object.entries(lastQueryKey.filters)) {
-            const prefix = filterString.length === 0 ? "?" : "&";
-            filterString += `${prefix}${k}=${v}`;
-          }
-        }
+        const filterString = Object.entries(filters || {}).reduce(
+          (curr, [k, v], idx) => `${curr}${!!idx ? "&" : "?"}${k}=${v}`,
+          ""
+        );
 
         const pageQuery = pageParam ? `&page=${pageParam}` : "";
 
-        const res = await fetch(
-          `${apiUri}${queryKey[0]}${filterString}${pageQuery}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const res = await defaultFetch(
+          `${queryKey[0]}${filterString}${pageQuery}`,
+          { token }
         );
 
         if (!res.ok) {

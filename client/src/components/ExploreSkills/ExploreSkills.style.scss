@@ -1,20 +1,11 @@
-.search__results__suggestions-title {
-  padding-block: 1em;
-  text-align: center;
+.explore__skills {
   background-color: var(--clr_primary_1);
-  color: var(--clr_text_1);
-}
-
-.search__results__suggestions {
-  background-color: var(--clr_primary_1);
-  color: var(--clr_text_1);
-  position: absolute;
   width: 100%;
-  height: 100svh;
   z-index: 801;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  // grid-template-rows: repeat(1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+  padding: 1em;
 
   &[aria-expanded="false"] {
     height: 0;
@@ -24,18 +15,25 @@
     width: 100%;
     aspect-ratio: 1;
     margin: auto;
-    padding: 1em;
+    border-radius: 0.5em;
 
-    & > button {
-      border: none;
-      background-color: var(--clr_primary_1);
-      color: var(--clr_white);
+    & > a {
       box-shadow: 0 0 2px 2px var(--clr_white);
+      color: var(--clr_white) !important;
+      border: none;
       border-radius: 0.5em;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      margin-inline: auto;
+      display: grid;
+      overflow: hidden;
+
+      & > * {
+        grid-row: 1;
+        grid-column: 1;
+      }
+
+      & > img {
+        height: 100%;
+        overflow: hidden;
+      }
 
       & > p {
         margin: auto auto 1ch auto;

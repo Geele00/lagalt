@@ -1,15 +1,10 @@
 import "./Feed.style.scss";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import {
-  InfiniteData,
-  useInfiniteQuery,
-  useMutation,
-} from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { IProjectsPage } from "src/types/models/Project";
 import { ErrorComponent } from "@tanstack/react-router";
-import { updateProject } from "src/api/v1/projects/projects";
-import useFeedItems from "./useFeedItems";
+import FeedItems from "./FeedItems";
 
 const apiUri = import.meta.env.VITE_API_V1_URL;
 
@@ -53,8 +48,6 @@ const Feed = ({ filters }: IFeed) => {
       onSuccess: async (data) => {
         const lastPage = data.pages.at(-1);
 
-        console.log(data);
-
         if (!lastPage) return;
 
         const projectIds = lastPage?.content.map(
@@ -77,24 +70,17 @@ const Feed = ({ filters }: IFeed) => {
     title: "lol",
   };
 
-  const testMut = useMutation({
-    mutationFn: () => {
-      const { token } = authState;
-      if (!token) throw new Error("Authentication error");
-      return updateProject(updates, token);
-    },
-    onSuccess: () => {
-      refetch();
-      //queryClient.invalidateQueries(["/feed"]);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  console.log(data);
-
-  const feedItems = useFeedItems({ data, isPlaceholderData });
+  //const testMut = useMutation({
+  //  mutationFn: () => {
+  //    const { token } = authState;
+  //    if (!token) throw new Error("Authentication error");
+  //    return updateProject(updates, token);
+  //  },
+  //  onSuccess: () => {
+  //    refetch();
+  //    //queryClient.invalidateQueries(["/feed"]);
+  //  },
+  //});
 
   const containerRef = useRef<HTMLUListElement>(null);
 
@@ -133,7 +119,9 @@ const Feed = ({ filters }: IFeed) => {
 
   return (
     <ul className="feed" role="feed" ref={containerRef}>
-      {errorScreen ?? <>{feedItems}</>}
+      {errorScreen ?? (
+        <FeedItems data={data} isPlaceholderData={isPlaceholderData} />
+      )}
     </ul>
   );
 };

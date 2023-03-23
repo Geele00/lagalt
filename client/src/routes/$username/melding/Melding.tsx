@@ -69,7 +69,7 @@ const Melding = () => {
       queryClient.setQueryData(
         queryKey,
         (prev: InfiniteData<IChatMessagePage> | undefined) => {
-          if (prev === undefined) return;
+          if (prev === undefined) return previousData;
 
           const prevCopy = { ...prev };
 
@@ -95,7 +95,7 @@ const Melding = () => {
       return { previousData };
     },
     onSettled: (data, error, vars, context) => {
-      if (error) {
+      if (error && !!data) {
         const previousData = context?.previousData;
         queryClient.setQueryData(queryKey, previousData);
       }
@@ -108,12 +108,18 @@ const Melding = () => {
 
   const containerRef = useRef<HTMLElement>(null);
 
-  // Scroll into view for first page
-  useEffect(() => {
+  const scrollToBottom = () => {
     if (!containerRef.current?.lastChild) return;
-    if (!data || data.pages.length > 1) return;
     (containerRef.current.lastChild as HTMLElement).scrollIntoView();
-  }, [data]);
+  };
+
+  if (data && data.pages.length < 1) scrollToBottom();
+
+  // Scroll into view for first page
+  // useEffect(() => {
+  //   if (!data || data.pages.length > 1) return;
+  //   scrollToBottom();
+  // }, [data]);
 
   const reachedFinalPage = useMemo(
     () => !data?.pages.at(-1)?.hasNextPage,
@@ -152,8 +158,6 @@ const Melding = () => {
 
   const onSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
-    console.log(e.target);
-    console.log(e.currentTarget);
   }, []);
 
   const onKeyUp = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -210,6 +214,9 @@ const Melding = () => {
   return (
     <div className="user-chat">
       <section className="user-chat__history" ref={containerRef}>
+        <article key={"prop 1"} data-author={"other"}>
+          <p>A message from testuser2</p>
+        </article>
         {loadingScreen ?? errorScreen ?? messages}
       </section>
       <form
@@ -224,12 +231,6 @@ const Melding = () => {
         <button title="Send" className="user-chat__compose__send">
           <img src="/images/send-message.svg" alt="paper plane" />
         </button>
-        <div className="user-chat__compose__controls">
-          <button>
-            <img src="/images/wrench.svg" />
-          </button>
-          <button>Op2</button>
-        </div>
       </form>
     </div>
   );

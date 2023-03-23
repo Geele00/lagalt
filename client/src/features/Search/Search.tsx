@@ -1,54 +1,41 @@
 import "./Search.style.scss";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { ISearchBar } from "./Search.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAuth } from "src/auth/Auth.Provider";
 import { useOverlay } from "src/features/Overlay/Overlay.Provider";
-import useSearchResults from "./useSearchResults";
 import { IProjectsPage } from "src/types/models/Project";
-import { ExploreSkills } from "src/components/ExploreSkills/ExploreSkills";
+import { useDebounce } from "src/components/__hooks/useDebounce";
+import { SearchOverlay } from "./SearchOverlay/SearchOverlay";
+import { createPortal } from "react-dom";
 
-export const SearchBar = ({ className }: ISearchBar) => {
+export const Search = ({ className }: ISearchBar) => {
   const { authState } = useAuth();
   const { activeOverlay, toggleOverlay } = useOverlay();
 
   const [searchString, setSearchString] = useState("");
-
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const debouncedSearch = useDebounce(searchString, searchString[1] ? 1000 : 0);
 
   const filters = {
     size: 20,
     sort: "createdAt",
-    query: searchString,
+    query: debouncedSearch,
   };
 
   const queryKey = ["/search", { filters, token: authState.token }];
 
   const { data } = useInfiniteQuery<IProjectsPage>({
     queryKey,
-    enabled: !!authState.token && !!searchString.length,
+    enabled: !!authState.token && !!debouncedSearch.length,
     keepPreviousData: true,
   });
-
-  const overlayRef = useRef<Element | null>(null);
-
-  useEffect(() => {
-    if (overlayRef.current === null) {
-      const overlayEl = document.querySelector("#overlay");
-
-      overlayRef.current = overlayEl;
-    }
-  }, []);
 
   const onInput = (e: FormEvent) => {
     const input = e.target as HTMLInputElement;
     setSearchString(input.value);
-    console.log(input.value);
   };
 
-  const onSubmit = (e: any) => {
-    e.preventDefault();
-  };
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!searchInputRef.current) return;
@@ -61,36 +48,14 @@ export const SearchBar = ({ className }: ISearchBar) => {
     }
   };
 
-  // const onBlur = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (!searchInputRef.current) return;
-  //
-  //   searchInputRef.current.value = "";
-  // };
-
-  const searchResults = useSearchResults({ data });
-
   return (
     <>
-      <div
-        aria-expanded={activeOverlay === "search"}
-        className="search-results"
-      >
-        {searchString.length ? (
-          <ul className="search-results__list">
-            {searchResults ?? <p>Ingen resultater</p>}
-          </ul>
-        ) : (
-          <ExploreSkills />
+      {activeOverlay === "search" &&
+        createPortal(
+          <SearchOverlay data={data} searchQuery={debouncedSearch} />,
+          document.getElementById("overlay-container") as HTMLElement
         )}
-      </div>
-
-      <form
-        className={`${className} search-bar`}
-        role="search"
-        onInput={onInput}
-        onSubmit={onSubmit}
-        aria-haspopup="listbox"
-      >
+      <div className={`${className} search-bar`}>
         <img
           src="/images/magnifying-glass.png"
           onPointerDown={(e) => {
@@ -100,11 +65,15 @@ export const SearchBar = ({ className }: ISearchBar) => {
         />
         <input
           onKeyDown={onKeyDown}
+          onInput={onInput}
+          aria-haspopup="listbox"
+          aria-controls="search-dropdown"
+          role="search"
           type="text"
           ref={searchInputRef}
           onFocus={() => toggleOverlay({ overlay: "search", type: "open" })}
         />
-      </form>
+      </div>
     </>
   );
 };

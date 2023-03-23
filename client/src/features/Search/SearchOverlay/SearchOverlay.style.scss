@@ -1,0 +1,22 @@
+.search-overlay {
+  background-color: var(--clr_primary_1);
+  transition: all 0.15s ease-out;
+  z-index: 1000;
+  max-width: 800px;
+  margin-inline: auto;
+  height: 0;
+  width: 100%;
+  scroll-behavior: smooth;
+
+  &[aria-expanded="true"] {
+    height: fit-content;
+  }
+
+  &__title {
+    padding-block: 1.5em;
+    font-size: 1.8em;
+    text-align: center;
+    background-color: var(--clr_primary_1);
+    color: var(--clr_text_1);
+  }
+}

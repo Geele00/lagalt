@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { ReactNode } from "react";
 
 export interface IAuthState {
   token: string | null;
@@ -7,7 +7,7 @@ export interface IAuthState {
 }
 
 export interface IAuthProvider {
-  queryClient: QueryClient;
+  children: ReactNode;
 }
 
 export type SignIn = (
