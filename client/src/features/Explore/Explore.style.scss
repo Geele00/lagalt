@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
- // background-color: #0e9594;
+  // background-color: #0e9594;
   width: 80%;
   height: 300px;
   margin: 25px auto;
@@ -13,13 +13,12 @@
   text-align: center;
   overflow-y: scroll;
 
-  
   @media (max-width: 767px) {
     width: 100%;
   }
 }
 
-.news-feed{
+.news-feed {
   width: 100%;
   max-width: 960px;
   display: flex;
@@ -27,7 +26,7 @@
   justify-content: space-between;
 }
 
-.article-container{
+.article-container {
   width: calc(100% - 10px);
   border: 1px solid black;
   background-color: white;
@@ -36,11 +35,9 @@
 
   &:hover {
     border-color: #0e9594;
-  transition: box-shadow 0.5s ease-in-out;
+    transition: box-shadow 0.5s ease-in-out;
 
-  
     box-shadow: 0 0.4em 1em rgb(0, 0, 0);
-  
   }
 }
 
@@ -59,5 +56,3 @@ a {
     color: #0e9594;
   }
 }
-
-

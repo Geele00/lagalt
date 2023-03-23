@@ -1,6 +1,8 @@
+import { IProject } from "src/types/models/Project";
+
 export interface IProjectPreview {
-  title: string;
-  description: string;
+  project: IProject;
   className?: string;
   isPlaceholderData?: boolean | null;
+  short?: boolean;
 }

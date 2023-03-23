@@ -1,3 +1,4 @@
+import { ProjectPage } from "src/features/Search/Search.types";
 import { IPage } from "./Page";
 
 export interface IProject {
@@ -11,6 +12,12 @@ export interface INewProject {
   ownerId: number;
   title: string;
   description: string;
+}
+
+export interface IProjectPageData {
+  data?: {
+    pages: ProjectPage[];
+  };
 }
 
 export type IProjectsPage = IPage<IProject>;

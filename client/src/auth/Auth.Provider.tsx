@@ -9,17 +9,17 @@ import {
 import { IAuthProvider, IAuthContext, IAuthState, SignIn } from "./Auth.types";
 import { auth } from "./firebase";
 import { signInAnonymously } from "firebase/auth";
-import { RouterProvider } from "@tanstack/react-router";
-import { router } from "src/routes/router";
 
 const AuthContext = createContext<IAuthContext>(null!);
 
-export const AuthProvider = ({ queryClient }: IAuthProvider) => {
-  const [authState, setAuthState] = useState<IAuthState>({
-    token: null,
-    username: null,
-    signedIn: false,
-  });
+const initialAuthState = {
+  token: null,
+  username: null,
+  signedIn: false,
+};
+
+export const AuthProvider = ({ children }: IAuthProvider) => {
+  const [authState, setAuthState] = useState<IAuthState>(initialAuthState);
 
   // useEffect(() => {
   // queryClient.setQueryDefaults(["auth"], {
@@ -40,26 +40,28 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
     // queryClient.invalidateQueries(["auth"]);
   };
 
-  const anonSignIn = () => {
-    signInAnonymously(auth).then(({ user }) => {
-      user.getIdToken().then((token) => {
-        // queryClient.setQueryData(["auth"], {
-        //   token,
-        //   username: "anon",
-        // });
-        // queryClient.invalidateQueries(["auth"]);
-
-        setAuthState({ token, username: "anon", signedIn: false });
-      });
-    });
-  };
+  // const anonSignIn = () => {
+  //   signInAnonymously(auth).then(({ user }) => {
+  //     user.getIdToken().then((token) => {
+  //       // queryClient.setQueryData(["auth"], {
+  //       //   token,
+  //       //   username: "anon",
+  //       // });
+  //       // queryClient.invalidateQueries(["auth"]);
+  //
+  //       setAuthState({ token, username: "anon", signedIn: false });
+  //     });
+  //   });
+  // };
 
   // this might break without connection to firebase
-  const signOut = useCallback(() => {
-    auth.signOut().then(() => {
-      anonSignIn();
-    });
-  }, [auth]);
+  const signOut = () => {
+    if (authState.signedIn)
+      auth.signOut().then(() => {
+        setAuthState(initialAuthState);
+        // anonSignIn();
+      });
+  };
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((user) => {
@@ -72,9 +74,10 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
           // });
           // queryClient.invalidateQueries(["auth"]);
         });
-      } else {
-        anonSignIn();
       }
+      // else {
+      //   anonSignIn();
+      // }
 
       return unsub;
     });
@@ -89,11 +92,7 @@ export const AuthProvider = ({ queryClient }: IAuthProvider) => {
     [authState]
   );
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      <RouterProvider router={router} context={{ queryClient, authState }} />
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue} children={children} />;
 };
 
 export const useAuth = () => {

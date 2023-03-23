@@ -1,40 +1,54 @@
 .user-chat {
   display: flex;
   flex-flow: column;
-  height: 100%;
+  position: absolute;
+  top: 3em;
+  bottom: 0;
+  width: 100%;
+  flex-grow: 1;
+  background-color: var(--clr_primary_1);
+  // padding-top: 3em;
 
   &__history {
-    padding: 1ch 1ch 2ch 1ch;
+    // padding: 1ch 1ch 2ch 1ch;
+    margin: 1ch;
     flex-grow: 1;
-    overflow-y: scroll;
+    gap: 1ch;
+    // overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    margin-bottom: auto;
 
     & > h2 {
-      margin-inline: auto;
-      margin-top: 1ch;
-      font-size: 1.1em;
       color: var(--clr_primary_1);
       border: 1px solid var(--clr_primary_1);
-      padding: 1ch;
       border-radius: 0.5em;
+      font-size: 1.1em;
+      margin-inline: auto;
+      margin-top: 1ch;
+      padding: 1ch;
     }
 
     & > article {
-      border: 1px solid var(--clr_primary_1);
-      min-height: 3em;
+      background-color: var(--clr_primary_white);
+      color: var(--clr_primary_1);
+      overflow-anchor: none;
+      //   outline: 3px solid var(--clr_primary_2);
+      //   box-shadow: 0 0 2px 2px var(--clr_profile_icon);
+      // border-radius: 0.8em;
+      // outline: 1px solid var(--clr_primary_1);
+
+      border-radius: 1em;
+      border: 5px solid var(--clr_primary_2);
+      outline: 1px solid var(--clr_primary_1);
       display: flex;
       width: 49%;
-      border-radius: 1em;
-      margin-block: 0.5ch;
-      overflow-anchor: none;
 
       &:last-child {
         overflow-anchor: auto;
       }
 
       & > p {
+        padding-block: 0.4ch;
         margin-block: auto;
         word-wrap: break-word;
         width: 100%;
@@ -48,61 +62,38 @@
   }
 
   &__compose {
-    border-radius: 0.2em 0.2em 0 0;
+    box-shadow: 0 -2px 1px var(--clr_profile_icon);
     background-color: var(--clr_primary_2);
     position: sticky;
     bottom: 0;
-    display: grid;
-    margin-top: auto;
-    grid-template-rows: 4em auto;
-    grid-template-columns: auto 2em;
+    min-height: 6em;
+    display: flex;
     padding: 1ch;
-    gap: 1ch;
-
-    // &:focus-within {
-    //   // flex-basis: 15em;
-    //   height: 15em;
-    //   margin-top: 5em;
-    // }
+    gap: 0.5ch;
+    margin-top: auto;
 
     &__send {
       background-color: var(--clr_primary_2);
+      border: 1px solid white;
       border: 0;
+      border-radius: 0 1ch 1ch 0;
       display: flex;
+      width: 3em;
+      min-height: 6em;
 
-      // img {
-      //   // padding: 0.5ch;
-      //   // padding-top: 1ch;
-      // }
+      img {
+        margin: auto;
+      }
     }
 
     & > textarea {
       font-family: Montserrat;
       border: 0;
       outline: none;
-      border-radius: 0.2em;
-      padding: 0.5ch;
-    }
-
-    &__controls {
-      display: flex;
-      flex-flow: row-reverse;
-      gap: 1ch;
-      margin-right: auto;
-
-      button {
-        background-color: var(--clr_primary_2);
-        margin-block: auto;
-        height: 2em;
-        border: 1px solid var(--clr_primary_white);
-        border-radius: 0.5em;
-
-        img {
-          height: 90%;
-          // padding: 1ch;
-          // height: 3em;
-        }
-      }
+      border-radius: 1ch;
+      border-radius: 1ch 0 0 1ch;
+      padding: 0.6ch;
+      flex-grow: 1;
     }
   }
 }

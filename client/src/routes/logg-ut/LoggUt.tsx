@@ -5,9 +5,7 @@ import { useAuth } from "src/auth/Auth.Provider";
 const LoggUt = () => {
   const { signOut } = useAuth();
 
-  useEffect(() => {
-    signOut();
-  }, []);
+  useEffect(() => signOut(), []);
 
   return (
     <div>

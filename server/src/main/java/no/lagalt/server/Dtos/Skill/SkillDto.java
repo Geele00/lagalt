@@ -15,5 +15,7 @@ public class SkillDto {
 
   private String addedBy;
 
+  private String imageUrl;
+
   // private List<IndustryDto> industries;
 }
