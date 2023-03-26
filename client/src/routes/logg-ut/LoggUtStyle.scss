@@ -1,11 +1,10 @@
 
 .log-out-page {
-  background-color: var(--clr_primary_2);
+  background-color: var(--clr_primary_1);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 
   &-container {
     background-color: var(--clr_primary_white);
@@ -29,8 +28,5 @@
         text-decoration: underline;
       }
     }
-
-    
-
   }
 }

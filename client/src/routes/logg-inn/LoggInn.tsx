@@ -75,7 +75,7 @@ const LoggInn = () => {
           placeholder="Passord"
           className="login__password"
         />
-        <button>Logg inn</button>
+        <button className="login-button">Logg inn</button>
       </form>
 
       <section className="login_options">
