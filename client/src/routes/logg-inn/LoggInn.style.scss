@@ -7,6 +7,24 @@
   max-width: 500px;
   gap: 1.5em;
   margin-top: 1em;
+  align-items: center;
+}
+.login__form{
+  position: relative;
+  align-items: center;
+  box-sizing: content-box;
+}
+
+.login-button{
+  position: relative;
+  left: 50px;
+  width: 220px;
+  margin: 4px;
+  align-items: center;
+  box-sizing: content-box;
+  border-radius: 3em;
+  height: 2em;
+  border-color: var(--clr_primary_2);
 }
 
 // .login {
