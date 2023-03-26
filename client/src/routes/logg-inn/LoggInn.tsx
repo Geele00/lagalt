@@ -54,13 +54,13 @@ const LoggInn = () => {
     <div className="login">
       <button onPointerUp={devLogin}>Cheatcode: devLogin</button>
       <form className="login__form" onSubmit={onSubmit}>
-        <Input
+        {/* <Input
           maxLength={15}
           type="text"
           name="username"
           placeholder="Brukernavn"
           className="login__username"
-        />
+        /> */}
         <Input
           maxLength={40}
           type="email"
@@ -80,7 +80,7 @@ const LoggInn = () => {
 
       <section className="login_options">
         <Link to="glemt-passord">Glemt passord</Link>
-        <Link to="ny-bruker">Ny bruker</Link>
+        {/* <Link to="ny-bruker">Ny bruker</Link> */}
       </section>
 
       <p className="login_google">Google Login</p>

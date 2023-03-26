@@ -1,10 +1,11 @@
 .main-input {
   border-style: none;
-  text-indent: 1ch;
+  text-indent: 3ch;
   margin-inline: auto;
+  margin: 3px;
   width: 100%;
   height: 6ch;
-  border-radius: 0.5em;
+  border-radius: 1em;
   outline: 2px solid var(--clr_grey2);
   background-color: var(--clr_white);
 }
