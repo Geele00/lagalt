@@ -1,0 +1,32 @@
+
+.log-out-page {
+  background-color: var(--clr_primary_1);
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-container {
+    background-color: var(--clr_primary_white);
+    border: 1px solid  #ccc;
+    border-radius: 15px;
+    box-shadow: black;
+    width: 80%;
+    padding: 40px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+
+    & > * + * {
+      margin-top: 20px;
+    }
+
+    .log-out-page-link {
+      color: blue;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,19 +1,14 @@
 .main-logo {
-  font-family: Codystar;
-  font-weight: 600;
-  color: var(--clr_text_1);
-  padding-left: 0.5ch;
-  font-size: 1.3em;
-  display: grid;
-  text-decoration: none;
+  position: absolute;
+  top: -10px;
+  left: 55px;
+  height: 60px; /* adjust as needed */
+  width: auto;
+  margin: 10px; /* adjust as needed */
 
-  &:visited {
-    text-decoration: none;
-  }
-
-  span {
-    margin-block: auto;
-    display: block;
-    padding-right: 3ch;
+  img {
+    height: 55px;
+    width: auto;
   }
 }
+
